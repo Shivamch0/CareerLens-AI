@@ -11,8 +11,8 @@ function App() {
     <div className="relative min-h-screen bg-[#020617] overflow-hidden">
 
       <div className="absolute bottom-30 left-1/2 -translate-x-1/2 
-        w-[1000px] h-[400px] 
-        bg-[radial-gradient(ellipse_at_center,_rgba(168,85,247,0.6),_transparent_70%)] 
+        w-250 h-100 
+        bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.6),transparent_70%)] 
         blur-[120px] rounded-full">
       </div>
 
