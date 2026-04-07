@@ -1,7 +1,13 @@
-import React from "react";
+// Hooks Imports
 import { Link, useNavigate } from "react-router-dom";
+
+// Components Imports
 import Button from "./Button";
+import ToggleTheme from "./ToggleTheme";
+
+//Other Imports
 import logo from "../assets/logo.png";
+
 
 function Navbar() {
   const navigate = useNavigate();
@@ -56,7 +62,7 @@ function Navbar() {
 
         <div className="flex gap-5">
           <Button title="Get Started" onClick={() => navigate("/login")} />
-          <button>Toggle</button>
+          <ToggleTheme />
         </div>
       </nav>
     </header>

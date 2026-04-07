@@ -1,12 +1,18 @@
+// Hooks Import
+import { useTheme } from "./Provider/ThemeProvider"
+
+// Conponents Imports
 import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 
+// Other Imports
 import { Routes, Route } from "react-router-dom";
 
 function App() {
+  const isDark  = useTheme()
   return (
     <div className="relative min-h-screen bg-[#020617] overflow-hidden">
 
