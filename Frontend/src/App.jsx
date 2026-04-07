@@ -10,26 +10,32 @@ function App() {
   return (
     <div className="relative min-h-screen bg-[#020617] overflow-hidden">
 
-      <div className="absolute bottom-30 left-1/2 -translate-x-1/2 
-        w-250 h-100 
+      {/*  MAIN GLOW */}
+      <div className="absolute bottom-[-120px] left-1/2 -translate-x-1/2 
+        w-[1000px] h-[400px] 
         bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.6),transparent_70%)] 
         blur-[120px] rounded-full">
       </div>
 
-      <div className="absolute bottom-25 left-1/2 -translate-x-1/2 
-        w200 h-75
+      {/*  SECOND GLOW */}
+      <div className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 
+        w-[800px] h-[300px] 
         bg-purple-500/30 blur-[100px] rounded-full">
       </div>
 
+      {/*  TOP GRADIENT FADE */}
       <div className="absolute inset-0 
-        bg-linear-to-b from-[#020617] via-[#020617]/80 to-transparent">
+        bg-gradient-to-b from-[#020617] via-[#020617]/80 to-transparent">
       </div>
 
-      <section>
-        <div className="relative z-20 text-white">
+     <section className="mx-10">
+       {/* NAVBAR */}
+      <div className="relative z-20 text-white">
         <Navbar />
       </div>
-      <div className="relative z-10  text-white">
+
+      {/*  PAGES */}
+      <div className="relative z-20 text-white mt-5">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -37,8 +43,8 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </div>
+     </section>
 
-      </section>
     </div>
   );
 }
