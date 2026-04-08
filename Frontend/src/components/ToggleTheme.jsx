@@ -3,13 +3,13 @@
 import { ThemeProvider, useTheme } from "../Provider/ThemeProvider"
 
 function ThemeToggleButton(){
-  const { theme , ToggleTheme , isDark } = useTheme();
+  const { theme , toggleTheme , isDark } = useTheme();
 
   return(
     <button
-    onClick={ToggleTheme}
+    onClick={toggleTheme}
     className={`
-      relative w-16 h-8 rounded-full transition-colors duration-300
+      relative top-2 w-16 h-8 rounded-full transition-colors duration-300 cursor-pointer
       ${isDark ? "bg-blue-600" : "bg-gray-300"}`}
     >
       <div
@@ -25,10 +25,16 @@ function ThemeToggleButton(){
   )
 }
 
-function ToggleTheme() {
+
+
+function ToggleTheme({isDark}) {
   return (
     <div>
-      <ThemeToggleButton/>
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-3">
+          <ThemeToggleButton />
+        </div>
+      </div>
     </div>
   )
 }
