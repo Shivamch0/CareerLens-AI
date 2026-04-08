@@ -49,14 +49,14 @@ function App() {
         </div>
 
         {/*  PAGES */}
-        <div className="relative z-20 text-white mt-5">
+        <main className="relative z-20 text-white mt-5">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
-        </div>
+        </main>
       </section>
     </div>
   );

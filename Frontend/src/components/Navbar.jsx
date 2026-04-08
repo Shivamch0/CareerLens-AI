@@ -63,7 +63,6 @@ function Navbar() {
         </div>
 
         <div className="flex gap-5 items-center">
-          <Button title="Get Started" onClick={() => navigate("/login")} />
           <ToggleTheme />
         </div>
       </nav>
