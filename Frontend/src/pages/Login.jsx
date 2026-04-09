@@ -33,7 +33,7 @@ function Login() {
           <LinkComponent
             route="/login"
             content="Log in"
-            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : "bg-blue-500 hover:bg-blue-700"}`}
+            className={`${isDark ? " text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : "bg-blue-500 hover:bg-blue-700"}`}
           />
           <LinkComponent route="/signup" content="Sign up" />
         </div>
@@ -57,14 +57,14 @@ function Login() {
             placeholder="Enter your password"
            className={`pl-5 w-full md:w-96 py-3 rounded-xl ${isDark ? "bg-[#121A3A] border border-[#2A356B] text-[#E6E9FF] placeholder:text-[#A8B0D6 outline-none focus:ring-2 focus:ring-[#5B6CFF]/4 transition" : 'border border-white/20 placeholder:text-gray-500 shadow-lg shadow-gray-500 outline-0 text-gray-700'} `}
           />
-          <div className={`flex items-center text-sm gap-1 ${isDark ? '' : 'text-gray-800'}`}>
+          <div className={`flex items-center text-sm gap-1 ${isDark ? 'text-white' : 'text-gray-800'}`}>
             <input type="checkbox" name="" id="remember" />
             <label htmlFor="remember">Remember me</label>
           </div>
           <Button
             type="submit"
             title="Submit"
-            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90 py-3" : 'bg-blue-500 py-3 hover:bg-blue-700'}`}
+            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90 py-3 text-white" : 'bg-blue-500 py-3 hover:bg-blue-700'}`}
           />
         </form>
 

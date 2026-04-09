@@ -32,7 +32,7 @@ function SignUp() {
           <LinkComponent
             route="/signup"
             content="Sign up"
-            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : "bg-blue-500 hover:bg-blue-700"}`}
+            className={`${isDark ? " text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : "bg-blue-500 hover:bg-blue-700"}`}
           />
         </div>
       </div>

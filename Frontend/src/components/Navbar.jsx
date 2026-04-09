@@ -7,7 +7,7 @@ import Button from "./Button";
 import ToggleTheme from "./ToggleTheme";
 
 //Other Imports
-import logo from "../assets/logo.png";
+import logo from "../assets/Logo.png";
 
 
 function Navbar() {

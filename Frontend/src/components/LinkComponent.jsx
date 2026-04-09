@@ -5,7 +5,7 @@ function LinkComponent({className , content , route}) {
   const { isDark } = useTheme();
 
    const defaultClasses = isDark
-    ? "bg-[#121A3A] border border-[#2A356B] text-[#E6E9FF] hover:brightness-150"
+    ? "bg-[#121A3A] border border-[#2A356B] text-[#E6E9FF] hover:brightness-150 "
     : "bg-blue-100 border border-blue-300 text-blue-900 hover:brightness-95";
 
   return (
