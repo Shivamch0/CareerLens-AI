@@ -6,7 +6,8 @@ import Button from "../components/Button"
 import HomeCard from "../components/HomeCard"
 
 //Other Import
-import { FaSearch } from "react-icons/fa"
+import { FaSearch  , FaLightbulb } from "react-icons/fa"
+import { FaNoteSticky  } from "react-icons/fa6"
 import lightBgImage from "../assets/Light_image.png"
 
 
@@ -14,7 +15,7 @@ function Home({isDark}) {
   const navigate = useNavigate()
   console.log(isDark)
   return (
-    <section>
+    <section >
 
     <div className="flex">
         <div className="flex flex-col justify-center gap-5">
@@ -38,12 +39,14 @@ function Home({isDark}) {
       
 
       <div>
-        <img src={lightBgImage} className="w-270 h-110" />
+        <img src={lightBgImage} className="w-250 h-100" />
       </div>
     </div>
 
-    <div>
-      <HomeCard title='Smart Job Matching' content='' icon={<FaSearch />} />
+    <div className="flex gap-10">
+      <HomeCard title='Smart Job Matching' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaSearch />} />
+      <HomeCard title='Resume Optimization' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaNoteSticky />} />
+      <HomeCard title='Skill Development' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaLightbulb />} />
     </div>
 
     </section>

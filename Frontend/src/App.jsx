@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div
-      className={`relative min-h-screen  overflow-hidden ${isDark ? "bg-[#020617]" : "bg-white"}`}
+      className={`relative min-h-screen overflow-hidden ${isDark ? "bg-[#020617]" : "bg-white"}`}
     >
       {isDark ? (
         <>
