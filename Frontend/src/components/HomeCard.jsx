@@ -10,13 +10,13 @@ function HomeCard({ title, content, icon }) {
       ></div>
 
       <div
-        className=" flex gap-5 items-center relative rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 text-white"
+        className=" flex flex-col sm:flex-row gap-4 items-start sm:items-center relative rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 text-white"
       >
         <div className={`text-4xl ${isDark ? 'text-blue-400' : "text-blue-600"} `}>{icon}</div>
 
         <div className="flex flex-col gap-2">
           <h4 className={`text-2xl font-bold ${isDark ? '' : 'text-blue-800'}`}>{title}</h4>
-          <hr className="text-gray-400  w-60" />
+          <hr className="ttext-gray-400 w-full sm:w-60" />
           <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>{content}</p>
         </div>
       </div>

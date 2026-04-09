@@ -26,10 +26,10 @@ function Navbar() {
           onClick={handleNavigate}
         >
           <img className="w-12 h-12 rounded-full" src={logo} alt="" />
-          <h3 className="text-2xl font-bold text-blue-600">CAREER</h3>
-          <p className={`text-2xl font-bold ${isDark ? "" : "text-blue-300"} `}>LENS</p>
+          <h3 className="text-lg md:text-2xl font-bold text-blue-600">CAREER</h3>
+          <p className={`text-lg md:text-2xl font-bold ${isDark ? "text-white" : "text-blue-300"} `}>LENS</p>
         </div>
-        <div className={`flex gap-10 py-1 px-4 rounded-full text-sm text-gray-400 ${isDark ? "bg-white/10 border-white/20" : "bg-gray-300"}`}>
+        <div className={`hidden md:flex gap-6 lg:gap-10 py-1 px-4 rounded-full text-sm text-gray-400 ${isDark ? "bg-white/10 border-white/20" : "bg-gray-300"}`}>
           <Link
             to={"/learning"}
             className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}  

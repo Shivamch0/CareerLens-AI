@@ -19,15 +19,15 @@ function Home() {
   return (
     <section >
 
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row items-center justify-between gap-10 px-4 md:px-10">
         <div className="flex flex-col justify-center gap-5">
         <div>
-          <h1 className={`text-6xl font-bold mb-1 ${isDark ? '' : 'text-blue-800'}`}>Advance Your Career with AI</h1>
-          <p className={`font-bold ${isDark ? "text-gray-400" : 'text-gray-900'}`}>Unlock your potential with AI-Powered tools for job matching, resume optimization and skills development</p>
+          <h1 className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-1 ${isDark ? 'text-white' : 'text-blue-800'}`}>Advance Your Career with AI</h1>
+          <p className={`font-bold text-sm sm:text-base md:text-lg ${isDark ? "text-gray-400" : 'text-gray-900'}`}>Unlock your potential with AI-Powered tools for job matching, resume optimization and skills development</p>
 
         </div>
         
-        <div className="flex gap-20">
+        <div className="flex flex-col sm:flex-row gap-5 sm:gap-10">
           <Button 
           title="Get Started"
            onClick={() => navigate("/login")} 
@@ -41,11 +41,11 @@ function Home() {
       
 
       <div>
-        <img src={lightBgImage} className="w-230 h-90" />
+        <img src={lightBgImage} className="w-full max-w-md md:max-w-lg lg:max-w-3xl" />
       </div>
     </div>
 
-    <div className="flex gap-10">
+    <div className="flex flex-col md:flex-row gap-6 px-4 md:px-10">
       <HomeCard title='Smart Job Matching' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaSearch />} />
       <HomeCard title='Resume Optimization' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaNoteSticky />} />
       <HomeCard title='Skill Development' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaLightbulb />} />

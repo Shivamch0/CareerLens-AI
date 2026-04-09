@@ -22,14 +22,16 @@ function App() {
         <>
           <div
             className="absolute bottom-[-120px] left-1/2 -translate-x-1/2 
-        w-[1000px] h-[400px] 
+        w-[500px] sm:w-[700px] md:w-[900px] lg:w-[1000px]
+h-[200px] sm:h-[300px] md:h-[350px] lg:h-[400px] 
         bg-[radial-gradient(ellipse_at_center,rgba(168,85,247,0.6),transparent_70%)] 
         blur-[120px] rounded-full"
           ></div>
 
           <div
             className="absolute bottom-[-100px] left-1/2 -translate-x-1/2 
-        w-[800px] h-[300px] 
+        w-[400px] sm:w-[600px] md:w-[700px] lg:w-[800px]
+h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px] 
         bg-purple-500/30 blur-[100px] rounded-full"
           ></div>
 
@@ -44,12 +46,12 @@ function App() {
 
       <section className="mx-10">
         {/* NAVBAR */}
-        <div className="relative z-20 text-white">
+        <div className="relative z-20">
           <Navbar />
         </div>
 
         {/*  PAGES */}
-        <main className="relative z-20 text-white mt-5">
+        <main className="relative z-20 mt-5">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
