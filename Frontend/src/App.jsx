@@ -44,7 +44,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         ""
       )}
 
-      <section className="mx-10">
+      <section className="px-0 sm:px-6 md:px-10">
         {/* NAVBAR */}
         <div className="relative z-20">
           <Navbar />

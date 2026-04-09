@@ -45,7 +45,7 @@ function Home() {
       </div>
     </div>
 
-    <div className="flex flex-col md:flex-row gap-6 px-4 md:px-10">
+    <div className="flex flex-col md:flex-row gap-6 mt-14 md:mt-10 px-0 md:px-10">
       <HomeCard title='Smart Job Matching' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaSearch />} />
       <HomeCard title='Resume Optimization' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaNoteSticky />} />
       <HomeCard title='Skill Development' content='Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, quis.' icon={<FaLightbulb />} />

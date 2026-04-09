@@ -16,7 +16,7 @@ function HomeCard({ title, content, icon }) {
 
         <div className="flex flex-col gap-2">
           <h4 className={`text-2xl font-bold ${isDark ? '' : 'text-blue-800'}`}>{title}</h4>
-          <hr className="ttext-gray-400 w-full sm:w-60" />
+          <hr className="border-gray-300 dark:border-gray-600 w-full sm:w-60" />
           <p className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-700'}`}>{content}</p>
         </div>
       </div>

@@ -27,7 +27,7 @@ function SignUp() {
        <h2 className={`font-bold text-4xl ${isDark ? "text-white" : "text-blue-800"} `}>
           Welcome to CareerLens
         </h2>
-        <div className={`mt-3 flex gap-15 justify-center`}>
+        <div className={`mt-6 flex flex-col sm:flex-row gap-4 sm:gap-10 justify-center items-center`}>
           <LinkComponent route="/login" content="Log in" />
           <LinkComponent
             route="/signup"
