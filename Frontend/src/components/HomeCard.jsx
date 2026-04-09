@@ -10,7 +10,7 @@ function HomeCard({ title, content, icon }) {
       ></div>
 
       <div
-        className=" flex gap-5 items-center relative rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-4 text-white"
+        className=" flex gap-5 items-center relative rounded-3xl bg-white/5 backdrop-blur-xl border border-white/10 p-6 text-white"
       >
         <div className={`text-4xl ${isDark ? 'text-blue-400' : "text-blue-600"} `}>{icon}</div>
 

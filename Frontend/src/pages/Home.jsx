@@ -41,7 +41,7 @@ function Home() {
       
 
       <div>
-        <img src={lightBgImage} className="w-250 h-100" />
+        <img src={lightBgImage} className="w-230 h-90" />
       </div>
     </div>
 
