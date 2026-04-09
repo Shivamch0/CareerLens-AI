@@ -1,5 +1,6 @@
 // Hooks Import
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "../Provider/ThemeProvider";
 
 // Components Import
 import Button from "../components/Button"
@@ -11,8 +12,9 @@ import { FaNoteSticky  } from "react-icons/fa6"
 import lightBgImage from "../assets/Light_image.png"
 
 
-function Home({isDark}) {
-  const navigate = useNavigate()
+function Home() {
+  const navigate = useNavigate();
+  const {isDark} = useTheme()
   console.log(isDark)
   return (
     <section >
@@ -20,8 +22,8 @@ function Home({isDark}) {
     <div className="flex">
         <div className="flex flex-col justify-center gap-5">
         <div>
-          <h1 className="text-6xl font-bold mb-1">Advance Your Career with AI</h1>
-          <p className="text-gray-400">Unlock your potential with AI-Powered tools for job matching, resume optimization and skills development</p>
+          <h1 className={`text-6xl font-bold mb-1 ${isDark ? '' : 'text-blue-800'}`}>Advance Your Career with AI</h1>
+          <p className={`font-bold ${isDark ? "text-gray-400" : 'text-gray-900'}`}>Unlock your potential with AI-Powered tools for job matching, resume optimization and skills development</p>
 
         </div>
         
@@ -29,11 +31,11 @@ function Home({isDark}) {
           <Button 
           title="Get Started"
            onClick={() => navigate("/login")} 
-           className='px-7 py-3 rounded-xl text-white font-medium  bg-gradient-to-r from-blue-500 to-purple-500  shadow-[0_4px_14px_rgba(99,102,241,0.5)]  hover:brightness-110'
+           className={`px-7 py-3 rounded-xl font-medium text-white transiton duration-300  ${isDark ? 'bg-gradient-to-r from-blue-500 to-purple-500' : 'bg-blue-500'}  shadow-[0_4px_14px_rgba(99,102,241,0.5)]  hover:brightness-90 `}
             />
           <Button 
           title='Watch Demo'
-           className='px-7 py-3 rounded-xl text-white font-medium border border-white/60 hover:bg-white/10'/>
+           className={`px-7 py-3 rounded-xl font-medium border  ${isDark ? 'text-white border-white/60 hover:bg-white/10' : 'text-gray-700 bg-white border-black/20 hover:bg-black/10'}`}/>
         </div>
       </div>
       
