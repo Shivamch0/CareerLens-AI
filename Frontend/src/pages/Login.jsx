@@ -68,7 +68,7 @@ function Login() {
           />
         </form>
 
-        <div>
+        <div className="hidden lg:block">
           <img src={lightBgImage} className="w-full max-w-sm md:max-w-md lg:max-w-lg" />
         </div>
       </div>

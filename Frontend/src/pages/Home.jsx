@@ -40,7 +40,7 @@ function Home() {
       </div>
       
 
-      <div>
+      <div className="hidden lg:block">
         <img src={lightBgImage} className="w-full max-w-md md:max-w-lg lg:max-w-3xl" />
       </div>
     </div>
