@@ -18,14 +18,14 @@ import { FaAngleRight } from "react-icons/fa";
 function Dashboard() {
   const { isDark } = useTheme();
   return (
-    <section className={`${isDark ? "text-white" : ''} px-30 `}>
+    <section className={`${isDark ? "text-white" : ''} px-4 sm:px-8 md:px-16 lg:px-30 `}>
       <h3 className="font-bold text-2xl mb-2">Welcome,Shivam👋</h3>
       <p className="text-gray-400 text-sm">B.Tech CSE | 4th Year</p>
 
       <div className="my-2">
         <p className="font-bold text-white/80 mb-2"> Skils: 5 | Test: 2 | Match Score: 78%</p>
 
-        <div className="grid grid-cols-3 gap-5 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <StatsCard
             content="Profile Completion "
             percentage="85"
@@ -49,13 +49,13 @@ function Dashboard() {
           />
         </div>
 
-        <div className="grid grid-cols-2 my-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 my-4 gap-5">
           <section className="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#4c1d95] rounded-2xl p-6 text-white shadow-xl flex">
             <div >
-              <h4 className="text-gray-00 font-bold whitespace-nowrap mb-3 ">Recommended Carrer</h4>
+              <h4 className="text-gray-00 font-bold mb-3 ">Recommended Carrer</h4>
               <h3 className="text-lg font-bold mb-3">Software Developer</h3>
               <h5 className="text-yellow-500 font-bold mb-3">Match : 85%</h5>
-              <p className="whitespace-nowrap text-sm opacity-80 mb-3">Strong coding & analytical skills</p>
+              <p className="text-sm opacity-80 mb-3">Strong coding & analytical skills</p>
               <button className=" mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition font-bold text-sm cursor-pointer">View Roadmap</button>
             </div>
             
@@ -64,14 +64,14 @@ function Dashboard() {
               </div>
            
           </section>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             <SuggestionCard image={clipboard} content='Aptitude Test' buttonText='Test' className='bg-gradient-to-br from-[#4f46e5] via-[#6d28d9] to-[#1e3a8a] '/>
             <SuggestionCard image={notes} content='Analyze Resume' buttonText='Resume' className='bg-gradient-to-br from-[#2bb7a9] via-[#1f9d94] to-[#0f766e]' />
             <SuggestionCard image={micIcon} content=' Mock Interview' buttonText='Interview' className='bg-gradient-to-br from-[#ef4444] via-[#dc2626] to-[#b91c1c]' />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 mt-4 ">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-4 ">
           <section className="relative p-4 bg-gradient-to-r from-[#4c1d95] via-[#1e293b] to-[#0f172a] rounded-2xl p-6 text-white shadow-xl ">
             <h2 className="text-lg font-bold mb-3">Skill Gap Analysis</h2>
               <hr  className="text-gray-500 w-100"/>
@@ -89,11 +89,11 @@ function Dashboard() {
           <section className="p-4 bg-gradient-to-r from-[#4c1d95] via-[#1e293b] to-[#0f172a] rounded-2xl p-6 text-white shadow-xl " >
             <h3 className="text-lg font-bold mb-3">Recent Activity</h3>
             <hr  className="text-gray-500 w-100"/>
-            <p className="font-bold my-2 text-sm flex gap-2 items-center"><p className="text-lg">▶️</p>Aptitude Test: 72%</p>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center"><li className="text-lg">▶️</li>Aptitude Test: 72%</p>
             <hr  className="text-gray-500 w-100"/>
-            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><p className="text-lg">▶️</p>Resume Review: Need more keywords</p>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><li className="text-lg">▶️</li>Resume Review: Need more keywords</p>
             <hr  className="text-gray-500 w-100"/>
-            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><p className="text-lg">▶️</p>Mock Interview: Good communication</p>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><li className="text-lg">▶️</li>Mock Interview: Good communication</p>
           </section>
         </div>
       </div>
