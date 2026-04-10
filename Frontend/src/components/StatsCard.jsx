@@ -1,12 +1,15 @@
+import { useTheme } from "../Provider/ThemeProvider";
+
 function StatsCard({ image, className ,  content, percentage , progressBar }) {
+  const { isDark } = useTheme()
   return (
     <div
       className={`cursor-pointer flex flex-col sm:flex-row p-4 sm:p-5 gap-4 rounded-2xl my-2 shadow-lg w-full max-w-xl shadow-lg hover:scale-105 transition duration-300 ${className}`}
     >
       <div >
-        <h3 className="text-base sm:text-lg  font-semibold opacity-90">{content}</h3>
+        <h3 className="text-base sm:text-lg whitespace-nowrap  font-semibold opacity-90">{content}</h3>
 
-        <div className="flex items-end gap-1 mt-2">
+        <div className={`flex items-end gap-1 mt-2 ${isDark ? 'text-white' : 'text-black'}`}>
           <h2 className="text-xl sm:text-2xl font-bold">{percentage}</h2>
           <span className="text-lg mb-1">%</span>
         </div>
