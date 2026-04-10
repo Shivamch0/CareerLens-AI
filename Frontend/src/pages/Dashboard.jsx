@@ -13,36 +13,43 @@ import micIcon from "../assets/mic-icon.png";
 import notes from "../assets/notes.png";
 import redIcon from "../assets/red_icon.png";
 import youngMan from "../assets/young_man.png";
+import { FaAngleRight } from "react-icons/fa";
 
 function Dashboard() {
   const { isDark } = useTheme();
   return (
-    <section>
-      <h3>Welcome,Shivam👋</h3>
-      <p>B.Tech CSE | 4th Year</p>
+    <section className={`${isDark ? "text-white" : ''} px-30 `}>
+      <h3 className="font-bold text-2xl mb-2">Welcome,Shivam👋</h3>
+      <p className="text-gray-400 text-sm">B.Tech CSE | 4th Year</p>
 
-      <div>
-        <p>Skils: 5 | Test: 2 | Match Score: 78%</p>
+      <div className="my-2">
+        <p className="font-bold text-white/80 mb-2"> Skils: 5 | Test: 2 | Match Score: 78%</p>
 
-        <div className="flex gap-5 justify-around">
+        <div className="grid grid-cols-3 gap-5 ">
           <StatsCard
-            content="Profile Completion"
+            content="Profile Completion "
             percentage="85"
             image={greenIcon}
+            className=' bg-gradient-to-r from-green-800 to-green-500'
+            progressBar='bg-green-300'
           />
           <StatsCard
             content="Aptitude Score"
             percentage="72"
             image={blueIcon}
+            className=' bg-gradient-to-r from-blue-800 to-blue-500'
+            progressBar='bg-blue-300'
           />
           <StatsCard
             content="Resume Strength"
             percentage="68"
             image={redIcon}
+            className=' bg-gradient-to-r from-red-800 to-red-500'
+            progressBar='bg-red-400'
           />
         </div>
 
-        <div className="grid grid-cols-2 my-2 gap-10">
+        <div className="grid grid-cols-2 my-2 gap-5">
           <section className="bg-red-500 flex p-4 ">
             <div>
               <h4>Recommended Carrer</h4>
@@ -62,9 +69,26 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="flex justify-around">
-          <section></section>
-          <section></section>
+        <div className="grid grid-cols-2 gap-5 my-2">
+          <section className="p-4">
+            <h2>Skill Gap Analysis</h2>
+            <h3>Skills to Imporove:</h3>
+            <ul>
+              <li>Data Strictures</li>
+              <li>System</li>
+              <li>Advanced React</li>
+            </ul>
+            <div className="flex ">
+              <button className="flex items-center">Improve Skills <FaAngleRight /> </button>
+            </div>
+          </section>
+
+          <section className="p-4">
+            <h3>Recent Activity</h3>
+            <p>▶️Aptitude Test: 72%</p>
+            <p>▶️Resume Review: Need more keywords</p>
+            <p>▶️Mock Interview: Good communication</p>
+          </section>
         </div>
       </div>
     </section>

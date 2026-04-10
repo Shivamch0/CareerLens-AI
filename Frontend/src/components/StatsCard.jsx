@@ -1,23 +1,34 @@
-
-
-function StatsCard({image , className , content , percentage}) {
+function StatsCard({ image, className ,  content, percentage , progressBar }) {
   return (
-    <div className="flex my-2 justify-between items-center border max-h-40 p-4 ">
+    <div
+      className={`flex p-2 rounded-2xl my-2 shadow-lg w-full max-w-xl ${className}`}
+    >
+      <div>
+        <h3 className="text-lg whitespace-nowrap font-semibold opacity-90">{content}</h3>
 
-      <div className="bg-red-500 " >
-        <h3>{content}</h3>
-        <div className="flex">
-          <h2>{percentage}</h2><p>%</p>
+        <div className="flex items-end gap-1 mt-2">
+          <h2 className="text-2xl font-bold">{percentage}</h2>
+          <span className="text-lg mb-1">%</span>
         </div>
-        <div>
-          Bar
+
+        {/* Progress Bar */}
+        <div className="mt-4 w-full h-2 bg-green-800 rounded-full overflow-hidden">
+          <div
+            className={`h-full ${progressBar} rounded-full transition-all duration-500`}
+            style={{ width: `${percentage}%` }}
+          />
         </div>
       </div>
 
-     <img src={image} className="w-60 relative left-10"/>
-
+      <div className="flex justify-center items-center h-full">
+        <img
+          src={image}
+          alt="progress"
+          className="w-full h-full object-contain"
+        />
+      </div>
     </div>
-  )
+  );
 }
 
-export default StatsCard
+export default StatsCard;
