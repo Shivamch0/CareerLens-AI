@@ -26,22 +26,22 @@ function Dashboard() {
 
         <p>Skils: 5 | Test: 2 | Match Score: 78%</p>
 
-        <div>
-          <StatsCard />
-          <StatsCard />
-          <StatsCard />
+        <div className="flex gap-1 justify-around">
+          <StatsCard content='Profile Completion' percentage='85' image={greenIcon} />
+          <StatsCard content='Aptitude Score' percentage='72' image={blueIcon} />
+          <StatsCard content='Resume Strength' percentage='68' image={redIcon} />
         </div>
 
-        <div>
+        <div className="flex justify-around">
           <ActivityCard />
-          <div>
+          <div className="flex justify-between gap-10">
             <SuggestionCard />
             <SuggestionCard />
             <SuggestionCard />
           </div>
         </div>
 
-        <div>
+        <div className="flex justify-around">
           <ActivityCard />
           <ActivityCard />
         </div>
