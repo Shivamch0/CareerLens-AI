@@ -1,9 +1,9 @@
 function StatsCard({ image, className ,  content, percentage , progressBar }) {
   return (
     <div
-      className={`flex p-2 rounded-2xl my-2 shadow-lg w-full max-w-xl ${className}`}
+      className={`cursor-pointer flex p-2 rounded-2xl my-2 shadow-lg w-full max-w-xl shadow-lg hover:scale-105 transition duration-300 ${className}`}
     >
-      <div>
+      <div >
         <h3 className="text-lg whitespace-nowrap font-semibold opacity-90">{content}</h3>
 
         <div className="flex items-end gap-1 mt-2">

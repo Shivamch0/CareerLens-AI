@@ -50,22 +50,24 @@ function Dashboard() {
         </div>
 
         <div className="grid grid-cols-2 my-2 gap-5">
-          <section className="bg-red-500 flex p-4 ">
-            <div>
-              <h4>Recommended Carrer</h4>
-              <h3>Software Developer</h3>
-              <h5>Match : 85%</h5>
-              <p>Strong coding & analytical skills</p>
-              <button>View Roadmap</button>
+          <section className="border border-white/10 shadow shadow-gray-500 rounded-2xl flex py-2 pl-6 ">
+            <div >
+              <h4 className="text-gray-500 font-bold whitespace-nowrap mb-3 ">Recommended Carrer</h4>
+              <h3 className="text-lg font-bold mb-3">Software Developer</h3>
+              <h5 className="text-yellow-500 font-bold mb-3">Match : 85%</h5>
+              <p className="whitespace-nowrap text-sm opacity-80 mb-3">Strong coding & analytical skills</p>
+              <button className=" text-sm font-bold mt-2 cursor-pointer bg-gray-800 border border-white/10 shadow shadow-gray-800 px-5 py-2 rounded-xl hover:brightness-80">View Roadmap</button>
             </div>
             
-              <img src={youngMan} className=" w-90 relative left-13" />
+              <div className="w-80">
+                <img src={youngMan} className="h-50" />
+              </div>
            
           </section>
           <div className="grid grid-cols-3 gap-5">
-            <SuggestionCard image={clipboard} content='Take Aptitude Test' buttonText='Start Test'/>
-            <SuggestionCard image={notes} content='Analyze Resume' buttonText='Upload Resume' />
-            <SuggestionCard image={micIcon} content='AI Mock Interview' buttonText='Start Interview' />
+            <SuggestionCard image={clipboard} content='Aptitude Test' buttonText='Test' className='bg-gradient-to-br from-[#4f46e5] via-[#6d28d9] to-[#1e3a8a] '/>
+            <SuggestionCard image={notes} content='Analyze Resume' buttonText='Resume' className='bg-gradient-to-br from-[#2bb7a9] via-[#1f9d94] to-[#0f766e]' />
+            <SuggestionCard image={micIcon} content=' Mock Interview' buttonText='Interview' className='bg-gradient-to-br from-[#ef4444] via-[#dc2626] to-[#b91c1c]' />
           </div>
         </div>
 
