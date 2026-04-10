@@ -50,16 +50,16 @@ function Dashboard() {
         </div>
 
         <div className="grid grid-cols-2 my-2 gap-5">
-          <section className="border bg-gray-800 border-white/10 shadow shadow-gray-500 rounded-2xl flex py-2 pl-6 ">
+          <section className="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#4c1d95] rounded-2xl p-6 text-white shadow-xl flex">
             <div >
-              <h4 className="text-gray-500 font-bold whitespace-nowrap mb-3 ">Recommended Carrer</h4>
+              <h4 className="text-gray-00 font-bold whitespace-nowrap mb-3 ">Recommended Carrer</h4>
               <h3 className="text-lg font-bold mb-3">Software Developer</h3>
               <h5 className="text-yellow-500 font-bold mb-3">Match : 85%</h5>
               <p className="whitespace-nowrap text-sm opacity-80 mb-3">Strong coding & analytical skills</p>
-              <button className=" text-sm font-bold mt-2 cursor-pointer bg-gray-800 border border-white/10 shadow shadow-gray-800 px-5 py-2 rounded-xl hover:brightness-80">View Roadmap</button>
+              <button className=" mt-4 px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition font-bold text-sm cursor-pointer">View Roadmap</button>
             </div>
             
-              <div className="w-80">
+              <div >
                 <img src={youngMan} className="h-50" />
               </div>
            
