@@ -71,25 +71,29 @@ function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5 my-2">
-          <section className="p-4">
-            <h2>Skill Gap Analysis</h2>
-            <h3>Skills to Imporove:</h3>
-            <ul>
-              <li>Data Strictures</li>
-              <li>System</li>
-              <li>Advanced React</li>
+        <div className="grid grid-cols-2 gap-5 mt-4 ">
+          <section className="relative p-4 bg-gradient-to-r from-[#4c1d95] via-[#1e293b] to-[#0f172a] rounded-2xl p-6 text-white shadow-xl ">
+            <h2 className="text-lg font-bold mb-3">Skill Gap Analysis</h2>
+              <hr  className="text-gray-500 w-100"/>
+            <h3 className="font-bold text-gray-300 my-1">Skills to Improve:</h3>
+            <ul className="flex flex-col gap-1 text-sm font-bold text-gray-400 mb-2">
+              <li className="list-disc ml-7">Data Structures</li>
+              <li className="list-disc ml-7">System</li>
+              <li className="list-disc ml-7">Advanced React</li>
             </ul>
-            <div className="flex ">
-              <button className="flex items-center">Improve Skills <FaAngleRight /> </button>
+            <div className="flex absolute bottom-3 right-10">
+              <button className="flex items-center bg-gradient-to-br from-[#4f46e5] via-[#6d28d9] to-[#1e3a8a] text-sm font-bold mt-2 cursor-pointer  border-white/10 shadow shadow-gray-800 px-5 py-2 rounded-xl hover:brightness-80">Improve Skills <FaAngleRight /> </button>
             </div>
           </section>
 
-          <section className="p-4">
-            <h3>Recent Activity</h3>
-            <p>▶️Aptitude Test: 72%</p>
-            <p>▶️Resume Review: Need more keywords</p>
-            <p>▶️Mock Interview: Good communication</p>
+          <section className="p-4 bg-gradient-to-r from-[#4c1d95] via-[#1e293b] to-[#0f172a] rounded-2xl p-6 text-white shadow-xl " >
+            <h3 className="text-lg font-bold mb-3">Recent Activity</h3>
+            <hr  className="text-gray-500 w-100"/>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center"><p className="text-lg">▶️</p>Aptitude Test: 72%</p>
+            <hr  className="text-gray-500 w-100"/>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><p className="text-lg">▶️</p>Resume Review: Need more keywords</p>
+            <hr  className="text-gray-500 w-100"/>
+            <p className="font-bold my-2 text-sm flex gap-2 items-center text-gray-300"><p className="text-lg">▶️</p>Mock Interview: Good communication</p>
           </section>
         </div>
       </div>
