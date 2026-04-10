@@ -50,7 +50,7 @@ function Dashboard() {
         </div>
 
         <div className="grid grid-cols-2 my-2 gap-5">
-          <section className="border border-white/10 shadow shadow-gray-500 rounded-2xl flex py-2 pl-6 ">
+          <section className="border bg-gray-800 border-white/10 shadow shadow-gray-500 rounded-2xl flex py-2 pl-6 ">
             <div >
               <h4 className="text-gray-500 font-bold whitespace-nowrap mb-3 ">Recommended Carrer</h4>
               <h3 className="text-lg font-bold mb-3">Software Developer</h3>
