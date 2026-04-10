@@ -37,8 +37,8 @@ function SignUp() {
         </div>
       </div>
 
-       <div className="flex flex-col lg:flex-row items-center justify-evenly mt-5 p-6 gap-10">
-        <form onSubmit={handleSubmit} className="flex flex-col  gap-5 p-4 mt-8">
+       <div className="flex flex-col lg:flex-row items-center justify-evenly mt-2 p-6 gap-10">
+        <form onSubmit={handleSubmit} className={`flex flex-col  gap-5 p-4 mt-8 ${isDark ? '' : 'border border-white/20 rounded-lg  shadow-lg shadow-gray-500'}` }>
            <input
             name="username"
             type="text"
