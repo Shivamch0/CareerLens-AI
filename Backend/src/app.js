@@ -18,4 +18,10 @@ app.use("/uploads" , express.static("uploads"))
 
 app.use(cookieParser());
 
+
+// routes Imports
+import userRoute from "./routes/user.route.js"
+
+app.use('/api/v1/users' , userRoute)
+
 export default app;

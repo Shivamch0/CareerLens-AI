@@ -23,8 +23,8 @@ const registerUser = asyncHandler ( async (req , res) => {
         password
     })
 
-    const accessToken = await User.generateAccessToken()
-    const refreshToken = await User.generateRefreshToken()
+    const accessToken = await user.generateAccessToken()
+    const refreshToken = await user.generateRefreshToken()
 
     user.refreshToken = refreshToken;
     await user.save({validateBeforeSave : false});
