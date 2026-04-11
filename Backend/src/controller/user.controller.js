@@ -7,7 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js"
 
 
 const registerUser = asyncHandler ( async (req , res) => {
-
+    const {userName , email , password} = req.body;
 });
 
 const loginUser = asyncHandler ( async (req , res) => {
