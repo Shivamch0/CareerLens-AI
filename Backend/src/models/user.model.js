@@ -32,6 +32,9 @@ const userSchema = new mongoose.Schema({
         branch : String,
         marks : String
     },
+    refreshToken : {
+        type : String
+    },
     
 } , { timestamps : true});
 
