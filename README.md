@@ -47,3 +47,13 @@ frontend/
 ❌ No real authentication (dummy flow)
 ❌ No database connection
 ❌ Dashboard uses static/mock data
+
+🚧 Upcoming Features
+🔗 Backend integration (Node.js + Express)
+🗄️ MongoDB database setup
+🤖 AI-based career recommendation system
+📄 Resume analysis module
+🧠 Aptitude test system
+🎤 AI interview system
+📈 Skill gap analysis
+🛤️ Career roadmap generator
