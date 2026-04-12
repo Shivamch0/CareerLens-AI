@@ -27,3 +27,23 @@ Frontend
 React.js
 Tailwind CSS
 JavaScript (ES6+)
+
+📂 Project Structure
+frontend/
+│── src/
+│   ├── components/
+│   │   ├── StatsCard.jsx
+│   │   ├── SuggestionCard.jsx
+│   ├── pages/
+│   │   ├── Login.jsx
+│   │   ├── Signup.jsx
+│   │   ├── Home.jsx
+│   │   ├── Dashboard.jsx
+│   ├── assets/
+│   ├── App.jsx
+│   ├── main.jsx
+🎯 Current Limitations
+❌ No backend integration yet
+❌ No real authentication (dummy flow)
+❌ No database connection
+❌ Dashboard uses static/mock data
