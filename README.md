@@ -57,3 +57,31 @@ frontend/
 🎤 AI interview system
 📈 Skill gap analysis
 🛤️ Career roadmap generator
+
+⚙️ Installation & Setup
+# Clone the repository
+git clone https://github.com/your-username/careerlens-ai.git
+
+# Navigate to project
+cd careerlens-ai/frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+🎨 UI Highlights
+Responsive design
+Modern card-based dashboard
+Tailwind utility-first styling
+Reusable components (StatsCard, SuggestionCard)
+📌 Future Vision
+CareerLens AI aims to become a complete career guidance ecosystem combining:
+AI + Rule-based recommendations
+Skill tracking
+Interview preparation
+Personalized growth roadmap
+👨‍💻 Author
+Shivam Choudhary
+⭐ Note
+This project is currently in the initial development phase and focuses on frontend UI/UX design. Backend and AI functionalities are under development.
