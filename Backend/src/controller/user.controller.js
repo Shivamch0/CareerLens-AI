@@ -48,13 +48,55 @@ const registerUser = asyncHandler ( async (req , res) => {
             .cookie("AccessToken" , options , accessToken)
             .cookie('RefreshToken' , options , refreshToken)
             .json(
-                new ApiResponse(200 , createdUser , "User Created Successfully")
+                new ApiResponse(200 , {user : createdUser} , "User Created Successfully")
             )
 
 });
 
 const loginUser = asyncHandler ( async (req , res) => {
+    const { email , password } = req.body;
+    if(!email || !password){
+        throw new ApiError(400 , "Fill all the fields...")
+    }
 
+    const user = await User.findOne({email});
+    if(!user){
+        throw new ApiError(400 , "User with this email does not exists...")
+    }
+
+    const checkPassword = await user.isPasswordCorrect(password)
+    if(!checkPassword){
+        throw new ApiError(400 , "Incorrect Password...")
+    }
+
+
+    const accessToken = await user.generateAccessToken()
+    const refreshToken = await user.generateRefreshToken()
+
+    user.refreshToken = refreshToken;
+    await user.save({validateBeforeSave : false});
+
+    const loggedInUser = await User.findById(user._id).select(
+        " -password -refreshToken ")
+
+        if(!loggedInUser){
+            throw new ApiError(400 , "Something went wrong while logging...")
+        }
+
+    const options = {
+        httpOnly : true,
+        secure : process.env.NODE_ENV === 'production',
+        smaeSite :"None" ,
+        path : "/",
+        maxAge : "7 * 24 * 60 * 60 * 1000"
+    }
+
+    return res.status(200)
+            .cookie("AccessToken" , options , accessToken)
+            .cookie('RefreshToken' , options , refreshToken)
+            .json(
+                new ApiResponse(200  , { user : loggedInUser } , "User Created Successfully")
+            )
 });
 
 const logoutUser = asyncHandler ( async (req , res) => {
