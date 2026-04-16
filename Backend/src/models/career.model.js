@@ -1,7 +1,26 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const careerSchema = new mongoose.model({
+const careerSchema = new mongoose.Schema(
+  {
+    careerTitle: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    requiredSkills: {
+      type: [String],
+    },
+    roadmap: {
+      type: [
+        {
+          step: String,
+          duration: String,
+        },
+      ],
+    },
+  },
+  { timestamps: true },
+);
 
-} , {timeStamps : true})
-
-export const Career = mongoose.model("Career" , careerSchema)
+export const Career = mongoose.model("Career", careerSchema);
