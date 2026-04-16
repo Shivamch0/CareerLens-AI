@@ -1,29 +1,32 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const interviewSchema = new mongoose.Schema({
-    userId : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User",
-        required : true
+const interviewSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    questionAnswer : {
-        type : [
-            {
-                question : String,
-                answer : String,
-                score : Number
-            }
-        ]
+    questionAnswer: {
+      type: [
+        {
+          question: String,
+          answer: String,
+          score: Number,
+        },
+      ],
     },
-    individualQuestionScore : {
-        type : []
+    individualQuestionScore: {
+      type: [],
     },
-    feedback : {
-        type : String
+    feedback: {
+      type: String,
     },
-    OverallScore : {
-        type : Number
-    }
-} , {timestamps : true})
+    OverallScore: {
+      type: Number,
+    },
+  },
+  { timestamps: true },
+);
 
-export const Interview = mongoose.model('Interview' , interviewSchema);
+export const Interview = mongoose.model("Interview", interviewSchema);
