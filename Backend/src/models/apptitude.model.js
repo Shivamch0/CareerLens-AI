@@ -23,7 +23,7 @@ const aptitudeSchema = new mongoose.Schema(
       ],
     },
   },
-  { timeStamps: true },
+  { timestamps: true },
 );
 
 export const Aptitude = mongoose.model("Aptitude", aptitudeSchema);
