@@ -23,7 +23,6 @@ const Onboarding = () => {
       >
         <div className="flex flex-col items-center gap-5 justify-center ">
           <h2 className={` font-bold text-3xl `}>
-            {" "}
             Shivam, Welcome to CareerLens
           </h2>
           <p className={`text-lg ${isDark ? "text-gray-500" : ""}`}>
