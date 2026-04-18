@@ -1,28 +1,62 @@
 import { useTheme } from "../../Provider/ThemeProvider";
+import { useNavigate } from "react-router-dom";
+
+// Components Imoports
+import DashboardButton from "../../components/DashboardButton";
+
+// Others Imports
+import { FaUserGraduate, FaBriefcase, FaUserTie } from "react-icons/fa";
+import { IoSchool } from "react-icons/io5";
+import { HiMiniUserGroup } from "react-icons/hi2";
 import { FaAngleRight } from "react-icons/fa";
 
 const Journey = () => {
   const { isDark } = useTheme();
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/onboarding-interests")
+  }
 
   const options = [
-    { id: "school", label: "Class 10–12 Student" },
-    { id: "bachelors", label: "Bachelor's Student" },
-    { id: "masters", label: "Master's Student" },
-    { id: "graduate", label: "Graduate / Job Seeker" },
-    { id: "careerSwitch", label: "Career Switcher" },
+    {
+      id: "school",
+      label: "Class 10-12 Student",
+      icon: <IoSchool />,
+    },
+    {
+      id: "bachelors",
+      label: "Bachelor’s Student",
+      icon: <FaUserGraduate />,
+    },
+    {
+      id: "masters",
+      label: "Master’s Student",
+      icon: <FaUserGraduate />,
+    },
+    {
+      id: "graduate",
+      label: "Graduate / Job Seeker",
+      icon: <FaUserTie />,
+    },
+    {
+      id: "switcher",
+      label: "Career Switcher",
+      icon: <FaBriefcase />,
+    },
   ];
 
   return (
     <section
-      className={`flex flex-col items-center gap-2 ${
+      className={`flex flex-col items-center gap-2 overflow-hidden${
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className="font-bold text-3xl my-2">
-        Shivam, Welcome to CareerLens
-      </h2>
+      <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>Shivam, Welcome to CareerLens</h2>
 
-      <p className={`text-sm font-bold ${isDark ? "text-gray-500" : ""}`}>
+      <p
+        className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
+      >
         Lets build your personalized career roadmap in few seconds
       </p>
 
@@ -31,9 +65,38 @@ const Journey = () => {
           <label
             key={option.id}
             htmlFor={option.id}
-            className="flex items-center justify-between border rounded-lg px-4 py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+            className={`
+              relative
+              flex
+              items-center
+              justify-between
+              px-6
+              py-4
+              rounded-2xl
+              backdrop-blur-md
+              bg-white/10
+              border
+              border-white/20
+              shadow-lg
+              cursor-pointer
+              transition
+              duration-300
+              hover:bg-white/20
+              hover:scale-[1.02]
+              ${isDark ? "hover:shadow-purple-500/40" : "hover:shadow-blue-500/40"}
+            `}
           >
-            <span>{option.label}</span>
+            <div
+              className={`flex items-center gap-4 font-bold text-lg ${isDark ? "text-white" : ""}`}
+            >
+              <div
+                className={`text-2xl ${isDark ? " text-purple-300" : "text-blue-300"} `}
+              >
+                {option.icon}
+              </div>
+
+              {option.label}
+            </div>
 
             <div className="  flex items-center gap-3">
               <input
@@ -43,11 +106,19 @@ const Journey = () => {
                 className="accent-blue-500 hidden"
               />
 
-              <FaAngleRight />
+              <FaAngleRight
+                className={`text-lg  font-bold ${isDark ? "text-white" : ""}`}
+              />
             </div>
           </label>
         ))}
       </div>
+
+      <DashboardButton
+        title="Next"
+        style={`mt-2 px-6 ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-blue-500 text-white "} `}
+        fn={handleNavigate}
+      />
     </section>
   );
 };
