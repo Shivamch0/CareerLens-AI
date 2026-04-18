@@ -1,6 +1,6 @@
 // Hooks Imports
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 
 // Components Imports
 import { useTheme } from "../Provider/ThemeProvider";
@@ -12,6 +12,7 @@ import lightBgImage from "../assets/Light_image.png";
 
 function Login() {
   const { isDark } = useTheme();
+  const navigate = useNavigate()
 
   const { values , handleSubmit , handleChange } = useFormik({
     initialValues: {
@@ -20,6 +21,7 @@ function Login() {
     },
     onSubmit: (values) => {
       console.log(values)
+      navigate('/onboarding')
     },
   });
 

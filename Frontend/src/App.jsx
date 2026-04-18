@@ -7,6 +7,10 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import Onboarding from "./pages/Onboarding/Onboarding"
+import Interests from "./pages/Onboarding/Interests"
+import Journey from "./pages/Onboarding/Journey"
+import FinalOnboarding from "./pages/Onboarding/FinalOnboarding"
 
 // Other Imports
 import { Routes, Route } from "react-router-dom";
@@ -57,6 +61,11 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/onboarding" element={<Onboarding />} />
+            <Route path="/onboarding-journey" element={<Journey />} />
+            <Route path="/onboard-interests" element={<Interests />} />
+            <Route path="onboarding-final" element={<FinalOnboarding />} />
+
           </Routes>
         </main>
       </section>
