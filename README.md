@@ -25,3 +25,60 @@ CAREERLENS 🚀
 ‎
 
 ‎
+‎🎯 Problem Statement
+‎
+‎Students often struggle with:
+‎
+‎Choosing the right degree after Class 12
+‎
+‎Selecting career paths after graduation
+‎
+‎Understanding required skills for roles
+‎
+‎Preparing industry‑ready resumes
+‎
+‎Practicing interviews effectively
+‎
+‎
+‎CAREERLENS solves these challenges with data‑driven recommendations + guided workflows.
+‎
+‎
+‎---
+‎
+‎🧠 Core Features
+‎
+‎1️⃣ Smart Onboarding
+‎
+‎Collects user details such as:
+‎
+‎Current education stage
+‎
+‎Interests
+‎
+‎Strength areas
+‎
+‎Career goals
+‎
+‎
+‎Creates a personalized career journey.
+‎
+‎
+‎---
+‎
+‎2️⃣ Aptitude & Interest Analysis
+‎
+‎Evaluates:
+‎
+‎Logical thinking
+‎
+‎Technical inclination
+‎
+‎Communication preference
+‎
+‎Domain interest alignment
+‎
+‎
+‎Generates intelligent recommendations.
+‎
+‎
+‎---
