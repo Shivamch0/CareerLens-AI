@@ -35,7 +35,7 @@ function Home() {
             />
           <Button 
           title='Watch Demo'
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/onboarding')}
            className={`px-7 py-3 rounded-xl font-medium border  ${isDark ? 'text-white border-white/60 hover:bg-white/10' : 'text-gray-700 bg-white border-black/20 hover:bg-black/10'}`}/>
         </div>
       </div>

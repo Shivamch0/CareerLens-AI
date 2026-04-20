@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -11,12 +12,17 @@ import { HiMiniUserGroup } from "react-icons/hi2";
 import { FaAngleRight } from "react-icons/fa";
 
 const Journey = () => {
+  const [selected, setSelected] = useState("");
   const { isDark } = useTheme();
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/onboarding-interests")
-  }
+    navigate("/onboarding-interests");
+  };
+
+  const handleClick = (id) => {
+    setSelected(id);
+  };
 
   const options = [
     {
@@ -52,7 +58,9 @@ const Journey = () => {
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className={`font-bold text-3xl mb-2 ${isDark ? "text-white" : ""}`}>Where are you in your Journey?</h2>
+      <h2 className={`font-bold text-3xl mb-2 ${isDark ? "text-white" : ""}`}>
+        Where are you in your Journey?
+      </h2>
 
       <p
         className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
@@ -65,6 +73,7 @@ const Journey = () => {
           <label
             key={option.id}
             htmlFor={option.id}
+            onClick={() => handleClick(option.id)}
             className={`
               relative
               flex
@@ -84,6 +93,13 @@ const Journey = () => {
               hover:bg-white/20
               hover:scale-[1.02]
               ${isDark ? "hover:shadow-purple-500/40" : "hover:shadow-blue-500/40"}
+
+
+              ${
+                selected === option.id
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 border-purple-400 text-white scale-[1.02]"
+                  : "bg-white/10 border-white/20 hover:bg-white/20"
+              }
             `}
           >
             <div
