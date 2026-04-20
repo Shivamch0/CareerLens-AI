@@ -55,7 +55,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         </div>
 
         {/*  PAGES */}
-        <main className="relative z-20">
+        <main className="relative z-20 mt-2 sm:mt-5">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
