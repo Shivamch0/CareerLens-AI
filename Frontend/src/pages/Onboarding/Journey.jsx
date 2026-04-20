@@ -48,11 +48,11 @@ const Journey = () => {
 
   return (
     <section
-      className={`flex flex-col items-center gap-2 overflow-hidden${
+      className={`min-h-screen flex flex-col items-center justify-center overflow-hidden gap-2 ${
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>Where are you in your Journey?</h2>
+      <h2 className={`font-bold text-3xl mb-2 ${isDark ? "text-white" : ""}`}>Where are you in your Journey?</h2>
 
       <p
         className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
@@ -60,7 +60,7 @@ const Journey = () => {
         Lets build your personalized career roadmap in few seconds
       </p>
 
-      <div className="w-full max-w-md flex flex-col gap-3 mt-4">
+      <div className="w-full max-w-md flex flex-col gap-3 mt-3">
         {options.map((option) => (
           <label
             key={option.id}

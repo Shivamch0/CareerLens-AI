@@ -72,7 +72,7 @@ const Interests = () => {
 
   return (
     <section
-      className={`flex flex-col items-center gap-2 my-3 overflow-hidden${
+      className={`min-h-screen flex flex-col items-center justify-center gap-2 my-3 overflow-hidden${
         isDark ? "text-white" : ""
       }`}
     >
