@@ -14,6 +14,13 @@ import FinalOnboarding from "./pages/Onboarding/FinalOnboarding"
 
 // Other Imports
 import { Routes, Route } from "react-router-dom";
+import Apptitude from "./pages/Apptitude/Apptitude";
+import ApptitudeTest from "./pages/Apptitude/ApptitudeTest";
+import Assessment from "./pages/Apptitude/Assessment";
+import InterestTest from "./pages/Apptitude/InterestTest";
+import Completed from "./pages/Apptitude/Completed";
+import Progress from "./pages/Apptitude/Progress";
+import Response from "./pages/Apptitude/Response";
 
 function App() {
   const { isDark } = useTheme();
@@ -57,6 +64,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         {/*  PAGES */}
         <main className="relative z-20 mt-2 sm:mt-5">
           <Routes>
+            
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
@@ -65,6 +73,17 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
             <Route path="/onboarding-journey" element={<Journey />} />
             <Route path="/onboarding-interests" element={<Interests />} />
             <Route path="/onboarding-final" element={<FinalOnboarding />} /> 
+
+            <Route path="/apptitude" element={<Apptitude />} >
+              <Route index element={null} />
+              <Route path="assessment" element={<Assessment />} />
+              <Route path="apptitudetest" element={<ApptitudeTest />} />
+              <Route path="intereststest" element={<InterestTest />} />
+              <Route path="completed" element={<Completed />} />
+              <Route path="progress" element={<Progress />} />
+              <Route path="response" element={<Response />} />
+            </Route>
+
           </Routes>
         </main>
       </section>
