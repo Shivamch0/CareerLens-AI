@@ -18,7 +18,8 @@ const Apptitude = () => {
     <>
       {isBaseRoute ? (
         <>
-          <section className={`flex items-center`}>
+          <section className={`flex items-center`}>   
+            
             <div className={``}>
               <h2 className={`font-extrabold text-2xl sm:text-3xl md:text-4xl`}>Apptitude and Interests Test</h2>
               <p>
