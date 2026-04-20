@@ -19,11 +19,11 @@ const Onboarding = () => {
   return (
     <>
       <section
-        className={`min-h-screen grid grid-cols-1 lg:grid-cols-[1.8fr_1.2fr]  gap-10 px-6 md:px-10 ${
+        className={`min-h-screen grid grid-cols-1 lg:grid-cols-[1.8fr_1.2fr] items-start gap-10 px-6 md:px-10 ${
           isDark ? "text-white" : ""
         }`}
       >
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-5 justify-center">
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left mt-30 gap-5 justify-center">
           <h2 className={`font-bold text-2xl sm:text-3xl lg:text-4xl`}>
             Shivam, Welcome to CareerLens
           </h2>
@@ -46,7 +46,7 @@ const Onboarding = () => {
           </p>
         </div>
 
-        <div className="hidden lg:block mt-40">
+        <div className="hidden lg:block mt-30">
           <img
             src={lightBgImage}
             className="w-full max-w-sm md:max-w-md lg:max-w-2xl "

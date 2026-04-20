@@ -74,7 +74,7 @@ const Interests = () => {
 
   return (
     <section
-      className={`min-h-screen flex flex-col items-center justify-center px-6 sm:px-8 md:px-10 gap-3  overflow-hidden${
+      className={`min-h-screen flex flex-col items-center px-6 sm:px-8 md:px-10 gap-3  overflow-hidden${
         isDark ? "text-white" : ""
       }`}
     >

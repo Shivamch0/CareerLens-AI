@@ -16,7 +16,7 @@ function FinalOnboarding() {
   return (
     <section>
       <section
-        className={` min-h-screen grid grid-col-1 lg:grid-cols-[1.8fr_1.2fr] items-center gap-10 px-6 sm:px-8 md:px-10   ${isDark ? "text-white" : ""}`}
+        className={` min-h-screen grid grid-col-1 lg:grid-cols-[1.8fr_1.2fr] items-start mt-20 gap-10 px-6 sm:px-8 md:px-10   ${isDark ? "text-white" : ""}`}
       >
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-5 justify-center ">
           <h2 className={` font-bold text-2xl sm:text-3xl lg:text-4xl `}>
@@ -37,7 +37,7 @@ function FinalOnboarding() {
           
         </div>
 
-        <div className="hidden lg:block ">
+        <div className="hidden lg:block mt-10 ">
           <img
             src={BoyImage}
             className="w-full max-w-sm md:max-w-md lg:max-w-xl"

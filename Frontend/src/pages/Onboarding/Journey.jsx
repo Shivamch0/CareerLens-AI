@@ -54,7 +54,7 @@ const Journey = () => {
 
   return (
     <section
-      className={`min-h-screen flex flex-col items-center justify-center px-6 sm:px-10 gap-3   ${
+      className={`min-h-screen flex flex-col items-center px-6 sm:px-10 gap-3   ${
         isDark ? "text-white" : ""
       }`}
     >
