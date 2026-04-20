@@ -1,1 +1,1 @@
-export const DB_NAME = 'CAREERLENS';
+export const DB_NAME = 'careerlens';
