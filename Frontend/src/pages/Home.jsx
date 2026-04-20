@@ -15,7 +15,6 @@ import lightBgImage from "../assets/Light_image.png"
 function Home() {
   const navigate = useNavigate();
   const {isDark} = useTheme()
-  console.log(isDark)
   return (
     <section >
 
