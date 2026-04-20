@@ -17,6 +17,7 @@ import { FaEllipsis } from "react-icons/fa6";
 
 const Interests = () => {
   const [selected, setSelected] = useState([]);
+  const [otherInterest , setOtherInterest] = useState("")
 
   const { isDark } = useTheme();
   const navigate = useNavigate();
@@ -76,17 +77,20 @@ const Interests = () => {
       }`}
     >
       <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>
-        Shivam, Welcome to CareerLens
+        What interests you most?
       </h2>
 
       <p
         className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
       >
-        Lets build your personalized career roadmap in few seconds
+        CareerLens want some info to help you.
       </p>
 
       <div className="w-full max-w-md flex flex-col gap-3 mt-4">
-        {options.map((option) => (
+        {options.map((option) => {
+          const isSelected = selected.includes(option.id)
+
+          return (
           <label
             key={option.id}
             htmlFor={option.id}
@@ -138,8 +142,19 @@ const Interests = () => {
                 className="accent-blue-500 hidden"
               />
             </div>
+
+            {option.id === "others" && isSelected && (
+              <input
+                type="text"
+                placeholder="Enter your interest..."
+                value={otherInterest}
+                onChange={(e) => setOtherInterest(e.target.value)}
+                className="mt-2 mx-2 px-4 py-2 w-full rounded-xl bg-white/10 border border-white/20 outline-none"
+              />
+            )}
           </label>
-        ))}
+        )
+        })}
       </div>
 
       <DashboardButton

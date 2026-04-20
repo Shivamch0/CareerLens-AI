@@ -52,7 +52,7 @@ const Journey = () => {
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>Shivam, Welcome to CareerLens</h2>
+      <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>Where are you in your Journey?</h2>
 
       <p
         className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
