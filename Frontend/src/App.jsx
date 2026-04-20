@@ -64,8 +64,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/onboarding-journey" element={<Journey />} />
             <Route path="/onboarding-interests" element={<Interests />} />
-            <Route path="onboarding-final" element={<FinalOnboarding />} />
-
+            <Route path="/onboarding-final" element={<FinalOnboarding />} /> 
           </Routes>
         </main>
       </section>
