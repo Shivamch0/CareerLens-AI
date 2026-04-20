@@ -17,7 +17,7 @@ import { FaEllipsis } from "react-icons/fa6";
 
 const Interests = () => {
   const [selected, setSelected] = useState([]);
-  const [otherInterest , setOtherInterest] = useState("")
+  const [otherInterest, setOtherInterest] = useState("");
 
   const { isDark } = useTheme();
   const navigate = useNavigate();
@@ -31,6 +31,8 @@ const Interests = () => {
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
+
+  const isNextDisabled = selected.length ===0 || (selected.includes("others") && !otherInterest.trim());
 
   const options = [
     {
@@ -72,35 +74,37 @@ const Interests = () => {
 
   return (
     <section
-      className={`min-h-screen flex flex-col items-center justify-center gap-2 my-3 overflow-hidden${
+      className={`min-h-screen flex flex-col items-center justify-center px-6 sm:px-8 md:px-10 gap-3  overflow-hidden${
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className={`font-bold text-3xl my-2 ${isDark ? "text-white" : ""}`}>
+      <h2
+        className={`font-bold text-2xl sm:text-3xl lg:text-4xl mb-2 ${isDark ? "text-white" : ""}`}
+      >
         What interests you most?
       </h2>
 
       <p
-        className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
+        className={`text-xs sm-text-sm md:text-base font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
       >
         CareerLens want some info to help you.
       </p>
 
-      <div className="w-full max-w-md flex flex-col gap-3 mt-4">
+      <div className="w-full max-w-sm sm:max-w-md flex flex-col gap-3 mt-3">
         {options.map((option) => {
-          const isSelected = selected.includes(option.id)
+          const isSelected = selected.includes(option.id);
 
           return (
-          <label
-            key={option.id}
-            htmlFor={option.id}
-            className={`
+            <label
+              key={option.id}
+              htmlFor={option.id}
+              className={`
             relative
               flex
               items-center
               justify-between
-              px-6
-              py-4
+              px-4 sm:px-6
+              py-3 sm:py-4
               rounded-2xl
               backdrop-blur-md
               bg-white/10
@@ -119,47 +123,48 @@ const Interests = () => {
                     : "bg-white/10 border-white/20 hover:bg-white/20"
                 }
               `}
-          >
-            <div
-              className={`flex items-center gap-4 font-bold text-lg ${isDark ? "text-white" : ""}`}
             >
               <div
-                className={`text-2xl  ${isDark ? " text-purple-300" : "text-blue-300"} `}
+                className={`flex items-center gap-4 font-bold text-lg ${isDark ? "text-white" : ""}`}
               >
-                {option.icon}
+                <div
+                  className={`text-xl sm:text-2xl ${isDark ? " text-purple-300" : "text-blue-300"} `}
+                >
+                  {option.icon}
+                </div>
+
+                {option.label}
               </div>
 
-              {option.label}
-            </div>
+              <div className="  flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  checked={selected.includes(option.id)}
+                  onChange={() => toggleOption(option.id)}
+                  name="careerStage"
+                  id={option.id}
+                  className="accent-blue-500 hidden"
+                />
+              </div>
 
-            <div className="  flex items-center gap-3">
-              <input
-                type="checkbox"
-                checked={selected.includes(option.id)}
-                onChange={() => toggleOption(option.id)}
-                name="careerStage"
-                id={option.id}
-                className="accent-blue-500 hidden"
-              />
-            </div>
-
-            {option.id === "others" && isSelected && (
-              <input
-                type="text"
-                placeholder="Enter your interest..."
-                value={otherInterest}
-                onChange={(e) => setOtherInterest(e.target.value)}
-                className="mt-2 mx-2 px-4 py-2 w-full rounded-xl bg-white/10 border border-white/20 outline-none"
-              />
-            )}
-          </label>
-        )
+              {option.id === "others" && isSelected && (
+                <input
+                  type="text"
+                  placeholder="Enter your interest..."
+                  value={otherInterest}
+                  onChange={(e) => setOtherInterest(e.target.value)}
+                  className="mt-2 ml-2 px-4 py-2 w-full text-sm sm:text-base rounded-xl bg-white/10 border border-white/20 outline-none"
+                />
+              )}
+            </label>
+          );
         })}
       </div>
 
       <DashboardButton
         title="Next"
-        style={`mt-2 px-6 ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-blue-500 text-white "} `}
+        disabled={isNextDisabled}
+        style={`my-3 w-full sm:w-auto px-6 ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-blue-500 text-white "} `}
         fn={handleNavigate}
       />
     </section>

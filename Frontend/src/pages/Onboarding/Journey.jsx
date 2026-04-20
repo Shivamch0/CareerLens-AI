@@ -54,21 +54,21 @@ const Journey = () => {
 
   return (
     <section
-      className={`min-h-screen flex flex-col items-center justify-center overflow-hidden gap-2 ${
+      className={`min-h-screen flex flex-col items-center justify-center px-6 sm:px-10 gap-3   ${
         isDark ? "text-white" : ""
       }`}
     >
-      <h2 className={`font-bold text-3xl mb-2 ${isDark ? "text-white" : ""}`}>
+      <h2 className={`font-bold text-2xl sm:text-3xl lg:text-4xl mb-2 ${isDark ? "text-white" : ""}`}>
         Where are you in your Journey?
       </h2>
 
       <p
-        className={`text-sm font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
+        className={`text-xs sm:text-sm md:text-base font-bold ${isDark ? "text-gray-500" : "text-gray-600"}`}
       >
         Lets build your personalized career roadmap in few seconds
       </p>
 
-      <div className="w-full max-w-md flex flex-col gap-3 mt-3">
+      <div className="w-full max-w-sm sm:max-w-md flex flex-col gap-3 mt-3">
         {options.map((option) => (
           <label
             key={option.id}
@@ -79,8 +79,8 @@ const Journey = () => {
               flex
               items-center
               justify-between
-              px-6
-              py-4
+              px-4 sm:px-6
+              py-3 sm:py-4
               rounded-2xl
               backdrop-blur-md
               bg-white/10
@@ -106,7 +106,7 @@ const Journey = () => {
               className={`flex items-center gap-4 font-bold text-lg ${isDark ? "text-white" : ""}`}
             >
               <div
-                className={`text-2xl ${isDark ? " text-purple-300" : "text-blue-300"} `}
+                className={`text-xl sm:text-2xl ${isDark ? " text-purple-300" : "text-blue-300"} `}
               >
                 {option.icon}
               </div>
@@ -132,7 +132,8 @@ const Journey = () => {
 
       <DashboardButton
         title="Next"
-        style={`mt-2 px-6 ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-blue-500 text-white "} `}
+        disabled={!selected}
+        style={`mt-2 w-full sm:w-auto px-6 ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white" : "bg-blue-500 text-white "} `}
         fn={handleNavigate}
       />
     </section>
