@@ -1,9 +1,14 @@
-import React from 'react'
+import Test from "../../components/Card/Test"
+import SideBar from "../../components/Navbar/SideBar"
+
+//Other Imports
+
 
 const ApptitudeTest = () => {
   return (
-    <section>
-      <p>Apptitude</p>
+    <section className="flex gap-5">
+     <SideBar />
+     <Test />
     </section>
   )
 }
