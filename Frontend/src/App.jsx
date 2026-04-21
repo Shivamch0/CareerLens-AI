@@ -74,10 +74,10 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         ""
       )}
 
-      <section className="px-0 sm:px-6 md:px-10">
+      <section className={` ${ showNavbar ? "px-0 sm:px-6 md:px-10" : "p-0" }`}>
         {/* NAVBAR */}
         <div className="relative z-20">
-          {showNavbar ? <Navbar /> : <FlowNavbar />}
+          {showNavbar ? <Navbar /> : <FlowNavbar test="Apptitude Test" />}
         </div>
 
         {/*  PAGES */}
