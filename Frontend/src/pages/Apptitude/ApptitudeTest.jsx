@@ -6,7 +6,7 @@ import SideBar from "../../components/Navbar/SideBar"
 
 const ApptitudeTest = () => {
   return (
-    <section className="flex gap-5">
+    <section className="flex gap-10">
      <SideBar />
      <Test />
     </section>
