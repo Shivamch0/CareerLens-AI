@@ -1,11 +1,11 @@
 // Hooks Imports
 import { useFormik } from "formik";
 import { Link , useNavigate } from "react-router-dom";
+import { useTheme } from "../Provider/ThemeProvider";
 
 // Components Imports
-import { useTheme } from "../Provider/ThemeProvider";
-import LinkComponent from "../components/LinkComponent";
-import Button from "../components/Button";
+import LinkComponent from "../components/Button/LinkComponent";
+import Button from "../components/Button/Button";
 
 // Other Imports
 import lightBgImage from "../assets/Light_image.png";

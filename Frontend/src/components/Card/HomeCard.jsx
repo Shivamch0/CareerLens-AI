@@ -1,4 +1,4 @@
-import { useTheme } from "../Provider/ThemeProvider"
+import { useTheme } from "../../Provider/ThemeProvider"
 
 function HomeCard({ title, content, icon }) {
   const { isDark } = useTheme()

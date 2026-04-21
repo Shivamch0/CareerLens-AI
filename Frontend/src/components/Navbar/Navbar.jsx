@@ -1,14 +1,13 @@
 // Hooks Imports
 import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "../Provider/ThemeProvider";
+import { useTheme } from "../../Provider/ThemeProvider";
 
 // Components Imports
-import Button from "./Button";
-import ToggleTheme from "./ToggleTheme";
+import Button from "../Button/Button";
+import ToggleTheme from "../ToggleTheme";
 
 //Other Imports
-import logo from "../assets/Logo.png";
-
+import logo from "../../assets/Logo.png";
 
 function Navbar() {
   const navigate = useNavigate();

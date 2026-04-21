@@ -3,7 +3,7 @@ import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom";
 
 // Components Imoports
-import DashboardButton from "../../components/DashboardButton";
+import DashboardButton from "../../components/Button/DashboardButton";
 
 // Others Imports
 import { FaUserGraduate, FaBriefcase, FaUserTie } from "react-icons/fa";

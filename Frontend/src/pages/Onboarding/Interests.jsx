@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
 
 // Components Imports
-import DashboardButton from "../../components/DashboardButton";
+import DashboardButton from "../../components/Button/DashboardButton";
 
 // Others Imports
 import { IoSchool } from "react-icons/io5";

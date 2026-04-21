@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../Provider/ThemeProvider";
 
 // Components Import
-import Button from "../components/Button"
-import HomeCard from "../components/HomeCard"
+import Button from "../components/Button/Button"
+import HomeCard from "../components/Card/HomeCard"
 
 //Other Import
 import { FaSearch  , FaLightbulb } from "react-icons/fa"

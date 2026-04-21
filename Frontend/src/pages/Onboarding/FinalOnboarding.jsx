@@ -1,4 +1,4 @@
-import DashboardButton from "../../components/DashboardButton"
+import DashboardButton from "../../components/Button/DashboardButton"
 
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom"

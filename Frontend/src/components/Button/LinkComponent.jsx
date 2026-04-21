@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useTheme } from "../Provider/ThemeProvider";
+import { useTheme } from "../../Provider/ThemeProvider";
 
 function LinkComponent({ className, content, route }) {
   const { isDark } = useTheme();

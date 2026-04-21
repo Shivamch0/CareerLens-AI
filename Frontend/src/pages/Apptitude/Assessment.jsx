@@ -3,7 +3,7 @@ import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom"
 
 // Components Imports
-import AptitudeCard from "../../components/AptitudeCard";
+import AptitudeCard from "../../components/Card/AptitudeCard";
 
 // Other Imports
 import brain from "../../assets/brain.png";

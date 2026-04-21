@@ -2,7 +2,7 @@ import { Outlet, useLocation , useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
 
 // Components Imports
-import DashboardButton from "../../components/DashboardButton";
+import DashboardButton from "../../components/Button/DashboardButton";
 
 // Other Imports
 import notes02 from "../../assets/notes02.png";

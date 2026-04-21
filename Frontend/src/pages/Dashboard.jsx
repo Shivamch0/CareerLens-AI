@@ -2,8 +2,8 @@
 import { useTheme } from "../Provider/ThemeProvider";
 
 // Components Imports
-import StatsCard from "../components/StatsCard";
-import SuggestionCard from "../components/SuggestionCard";
+import StatsCard from "../components/Card/StatsCard";
+import SuggestionCard from "../components/Card/SuggestionCard";
 
 // Other Imports
 import blueIcon from "../assets/blue_icon.png";

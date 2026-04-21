@@ -3,8 +3,8 @@ import { useTheme } from "./Provider/ThemeProvider";
 import { useLocation } from "react-router-dom";
 
 // Conponents Imports
-import Navbar from "./components/Navbar";
-import FlowNavbar from "./components/FlowNavbar";
+import Navbar from "./components/Navbar/Navbar";
+import FlowNavbar from "./components/Navbar/FlowNavbar";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
@@ -13,9 +13,6 @@ import Onboarding from "./pages/Onboarding/Onboarding";
 import Interests from "./pages/Onboarding/Interests";
 import Journey from "./pages/Onboarding/Journey";
 import FinalOnboarding from "./pages/Onboarding/FinalOnboarding";
-
-// Other Imports
-import { Routes, Route } from "react-router-dom";
 import Apptitude from "./pages/Apptitude/Apptitude";
 import ApptitudeTest from "./pages/Apptitude/ApptitudeTest";
 import Assessment from "./pages/Apptitude/Assessment";
@@ -23,6 +20,10 @@ import InterestTest from "./pages/Apptitude/InterestTest";
 import Completed from "./pages/Apptitude/Completed";
 import Progress from "./pages/Apptitude/Progress";
 import Response from "./pages/Apptitude/Response";
+
+// Other Imports
+import { Routes, Route } from "react-router-dom";
+
 
 function App() {
   const { isDark } = useTheme();

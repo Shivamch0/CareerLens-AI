@@ -3,7 +3,7 @@ import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom";
 
 // Components Imports
-import DashboardButton from "../../components/DashboardButton";
+import DashboardButton from "../../components/Button/DashboardButton";
 
 // Other Imports
 import lightBgImage from "../../assets/Light_image.png";

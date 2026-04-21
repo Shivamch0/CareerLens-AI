@@ -2,7 +2,7 @@ import React from 'react'
 
 const FlowNavbar = () => {
   return (
-    <div>FlowNavbar</div>
+    <div>Hello</div>
   )
 }
 
