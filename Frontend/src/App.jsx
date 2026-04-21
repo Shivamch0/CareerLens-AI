@@ -1,16 +1,18 @@
 // Hooks Import
 import { useTheme } from "./Provider/ThemeProvider";
+import { useLocation } from "react-router-dom";
 
 // Conponents Imports
 import Navbar from "./components/Navbar";
+import FlowNavbar from "./components/FlowNavbar";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
-import Onboarding from "./pages/Onboarding/Onboarding"
-import Interests from "./pages/Onboarding/Interests"
-import Journey from "./pages/Onboarding/Journey"
-import FinalOnboarding from "./pages/Onboarding/FinalOnboarding"
+import Onboarding from "./pages/Onboarding/Onboarding";
+import Interests from "./pages/Onboarding/Interests";
+import Journey from "./pages/Onboarding/Journey";
+import FinalOnboarding from "./pages/Onboarding/FinalOnboarding";
 
 // Other Imports
 import { Routes, Route } from "react-router-dom";
@@ -24,6 +26,22 @@ import Response from "./pages/Apptitude/Response";
 
 function App() {
   const { isDark } = useTheme();
+  const location = useLocation();
+
+  const navRoutes = [
+    "/",
+    "/login",
+    "/signup",
+    "/dashboard",
+    "/onboarding",
+    "/onboarding-journey",
+    "/onboarding-interests",
+    "/onboarding-final",
+    "/apptitude",
+    "/apptitude/assessment",
+  ];
+
+  const showNavbar = navRoutes.includes(location.pathname)
 
   return (
     <div
@@ -58,13 +76,12 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
       <section className="px-0 sm:px-6 md:px-10">
         {/* NAVBAR */}
         <div className="relative z-20">
-          <Navbar />
+          {showNavbar ? <Navbar /> : <FlowNavbar />}
         </div>
 
         {/*  PAGES */}
         <main className="relative z-20 mt-2 sm:mt-5">
           <Routes>
-            
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
@@ -72,9 +89,9 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/onboarding-journey" element={<Journey />} />
             <Route path="/onboarding-interests" element={<Interests />} />
-            <Route path="/onboarding-final" element={<FinalOnboarding />} /> 
+            <Route path="/onboarding-final" element={<FinalOnboarding />} />
 
-            <Route path="/apptitude" element={<Apptitude />} >
+            <Route path="/apptitude" element={<Apptitude />}>
               <Route index element={null} />
               <Route path="assessment" element={<Assessment />} />
               <Route path="apptitudetest" element={<ApptitudeTest />} />
@@ -83,7 +100,6 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
               <Route path="progress" element={<Progress />} />
               <Route path="response" element={<Response />} />
             </Route>
-
           </Routes>
         </main>
       </section>
