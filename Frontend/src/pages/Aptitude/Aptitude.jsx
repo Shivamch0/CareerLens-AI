@@ -10,7 +10,7 @@ import { FaRegClock } from "react-icons/fa";
 import { AiOutlineBars } from "react-icons/ai";
 import { CiCircleInfo } from "react-icons/ci";
 
-const Apptitude = () => {
+const Aptitude = () => {
   const location = useLocation();
   const { isDark } = useTheme();
   const navigate = useNavigate()
@@ -19,7 +19,7 @@ const Apptitude = () => {
     navigate("assessment")
   }
 
-  const isBaseRoute = location.pathname === "/apptitude";
+  const isBaseRoute = location.pathname === "/aptitude";
 
   return (
     <>
@@ -30,7 +30,7 @@ const Apptitude = () => {
               <h2
                 className={`font-extrabold text-2xl sm:text-3xl md:text-4xl mb-4 ${isDark ? "text-white" : ""}`}
               >
-                Apptitude and Interests Test
+                Aptitude and Interests Test
               </h2>
               <p className="text-sm font-bold text-gray-500 mb-2">
                 This assessment will help us understsnd your aptitude strengths
@@ -93,4 +93,4 @@ const Apptitude = () => {
   );
 };
 
-export default Apptitude;
+export default Aptitude;

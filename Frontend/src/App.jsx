@@ -13,13 +13,13 @@ import Onboarding from "./pages/Onboarding/Onboarding";
 import Interests from "./pages/Onboarding/Interests";
 import Journey from "./pages/Onboarding/Journey";
 import FinalOnboarding from "./pages/Onboarding/FinalOnboarding";
-import Apptitude from "./pages/Apptitude/Apptitude";
-import ApptitudeTest from "./pages/Apptitude/ApptitudeTest";
-import Assessment from "./pages/Apptitude/Assessment";
-import InterestTest from "./pages/Apptitude/InterestTest";
-import Completed from "./pages/Apptitude/Completed";
-import Progress from "./pages/Apptitude/Progress";
-import Response from "./pages/Apptitude/Response";
+import Aptitude from "./pages/Aptitude/Aptitude";
+import AptitudeTest from "./pages/Aptitude/AptitudeTest";
+import Assessment from "./pages/Aptitude/Assessment";
+import InterestTest from "./pages/Aptitude/InterestTest";
+import Completed from "./pages/Aptitude/Completed";
+import Progress from "./pages/Aptitude/Progress";
+import Response from "./pages/Aptitude/Response";
 
 // Other Imports
 import { Routes, Route } from "react-router-dom";
@@ -38,8 +38,8 @@ function App() {
     "/onboarding-journey",
     "/onboarding-interests",
     "/onboarding-final",
-    "/apptitude",
-    "/apptitude/assessment",
+    "/aptitude",
+    "/aptitude/assessment",
   ];
 
   const showNavbar = navRoutes.includes(location.pathname)
@@ -77,7 +77,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
       <section className={` ${ showNavbar ? "px-0 sm:px-6 md:px-10" : "p-0" }`}>
         {/* NAVBAR */}
         <div className="relative z-20">
-          {showNavbar ? <Navbar /> : <FlowNavbar test="Apptitude Test" />}
+          {showNavbar ? <Navbar /> : <FlowNavbar test={location.pathname.includes("aptitudetest") ? "Aptitude Test" : "Interest Test"} />}
         </div>
 
         {/*  PAGES */}
@@ -92,10 +92,10 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
             <Route path="/onboarding-interests" element={<Interests />} />
             <Route path="/onboarding-final" element={<FinalOnboarding />} />
 
-            <Route path="/apptitude" element={<Apptitude />}>
+            <Route path="/aptitude" element={<Aptitude />}>
               <Route index element={null} />
               <Route path="assessment" element={<Assessment />} />
-              <Route path="apptitudetest" element={<ApptitudeTest />} />
+              <Route path="aptitudetest" element={<AptitudeTest />} />
               <Route path="intereststest" element={<InterestTest />} />
               <Route path="completed" element={<Completed />} />
               <Route path="progress" element={<Progress />} />

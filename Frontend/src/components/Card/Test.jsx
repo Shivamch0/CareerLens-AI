@@ -8,12 +8,15 @@ import Button from "../Button/Button"
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = () => {
+const Test = ({type}) => {
   const [currentQ, setCurrentQ] = useState(7);
   const [selected, setSelected] = useState(null);
 
-  const questionData = {
-    question: "Find the next number in the series:",
+  const isAptitude = type === "aptitude"
+
+  const questionData = isAptitude ? 
+    {
+    question: "Find the next number in the series:",              
     series: "2, 6, 12, 20, ?",
     options: [
       { id: "A", text: "30" },
@@ -21,7 +24,18 @@ const Test = () => {
       { id: "C", text: "26" },
       { id: "D", text: "24" },
     ],
-  };
+  }
+   : 
+    {
+      question: "What type of work do you enjoy most?",
+      options: [
+        { id: "A", text: "Problem-solving" },
+        { id: "B", text: "Creative designing" },
+        { id: "C", text: "Helping people" },
+        { id: "D", text: "Managing tasks" },
+      ],
+    }
+  
 
   const tips = {
     text : " Read the Questions carefully and choose the best answer."

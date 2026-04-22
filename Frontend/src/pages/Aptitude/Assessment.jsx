@@ -13,8 +13,8 @@ const Assessment = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
 
-  const handleApptitude = () => {
-    navigate("../apptitudetest")
+  const handleAptitude = () => {
+    navigate("../aptitudetest")
   }
 
   const handleInterests = () => {
@@ -32,14 +32,14 @@ const Assessment = () => {
       <div className="flex justify-center p-4  gap-4">
         <AptitudeCard
           image={brain}
-          title="Apptitude Test"
+          title="Aptitude Test"
           para="Measures your logical, numerical, verbal, and analytical ablities"
           question={25}
           minute={30}
           style={` ${isDark ? "bg-gray-600/40  border-purple-400/40" : "bg-white border border-gray-200"}`}
           bgColor={`bg-blue-100`}
           progressColor={`bg-blue-600`}
-          fn={handleApptitude}
+          fn={handleAptitude}
         />
         <AptitudeCard
           image={greenHeart}
