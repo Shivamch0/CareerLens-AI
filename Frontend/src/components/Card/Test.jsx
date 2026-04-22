@@ -1,79 +1,124 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
-import Button from "../Button/Button"
+import Button from "../Button/Button";
 
 // Others Imports
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = ({type}) => {
-  const [currentQ, setCurrentQ] = useState(7);
-  const [selected, setSelected] = useState(null);
+const Test = ({ type }) => {
+  const [currentQ, setCurrentQ] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  const isAptitude = type === "aptitude"
+  useEffect(() => {
+    const data =
+      type === "aptitude"
+        ? [
+            {
+              id: 1,
+              question: "Find the next number in the series:",
+              series: "2, 6, 12, 20, ?",
+              options: [
+                { id: "A", text: "30" },
+                { id: "B", text: "28" },
+                { id: "C", text: "26" },
+                { id: "D", text: "24" },
+              ],
+            },
+            {
+              id: 2,
+              question: "5 + 7 = ?",
+              options: [
+                { id: "A", text: "10" },
+                { id: "B", text: "12" },
+                { id: "C", text: "13" },
+                { id: "D", text: "11" },
+              ],
+            },
+          ]
+        : [
+            {
+              id: 1,
+              question: "What type of work do you enjoy most?",
+              options: [
+                { id: "A", text: "Problem-solving" },
+                { id: "B", text: "Creative designing" },
+                { id: "C", text: "Helping people" },
+                { id: "D", text: "Managing tasks" },
+              ],
+            },
+          ];
 
-  const questionData = isAptitude ? 
-    {
-    question: "Find the next number in the series:",              
-    series: "2, 6, 12, 20, ?",
-    options: [
-      { id: "A", text: "30" },
-      { id: "B", text: "28" },
-      { id: "C", text: "26" },
-      { id: "D", text: "24" },
-    ],
-  }
-   : 
-    {
-      question: "What type of work do you enjoy most?",
-      options: [
-        { id: "A", text: "Problem-solving" },
-        { id: "B", text: "Creative designing" },
-        { id: "C", text: "Helping people" },
-        { id: "D", text: "Managing tasks" },
-      ],
-    }
-  
+    setQuestions(data);
+    setLoading(false);
+  }, [type]);
 
   const tips = {
-    text : " Read the Questions carefully and choose the best answer."
-  }
+    text: " Read the Questions carefully and choose the best answer.",
+  };
+
+  if (loading) return <p>Loading...</p>;
+
+  let currentQuestion = questions[currentQ];
 
   return (
     <section className="flex-1 px-6">
-
       <div className="mb-1 p-4 bg-blue-100 rounded-xl flex  gap-2">
-        <p className="text-blue-500 font-semibold">💡Tips:</p>{tips.text}
+        <p className="text-blue-500 font-semibold">💡Tips:</p>
+        {tips.text}
       </div>
-     <div>
-       <div className="flex justify-between items-center mb-6">
-        <div>
-          <p className="text-sm text-gray-500">Question {currentQ}/25</p>
+      <div>
+        <div className="flex justify-between items-center mb-6">
+          <div>
+            <p className="text-sm text-gray-500">
+              Question {currentQ + 1}/{questions.length}
+            </p>
+          </div>
+
+          <div className="w-1/2 h-2 bg-gray-200 rounded-full">
+            <div
+              className="h-full bg-blue-500 rounded-full"
+              style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+            />
+          </div>
+
+          <p className="cursor-pointer">Report 🚩</p>
         </div>
 
-        <div className="w-1/2 h-2 bg-gray-200 rounded-full">
-          <div className="h-full bg-blue-500 rounded-full w-[30%]" />
+        <QuestionCard
+          data={currentQuestion}
+          selected={answers[currentQuestion.id]}
+          setSelected={(id) => {
+            setAnswers((prev) => ({
+              ...prev,
+              [currentQuestion.id]: id,
+            }));
+          }}
+        />
+
+        <div className="flex justify-between px-4 mt-2">
+          <Button
+            title="Previous"
+            onClick={() => currentQ > 0 && setCurrentQ((prev) => prev - 1)}
+            disabled={currentQ === 0}
+            className={`py-2 shadow shadow-black/30 font-semibold flex items-center gap-3 flex-row-reverse`}
+            icon={<FaLongArrowAltLeft />}
+          />
+          <Button
+            title="Next"
+            onClick={() =>
+              currentQ < questions.length - 1 && setCurrentQ((prev) => prev + 1)
+            }
+            disabled={currentQ === questions.length - 1}
+            className={`py-2 bg-blue-400 text-white font-semibold flex items-center gap-3`}
+            icon={<FaLongArrowAltRight />}
+          />
         </div>
-
-        <p className="cursor-pointer">Report 🚩</p>
       </div>
-
-      <QuestionCard
-        data={questionData}
-        selected={selected}
-        setSelected={setSelected}
-      />
-
-      <div className="flex justify-between px-4 mt-2">
-        <Button title='Previous' className={`py-2 shadow shadow-black/30 font-semibold flex items-center gap-3 flex-row-reverse`} icon={<FaLongArrowAltLeft />} />
-        <Button title='Next'  className={`py-2 bg-blue-400 text-white font-semibold flex items-center gap-3`} icon={<FaLongArrowAltRight />}/>
-      </div>
-     </div>
-
-      {/* Tips */}
-      
     </section>
   );
 };
