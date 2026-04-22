@@ -5,7 +5,7 @@ const InterestTest = () => {
   return (
     <section className="flex gap-10">
      <SideBar />
-     <Test type="Interests Test"/>
+     <Test type="interest"/>
     </section>
   )
 }

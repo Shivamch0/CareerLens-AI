@@ -1,18 +1,25 @@
 // Hooks Import
 import { useTheme } from "./Provider/ThemeProvider";
-import { useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 // Conponents Imports
-import Navbar from "./components/Navbar/Navbar";
-import FlowNavbar from "./components/Navbar/FlowNavbar";
+// Layout
+import MainLayout from "./layouts/MainLayout";
+import FlowLayout from "./layouts/FlowLayout";
+
+//Pages
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+
+//Onboarding
 import Onboarding from "./pages/Onboarding/Onboarding";
 import Interests from "./pages/Onboarding/Interests";
 import Journey from "./pages/Onboarding/Journey";
 import FinalOnboarding from "./pages/Onboarding/FinalOnboarding";
+
+//Aptitude
 import Aptitude from "./pages/Aptitude/Aptitude";
 import AptitudeTest from "./pages/Aptitude/AptitudeTest";
 import Assessment from "./pages/Aptitude/Assessment";
@@ -22,27 +29,9 @@ import Progress from "./pages/Aptitude/Progress";
 import Response from "./pages/Aptitude/Response";
 
 // Other Imports
-import { Routes, Route } from "react-router-dom";
-
 
 function App() {
   const { isDark } = useTheme();
-  const location = useLocation();
-
-  const navRoutes = [
-    "/",
-    "/login",
-    "/signup",
-    "/dashboard",
-    "/onboarding",
-    "/onboarding-journey",
-    "/onboarding-interests",
-    "/onboarding-final",
-    "/aptitude",
-    "/aptitude/assessment",
-  ];
-
-  const showNavbar = navRoutes.includes(location.pathname)
 
   return (
     <div
@@ -74,36 +63,38 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         ""
       )}
 
-      <section className={` ${ showNavbar ? "px-0 sm:px-6 md:px-10" : "p-0" }`}>
-        {/* NAVBAR */}
-        <div className="relative z-20">
-          {showNavbar ? <Navbar /> : <FlowNavbar test={location.pathname.includes("aptitudetest") ? "Aptitude Test" : "Interest Test"} />}
-        </div>
+        <section className="px-0 sm:px-6 md:px-10">
+          {/*  PAGES */}
+          <main className="relative z-20 mt-2 sm:mt-5">
+            <Routes>
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/dashboard" element={<Dashboard />} />
 
-        {/*  PAGES */}
-        <main className="relative z-20 mt-2 sm:mt-5">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/onboarding-journey" element={<Journey />} />
-            <Route path="/onboarding-interests" element={<Interests />} />
-            <Route path="/onboarding-final" element={<FinalOnboarding />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route path="/onboarding-journey" element={<Journey />} />
+                <Route path="/onboarding-interests" element={<Interests />} />
+                <Route path="/onboarding-final" element={<FinalOnboarding />} />
+              </Route>
 
-            <Route path="/aptitude" element={<Aptitude />}>
-              <Route index element={null} />
-              <Route path="assessment" element={<Assessment />} />
-              <Route path="aptitudetest" element={<AptitudeTest />} />
-              <Route path="intereststest" element={<InterestTest />} />
-              <Route path="completed" element={<Completed />} />
-              <Route path="progress" element={<Progress />} />
-              <Route path="response" element={<Response />} />
-            </Route>
-          </Routes>
-        </main>
-      </section>
+              <Route element={<FlowLayout />}>
+                
+
+                <Route path="/aptitude" element={<Aptitude />}>
+                  <Route index element={null} />
+                  <Route path="assessment" element={<Assessment />} />
+                  <Route path="aptitudetest" element={<AptitudeTest />} />
+                  <Route path="intereststest" element={<InterestTest />} />
+                  <Route path="completed" element={<Completed />} />
+                  <Route path="progress" element={<Progress />} />
+                  <Route path="response" element={<Response />} />
+                </Route>
+              </Route>
+            </Routes>
+          </main>
+        </section>
     </div>
   );
 }

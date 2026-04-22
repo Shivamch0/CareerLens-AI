@@ -8,7 +8,7 @@ const AptitudeTest = () => {
   return (
     <section className="flex gap-10">
      <SideBar />
-     <Test type="Aptitude Test"/>
+     <Test type="aptitude"/>
     </section>
   )
 }

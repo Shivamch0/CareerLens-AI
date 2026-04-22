@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import logo from "../../assets/Logo.png";
 
-const FlowNavbar = ({test}) => {
+const FlowNavbar = ({test = ""}) => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const FlowNavbar = ({test}) => {
   }
 
   return (
-    <header className="bg-gray-100 p-2">
+    <header className="px-2">
        <nav className="flex items-center justify-between">
         <div
           className="flex items-center cursor-pointer"
@@ -26,10 +26,12 @@ const FlowNavbar = ({test}) => {
           <p>{test}</p>
         </div>
 
-        <div className=" items-center px-4">
-          <p className="text-sm text-gray-600">Time left</p>
-          <h3 className="font-bold text-2xl text-blue-500 ">24:35</h3>
-        </div>
+         {test && (
+          <div className="items-center px-4">
+            <p className="text-sm text-gray-600">Time left</p>
+            <h3 className="font-bold text-2xl text-blue-500">24:35</h3>
+          </div>
+        )}
       </nav>
     </header>
   )
