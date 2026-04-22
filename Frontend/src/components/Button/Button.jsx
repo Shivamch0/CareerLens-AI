@@ -1,13 +1,13 @@
 
-function Button({title , className , onClick , type}) {
+function Button({title , className , onClick , type , icon}) {
 
   return (
     <button 
-    className={`cursor-pointer font-bold rounded-2xl py-3 px-6 text-base sm:text-lg  ${className ? className : 'bg-blue-500 hover:bg-blue-800 '} transition-colors duration-300`} 
+    className={`cursor-pointer font-bold rounded-2xl  px-6 text-base sm:text-lg  ${className ? className : 'bg-blue-500 hover:bg-blue-800 py-3 '} transition-colors duration-300`} 
     onClick={onClick} 
     type={type}
     >
-      {title}
+      {title} {icon}
     </button>
   )
 }
