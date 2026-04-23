@@ -4,6 +4,7 @@ const Sections = ({
   icon,
   content,
   number,
+  total,
   iconColor,
   progress,
   progressColor,
@@ -14,7 +15,7 @@ const Sections = ({
       <div className="flex-1">
         <div className="flex justify-between items-center">
           <p className="font-medium">{content}</p>
-          <p className="text-sm text-gray-500">{number}/5</p>
+          <p className="text-sm text-gray-500">{number}/{total}</p>
         </div>
         <div className="w-full h-2 bg-gray-200 rounded-full mt-4 overflow-hidden">
           <div

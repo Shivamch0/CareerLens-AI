@@ -65,7 +65,7 @@ const Test = ({ type, timeLeft }) => {
   }, [type]);
 
   useEffect(() => {
-    if (!submitted && timeLeft === 0) {
+    if (!submitted && timeLeft !== undefined && timeLeft === 0) {
       handleSubmit();
     }
   }, [timeLeft, submitted]);
