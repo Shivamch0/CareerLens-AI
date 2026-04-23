@@ -88,13 +88,13 @@ const Test = ({ type, timeLeft }) => {
       localStorage.removeItem("testEndTime");
     });
 
-    navigate("/aptitude/response", {
-      state: {
-        score,
-        total: questions.length,
-        answers,
-      },
-    });
+    // navigate("/aptitude/response", {
+    //   state: {
+    //     score,
+    //     total: questions.length,
+    //     answers,
+    //   },
+    // });
   };
 
   if (loading) return <p>Loading...</p>;
