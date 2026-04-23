@@ -59,7 +59,7 @@ function SignUp() {
             name="password"
             value={values.password}
             onChange={handleChange}
-            type="text"
+            type="password"
             placeholder="Enter your password"
            className={`pl-5 w-full md:w-96 py-3 rounded-xl ${isDark ? "bg-[#121A3A] border border-[#2A356B] text-[#E6E9FF] placeholder:text-[#A8B0D6 outline-none focus:ring-2 focus:ring-[#5B6CFF]/4 transition" : 'border border-white/20 placeholder:text-gray-500 shadow-lg shadow-gray-500 outline-0 text-gray-700'} `}
           />

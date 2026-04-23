@@ -1,24 +1,50 @@
 import { Outlet, useLocation } from "react-router-dom";
 import FlowNavbar from "../components/Navbar/FlowNavbar";
-import { useState , useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const FlowLayout = () => {
-  const [timeLeft, setTimeLeft] = useState(300); // 5s
+  const TEST_DURATION = 300; // seconds
+
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const savedEnd = localStorage.getItem("testEndTime");
+
+    if (savedEnd) {
+      const remaining = Math.floor((savedEnd - Date.now()) / 1000);
+      return remaining > 0 ? remaining : 0;
+    }
+
+    return TEST_DURATION;
+  });
+
+  useEffect(() => {
+    const existing = localStorage.getItem("testEndTime");
+
+    if (!existing) {
+      const endTime = Date.now() + TEST_DURATION * 1000;
+      localStorage.setItem("testEndTime", endTime);
+    }
+  }, []);
 
   const location = useLocation();
 
   useEffect(() => {
-    if (timeLeft <= 0) {
-      handleSubmit(); // auto submit
-      return;
-    }
-
     const timer = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
+      const endTime = localStorage.getItem("testEndTime");
+
+      if (!endTime) return;
+
+      const remaining = Math.floor((endTime - Date.now()) / 1000);
+
+      if (remaining <= 0) {
+        setTimeLeft(0);
+        clearInterval(timer);
+      } else {
+        setTimeLeft(remaining);
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, []);
 
   const path = location.pathname;
 

@@ -65,10 +65,10 @@ const Test = ({ type, timeLeft }) => {
   }, [type]);
 
   useEffect(() => {
-    if (timeLeft !== undefined && timeLeft === 0) {
+    if (!submitted && timeLeft === 0) {
       handleSubmit();
     }
-  }, [timeLeft]);
+  }, [timeLeft, submitted]);
 
   const tips = {
     text: " Read the Questions carefully and choose the best answer.",
@@ -81,6 +81,11 @@ const Test = ({ type, timeLeft }) => {
       if (answers[q.id] === q.correct) {
         score++;
       }
+
+      if (submitted) return;
+      setSubmitted(true);
+
+      localStorage.removeItem("testEndTime");
     });
 
     navigate("/aptitude/response", {
@@ -94,7 +99,7 @@ const Test = ({ type, timeLeft }) => {
 
   if (loading) return <p>Loading...</p>;
 
-  const currentQuestion = questions[currentQ];
+  const currentQuestion = questions[currentQ] || {};
 
   return (
     <section className="flex-1 px-6">
