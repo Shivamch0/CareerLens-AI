@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate  } from "react-router-dom";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
@@ -8,11 +9,13 @@ import Button from "../Button/Button";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = ({ type }) => {
+const Test = ({ type , timeLeft }) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const data =
@@ -28,6 +31,7 @@ const Test = ({ type }) => {
                 { id: "C", text: "26" },
                 { id: "D", text: "24" },
               ],
+              correct: "A"
             },
             {
               id: 2,
@@ -38,6 +42,7 @@ const Test = ({ type }) => {
                 { id: "C", text: "13" },
                 { id: "D", text: "11" },
               ],
+              correct: "B"
             },
           ]
         : [
@@ -50,6 +55,7 @@ const Test = ({ type }) => {
                 { id: "C", text: "Helping people" },
                 { id: "D", text: "Managing tasks" },
               ],
+              correct: "A"
             },
           ];
 
@@ -61,9 +67,27 @@ const Test = ({ type }) => {
     text: " Read the Questions carefully and choose the best answer.",
   };
 
+  const handleSubmit = () => {
+    let score = 0;
+
+    questions.forEach((q) => {
+      if (answers[q.id] === q.correct) {
+        score++;
+      }
+    });
+
+    navigate("/aptitude/response", {
+      state: {
+        score,
+        total: questions.length,
+        answers,
+      },
+    });
+  };
+
   if (loading) return <p>Loading...</p>;
 
-  let currentQuestion = questions[currentQ];
+  const currentQuestion = questions[currentQ];
 
   return (
     <section className="flex-1 px-6">
@@ -108,15 +132,24 @@ const Test = ({ type }) => {
             className={`py-2 shadow shadow-black/30 font-semibold flex items-center gap-3 flex-row-reverse`}
             icon={<FaLongArrowAltLeft />}
           />
-          <Button
-            title="Next"
-            onClick={() =>
-              currentQ < questions.length - 1 && setCurrentQ((prev) => prev + 1)
-            }
-            disabled={currentQ === questions.length - 1}
-            className={`py-2 bg-blue-400 text-white font-semibold flex items-center gap-3`}
-            icon={<FaLongArrowAltRight />}
-          />
+          {currentQ === questions.length - 1 ? (
+            <Button
+              title="Submit"
+              disabled={!answers[currentQuestion.id]}
+              onClick={handleSubmit}
+              className="py-2 bg-green-500 text-white font-semibold"
+            />
+          ) : (
+            <Button
+              title="Next"
+              disabled={!answers[currentQuestion.id]}
+              onClick={() =>
+                currentQ < questions.length - 1 &&
+                setCurrentQ((prev) => prev + 1)
+              }
+              className="py-2 bg-blue-400 text-white font-semibold"
+            />
+          )}
         </div>
       </div>
     </section>

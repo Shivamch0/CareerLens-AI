@@ -1,4 +1,4 @@
-import { Outlet, useLocation , useNavigate } from "react-router-dom";
+import { Outlet, useLocation , useNavigate , useOutletContext } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
 
 // Components Imports
@@ -14,6 +14,8 @@ const Aptitude = () => {
   const location = useLocation();
   const { isDark } = useTheme();
   const navigate = useNavigate()
+
+  const context = useOutletContext()
 
   const handleNavigate = () => {
     navigate("assessment")
@@ -87,7 +89,7 @@ const Aptitude = () => {
           </section>
         </>
       ) : (
-        <Outlet />
+        <Outlet context={context} />
       )}
     </>
   );
