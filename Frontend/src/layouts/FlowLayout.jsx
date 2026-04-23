@@ -3,10 +3,13 @@ import FlowNavbar from "../components/Navbar/FlowNavbar";
 import { useState, useEffect } from "react";
 
 const FlowLayout = () => {
-  const TEST_DURATION = 300; // seconds
+
+   let testType = "";
+  const TEST_DURATION = testType === "aptitude" ? 3600 : testType === "interest" ? null : 300;
 
   const [timeLeft, setTimeLeft] = useState(() => {
-    const savedEnd = localStorage.getItem("testEndTime");
+    if (!testType) return null;
+    const savedEnd = localStorage.getItem(storageKey);
 
     if (savedEnd) {
       const remaining = Math.floor((savedEnd - Date.now()) / 1000);
@@ -17,11 +20,11 @@ const FlowLayout = () => {
   });
 
   useEffect(() => {
-    const existing = localStorage.getItem("testEndTime");
+    const existing = localStorage.getItem(storageKey);
 
     if (!existing) {
       const endTime = Date.now() + TEST_DURATION * 1000;
-      localStorage.setItem("testEndTime", endTime);
+      localStorage.setItem(storageKey, endTime);
     }
   }, []);
 
@@ -29,7 +32,7 @@ const FlowLayout = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const endTime = localStorage.getItem("testEndTime");
+      const endTime = localStorage.getItem(storageKey);
 
       if (!endTime) return;
 
@@ -48,12 +51,12 @@ const FlowLayout = () => {
 
   const path = location.pathname;
 
-  let testType = "";
+  const storageKey = `${testType}EndTime`;
 
   if (path.includes("aptitudetest")) {
-    testType = "Aptitude Test";
+    testType = "aptitude";
   } else if (path.includes("intereststest")) {
-    testType = "Interest Test";
+    testType = "interest";
   }
 
   return (
