@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
@@ -9,12 +9,13 @@ import Button from "../Button/Button";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = ({ type , timeLeft }) => {
+const Test = ({ type, timeLeft }) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [loading, setLoading] = useState(true);
-  
+  const [submitted, setSubmitted] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const Test = ({ type , timeLeft }) => {
                 { id: "C", text: "26" },
                 { id: "D", text: "24" },
               ],
-              correct: "A"
+              correct: "A",
             },
             {
               id: 2,
@@ -42,7 +43,7 @@ const Test = ({ type , timeLeft }) => {
                 { id: "C", text: "13" },
                 { id: "D", text: "11" },
               ],
-              correct: "B"
+              correct: "B",
             },
           ]
         : [
@@ -55,13 +56,19 @@ const Test = ({ type , timeLeft }) => {
                 { id: "C", text: "Helping people" },
                 { id: "D", text: "Managing tasks" },
               ],
-              correct: "A"
+              correct: "A",
             },
           ];
 
     setQuestions(data);
     setLoading(false);
   }, [type]);
+
+  useEffect(() => {
+    if (timeLeft !== undefined && timeLeft === 0) {
+      handleSubmit();
+    }
+  }, [timeLeft]);
 
   const tips = {
     text: " Read the Questions carefully and choose the best answer.",
@@ -128,21 +135,21 @@ const Test = ({ type , timeLeft }) => {
           <Button
             title="Previous"
             onClick={() => currentQ > 0 && setCurrentQ((prev) => prev - 1)}
-            disabled={currentQ === 0}
+            disabled={submitted || currentQ === 0}
             className={`py-2 shadow shadow-black/30 font-semibold flex items-center gap-3 flex-row-reverse`}
             icon={<FaLongArrowAltLeft />}
           />
           {currentQ === questions.length - 1 ? (
             <Button
               title="Submit"
-              disabled={!answers[currentQuestion.id]}
+              disabled={submitted || !answers[currentQuestion.id]}
               onClick={handleSubmit}
               className="py-2 bg-green-500 text-white font-semibold"
             />
           ) : (
             <Button
               title="Next"
-              disabled={!answers[currentQuestion.id]}
+              disabled={submitted || !answers[currentQuestion.id]}
               onClick={() =>
                 currentQ < questions.length - 1 &&
                 setCurrentQ((prev) => prev + 1)
