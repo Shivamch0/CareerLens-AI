@@ -1,115 +1,135 @@
 // Models Import
-import { User } from "../models/user.model.js"
+import { User } from "../models/user.model.js";
 
 // Utils Imports
-import { ApiError } from "../utils/ApiError.js"
-import { ApiResponse } from "../utils/ApiResponse.js"
-import { asyncHandler } from "../utils/asyncHandler.js"
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
+//Custom method for generation access and refresh token
+const generateAccessAndRefreshToken = async (userId) => {
+  try {
+    const user = await User.findById(userId);
 
-const registerUser = asyncHandler ( async (req , res) => {
-    const {userName , email , password} = req.body;
-    if(!userName || !email || !password ){
-        throw new ApiError(400 , 'Fill all the fields...')
-    }
-
-    const existedUser = await User.findOne({email});
-    if(existedUser){
-        throw new ApiError(400 , 'User already registered with this email...')
-    }
-
-    const user = await User.create({
-        userName,
-        email : email.toLowerCase(),
-        password
-    })
-
-    const accessToken = await user.generateAccessToken()
-    const refreshToken = await user.generateRefreshToken()
+    const accessToken = await user.generateAccessToken();
+    const refreshToken = await user.generateRefreshToken();
 
     user.refreshToken = refreshToken;
-    await user.save({validateBeforeSave : false});
+    await user.save({ validateBeforeSave: false });
 
-    const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
-    )
-    if(!createdUser){
-        throw new ApiError(400 , 'Something went wrong while registering user')
-    }
+    return {accessToken , refreshToken}
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Something went wrong while generating access and refreshToken",
+    );
+  }
+};
 
-    const options = {
-        httpOnly : true,
-        secure : process.env.NODE_ENV === 'production',
-        smaeSite :"None" ,
-        path : "/",
-        maxAge : "7 * 24 * 60 * 60 * 1000"
-    }
+const registerUser = asyncHandler(async (req, res) => {
+  const { userName, email, password } = req.body;
+  if (!userName || !email || !password) {
+    throw new ApiError(400, "Fill all the fields...");
+  }
 
-    return res.status(200)
-            .cookie("AccessToken" , options , accessToken)
-            .cookie('RefreshToken' , options , refreshToken)
-            .json(
-                new ApiResponse(200 , {user : createdUser} , "User Created Successfully")
-            )
+  const existedUser = await User.findOne({ email });
+  if (existedUser) {
+    throw new ApiError(400, "User already registered with this email...");
+  }
 
+  const user = await User.create({
+    userName,
+    email: email.toLowerCase(),
+    password,
+  });
+
+  const accessToken = await user.generateAccessToken();
+  const refreshToken = await user.generateRefreshToken();
+
+  user.refreshToken = refreshToken;
+  await user.save({ validateBeforeSave: false });
+
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken",
+  );
+  if (!createdUser) {
+    throw new ApiError(400, "Something went wrong while registering user");
+  }
+
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    smaeSite: "None",
+    path: "/",
+    maxAge: "7 * 24 * 60 * 60 * 1000",
+  };
+
+  return res
+    .status(200)
+    .cookie("AccessToken", options, accessToken)
+    .cookie("RefreshToken", options, refreshToken)
+    .json(
+      new ApiResponse(200, { user: createdUser }, "User Created Successfully"),
+    );
 });
 
-const loginUser = asyncHandler ( async (req , res) => {
-    const { email , password } = req.body;
-    if(!email || !password){
-        throw new ApiError(400 , "Fill all the fields...")
-    }
+const loginUser = asyncHandler(async (req, res) => {
+  // get data from req.body
+  const { userName, email, password } = req.body;
+  if (!email || !userName) {
+    throw new ApiError(400, "Username or email is required...");
+  }
 
-    const user = await User.findOne({email});
-    if(!user){
-        throw new ApiError(400 , "User with this email does not exists...")
-    }
+  //find the user
+  const user = await User.findOne({
+    $or: [{ userName }, { email }],
+  });
+  if (!user) {
+    throw new ApiError(
+      404,
+      "User with this email or Username does not exists...",
+    );
+  }
 
-    const checkPassword = await user.isPasswordCorrect(password)
-    if(!checkPassword){
-        throw new ApiError(400 , "Incorrect Password...")
-    }
+  // password check
+  const checkPassword = await user.isPasswordCorrect(password);
+  if (!checkPassword) {
+    throw new ApiError(401, "Incorrect Password...");
+  }
 
+  // generate accesstoken and refreshToken
+  const { accessToken , refreshToken } = await generateAccessAndRefreshToken(user._id)
 
-    const accessToken = await user.generateAccessToken()
-    const refreshToken = await user.generateRefreshToken()
+  const loggedInUser = await User.findById(user._id).select(
+    " -password -refreshToken ",
+  );
 
-    user.refreshToken = refreshToken;
-    await user.save({validateBeforeSave : false});
+  if (!loggedInUser) {
+    throw new ApiError(400, "Something went wrong while logging...");
+  }
 
-    const loggedInUser = await User.findById(user._id).select(
-        " -password -refreshToken ")
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    smaeSite: "None",
+    path: "/",
+    maxAge: "7 * 24 * 60 * 60 * 1000",
+  };
 
-        if(!loggedInUser){
-            throw new ApiError(400 , "Something went wrong while logging...")
-        }
-
-    const options = {
-        httpOnly : true,
-        secure : process.env.NODE_ENV === 'production',
-        smaeSite :"None" ,
-        path : "/",
-        maxAge : "7 * 24 * 60 * 60 * 1000"
-    }
-
-    return res.status(200)
-            .cookie("AccessToken" , options , accessToken)
-            .cookie('RefreshToken' , options , refreshToken)
-            .json(
-                new ApiResponse(200  , { user : loggedInUser } , "User Created Successfully")
-            )
+  // send response
+  return res
+    .status(200)
+    .cookie("AccessToken", options, accessToken)
+    .cookie("RefreshToken", options, refreshToken)
+    .json(
+      new ApiResponse(200, { user: loggedInUser , accessToken , refreshToken } , "User Created Successfully"),
+    );
 });
 
-const logoutUser = asyncHandler ( async (req , res) => {
-    
-});
+const logoutUser = asyncHandler(async (req, res) => {});
 
-const getCurrentUser = asyncHandler ( async (req , res) => {
+const getCurrentUser = asyncHandler(async (req, res) => {});
 
-});
+const refreshToken = asyncHandler(async (req, res) => {});
 
-const refreshToken = asyncHandler ( async (req , res) => {
-
-});
-
-export { registerUser , loginUser , logoutUser , getCurrentUser , refreshToken}
+export { registerUser, loginUser, logoutUser, getCurrentUser, refreshToken };
