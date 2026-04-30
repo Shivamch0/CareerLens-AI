@@ -45,8 +45,8 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function(next) {
+  if (!this.isModified("password")) return;
   
   this.password = await bcrypt.hash(this.password, 10);
   next();
@@ -62,7 +62,6 @@ userSchema.methods.generateAccessToken = function () {
       _id: this._id,
       userName: this.userName,
       email: this.email,
-      password: this.password,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: process.env.ACCESS_TOKEN_EXPIRY },

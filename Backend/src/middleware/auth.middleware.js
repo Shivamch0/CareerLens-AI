@@ -38,6 +38,6 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
       throw new ApiError(401, "Invalid token. Please log in again.");
     }
 
-    throw new ApiError(401, "Unauthorized. Please log in.");
+    throw new ApiError(401, `Unauthorized. Please log in. ${error}`);
   }
 });
