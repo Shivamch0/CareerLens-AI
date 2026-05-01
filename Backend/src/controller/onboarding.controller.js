@@ -22,7 +22,7 @@ const saveJourney = asyncHandler (async (req , res) => {
     }
 
     return res.status(200)
-            .json(200 , user , "Career stage saved successfully...")
+            .json(new ApiResponse(200 , user , "Career stage saved successfully..."))
 
 });
 
@@ -39,7 +39,7 @@ const saveInterests = asyncHandler ( async (req , res) => {
     ).select("-password")
 
     return res.status(200)
-            .json(200 , user , "Interests save successfully...")
+            .json(new ApiResponse(200 , user , "Interests save successfully..."))
 
 });
 
@@ -56,24 +56,27 @@ const saveSkills = asyncHandler( async (req , res) => {
     ).select("-password")
 
     return res.status(200)
-            .json(200 , user , "Skills saved successfully...")
+            .json(new ApiResponse(200 , user , "Skills saved successfully..."))
 })
 
 const completeOnboarding = asyncHandler ( async ( req , res) => {
     const user = await User.findByIdAndUpdate(
-        user.req._id,
+        req.user._id,
         {$set : {onboardingCompleted : true}},
         {new : true}
     ).select("-password")
 
     return res.status(200)
-            .json(200 , user , "Onboarding completed successfully...")
+            .json(new ApiResponse(200 , user , "Onboarding completed successfully..."))
 });
 
 const getOnboardingStatus = asyncHandler (async (req , res) => {
     const user = await User.findById(req.user._id).select(
         "careerStage , interests , skills , onboardingCompleted"
     )
+
+    return res.status(200)
+            .json(new ApiResponse(200 , user , "Onboarding status fetched successfully..."))
 });
 
 export { saveJourney , saveInterests , saveSkills , completeOnboarding , getOnboardingStatus}
