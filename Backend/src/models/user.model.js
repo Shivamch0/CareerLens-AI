@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema(
       branch: String,
       marks: String,
     },
+    careerStage : {
+      type : String,
+      enum : ["school" , "bachelors" , "masters" , 'graduate' , 'switcher']
+    },
+    onboardingCompleted : {
+      type : Boolean,
+      default : false
+    },
     refreshToken: {
       type: String,
     },
