@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    smaeSite: "None",
+    sameSite: "None",
     path: "/",
     maxAge: "7 * 24 * 60 * 60 * 1000",
   };
