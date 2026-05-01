@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import { useTheme } from "../Provider/ThemeProvider";
+import { registerUser } from "../api/auth.api.js";
+import { useNavigate } from "react-router-dom";
 
 // Components Imports
 import LinkComponent from "../components/Button/LinkComponent";
@@ -10,14 +12,16 @@ import lightBgImage from "../assets/Light_image.png";
 
 function SignUp() {
   const {isDark} = useTheme();
+  const navigate = useNavigate();
   const {values , handleChange , handleSubmit } = useFormik({
     initialValues: {
-      username : "",
+      userName : "",
       email : "",
       password : ""
     },
     onSubmit: (values) => {
-      console.log(values)
+      registerUser(values);
+      navigate("/login")
     },
   });
   return (
@@ -40,9 +44,9 @@ function SignUp() {
        <div className="flex flex-col lg:flex-row items-center justify-evenly mt-2 p-6 gap-10">
         <form onSubmit={handleSubmit} className={`flex flex-col  gap-5 p-4 mt-8 ${isDark ? '' : 'border border-white/20 rounded-lg  shadow-lg shadow-gray-500'}` }>
            <input
-            name="username"
+            name="userName"
             type="text"
-            value={values.username}
+            value={values.userName}
             onChange={handleChange}
             placeholder="Enter your username"
             className={`pl-5 w-full md:w-96 py-3 rounded-xl ${isDark ? "bg-[#121A3A] border border-[#2A356B] text-[#E6E9FF] placeholder:text-[#A8B0D6 outline-none focus:ring-2 focus:ring-[#5B6CFF]/4 transition" : 'border border-white/20 placeholder:text-gray-500 shadow-lg shadow-gray-500 outline-0 text-gray-700'} `}

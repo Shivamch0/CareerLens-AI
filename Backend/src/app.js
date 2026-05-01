@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import dotenv from 'dotenv'
+dotenv.config()
 
 const app = express();
 
@@ -8,7 +10,7 @@ app.set("trust proxy", 1);
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
-    // credentials: true,
+    credentials: true,
   }),
 );
 
@@ -25,5 +27,6 @@ import onboardingRoute from './routes/onboarding.route.js'
 
 app.use('/api/v1/users' , userRoute)
 app.use('/api/v1/onboarding' , onboardingRoute)
+console.log("CORS ORIGIN:", process.env.CORS_ORIGIN);
 
 export { app };
