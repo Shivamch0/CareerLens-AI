@@ -92,4 +92,4 @@ const Progress = () => {
   );
 };
 
-export default Progr;
+export default Progress;
