@@ -43,12 +43,37 @@ const saveInterests = asyncHandler ( async (req , res) => {
 
 });
 
-const completeOnboarding = asyncHandler ( async ( req , res) => {
+const saveSkills = asyncHandler( async (req , res) => {
+    const { skills } = req.body;
+    if(!skills || !Array.isArray(skills)){
+        throw new ApiError(400 , "Skills must be an array...")
+    }
 
+    const user = await User.findByIdAndUpdate(
+        req.user._id,
+        {$set : {skills}},
+        {new : true}
+    ).select("-password")
+
+    return res.status(200)
+            .json(200 , user , "Skills saved successfully...")
+})
+
+const completeOnboarding = asyncHandler ( async ( req , res) => {
+    const user = await User.findByIdAndUpdate(
+        user.req._id,
+        {$set : {onboardingCompleted : true}},
+        {new : true}
+    ).select("-password")
+
+    return res.status(200)
+            .json(200 , user , "Onboarding completed successfully...")
 });
 
 const getOnboardingStatus = asyncHandler (async (req , res) => {
-
+    const user = await User.findById(req.user._id).select(
+        "careerStage , interests , skills , onboardingCompleted"
+    )
 });
 
 export { saveJourney , saveInterests , completeOnboarding , getOnboardingStatus}
