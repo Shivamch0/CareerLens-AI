@@ -27,14 +27,21 @@ const saveJourney = asyncHandler (async (req , res) => {
 });
 
 const saveInterests = asyncHandler ( async (req , res) => {
-    const {interests} = req.body;
-    if(!interests || !Array.isArray(interests)){
-        throw new ApiError(400 , "At least one interests required...")
+    const { interests , otherInterests } = req.body;
+    if(!Array.isArray(interests)){
+        interests = []
     }
+
+    // Add custom interests if needed
+    if(otherInterests && otherInterests.trim() !== ""){
+        interests.push(otherInterests.trim())
+    }
+
+    const uniqueInterests = [...new Set(interests)];
 
     const user = await User.findByIdAndUpdate(
         req.user._id,
-        {$set : {interests}},
+        {$set : {interests : uniqueInterests}},
         {new : true}
     ).select("-password")
 
