@@ -76,4 +76,4 @@ const getOnboardingStatus = asyncHandler (async (req , res) => {
     )
 });
 
-export { saveJourney , saveInterests , completeOnboarding , getOnboardingStatus}
+export { saveJourney , saveInterests , saveSkills , completeOnboarding , getOnboardingStatus}

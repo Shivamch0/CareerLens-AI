@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema(
       type : String,
       enum : ["school" , "bachelors" , "masters" , 'graduate' , 'switcher']
     },
-    onboardingCompleted : {
+     : {
       type : Boolean,
       default : false
     },
