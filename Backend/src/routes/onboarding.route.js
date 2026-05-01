@@ -1,6 +1,6 @@
 import express from 'express';
-import { saveJourney , saveInterests , saveSkills , completeOnboarding  , getOnboardingStatus } from '../controller/onboarding.controller';
-import { verifyJWT } from '../middleware/auth.middleware';
+import { saveJourney , saveInterests , saveSkills , completeOnboarding  , getOnboardingStatus } from '../controller/onboarding.controller.js';
+import { verifyJWT } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
