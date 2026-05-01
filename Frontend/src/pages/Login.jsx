@@ -2,6 +2,7 @@
 import { useFormik } from "formik";
 import { Link , useNavigate } from "react-router-dom";
 import { useTheme } from "../Provider/ThemeProvider";
+import { loginUser } from "../api/auth.api";
 
 // Components Imports
 import LinkComponent from "../components/Button/LinkComponent";
@@ -20,8 +21,8 @@ function Login() {
       password : ""
     },
     onSubmit: (values) => {
-      console.log(values)
-      navigate('/onboarding')
+      loginUser(values)
+      console.log("login")
     },
   });
 
