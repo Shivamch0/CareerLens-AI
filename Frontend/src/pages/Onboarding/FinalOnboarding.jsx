@@ -10,7 +10,7 @@ function FinalOnboarding() {
   const { isDark } = useTheme();
 
   const handleNavigate = () => {
-    navigate("/dashboard")
+    navigate("/aptitude")
   }
 
   return (
@@ -30,7 +30,7 @@ function FinalOnboarding() {
             <p className="text-xs sm:text-sm md:text-base text-gray-500 font-bold">CareerLens adapts to your journey stage and creates your career roadmap</p>
           </div>
           <DashboardButton
-            title="Go to Dashboard"
+            title="Lets Start Your Test"
             fn={handleNavigate}
             style={` mt-3 w-full sm:w-auto ${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500" : "bg-blue-500 text-white"} `}
           />
