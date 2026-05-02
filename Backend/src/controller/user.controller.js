@@ -64,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: "Lax",
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   };
@@ -83,6 +83,20 @@ const loginUser = asyncHandler(async (req, res) => {
   const { userName, email, password } = req.body;
   if ((!email && !userName) || !password) {
     throw new ApiError(400, "Username or email is required...");
+  }
+
+  const existingToken = req.cookies?.accessToken;
+
+  if(existingToken){
+    try {
+      const decoded = jwt.verify(existingToken , process.env.ACCESS_TOKEN_SECRET);
+
+      if(decoded){
+        throw new ApiError(400 , "User already logged in ")
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   //find the user
@@ -118,7 +132,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: "Lax",
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   };
@@ -153,7 +167,7 @@ const logoutUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    sameSite: "Lax",
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   };
@@ -198,7 +212,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     const options = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
+      sameSite: "Lax",
       path: "/",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     };
