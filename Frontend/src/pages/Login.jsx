@@ -3,6 +3,8 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../Provider/ThemeProvider";
 import { loginUser, currentUser } from "../api/auth.api";
+import { useDispatch } from "react-redux";
+import { setUser } from "../Redux State/Slice/authSlice";
 
 // Components Imports
 import LinkComponent from "../components/Button/LinkComponent";
@@ -14,6 +16,7 @@ import lightBgImage from "../assets/Light_image.png";
 function Login() {
   const { isDark } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const { values, handleSubmit, handleChange } = useFormik({
     initialValues: {
@@ -23,7 +26,9 @@ function Login() {
     onSubmit: async (values) => {
       try {
         const res = await loginUser(values);
-        console.log(res);
+        console.log(res.data);
+        
+        dispatch(setUser(res.data.user));
 
        if(res.data.user.onboardingCompleted){
         navigate("/dashboard")

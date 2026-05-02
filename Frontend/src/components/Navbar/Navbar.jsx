@@ -1,17 +1,18 @@
 // Hooks Imports
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
+import { useSelector } from "react-redux";
 
 // Components Imports
 import Button from "../Button/Button";
-import ToggleTheme from "../ToggleTheme";
 
 //Other Imports
 import logo from "../../assets/Logo.png";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { theme , toggleTheme , isDark} = useTheme()
+  const { theme, toggleTheme, isDark } = useTheme();
+  const user = useSelector((state) => state.auth.user);
 
   const handleNavigate = () => {
     navigate("/");
@@ -25,13 +26,21 @@ function Navbar() {
           onClick={handleNavigate}
         >
           <img className="w-12 h-12 rounded-full" src={logo} alt="" />
-          <h3 className="text-lg md:text-2xl font-bold text-blue-600">CAREER</h3>
-          <p className={`text-lg md:text-2xl font-bold ${isDark ? "text-white" : "text-blue-300"} `}>LENS</p>
+          <h3 className="text-lg md:text-2xl font-bold text-blue-600">
+            CAREER
+          </h3>
+          <p
+            className={`text-lg md:text-2xl font-bold ${isDark ? "text-white" : "text-blue-300"} `}
+          >
+            LENS
+          </p>
         </div>
-        <div className={`hidden md:flex gap-6 lg:gap-10 py-1 px-4 rounded-full text-sm text-gray-400 ${isDark ? "bg-white/10 border-white/20" : "bg-gray-300"}`}>
+        <div
+          className={`hidden md:flex gap-6 lg:gap-10 py-1 px-4 rounded-full text-sm text-gray-400 ${isDark ? "bg-white/10 border-white/20" : "bg-gray-300"}`}
+        >
           <Link
             to={"/learning"}
-            className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}  
+            className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
           >
             Learning
           </Link>
@@ -62,7 +71,18 @@ function Navbar() {
         </div>
 
         <div className="flex gap-5 items-center">
-          <ToggleTheme />
+          {user ? (
+            <div>
+              <div
+                className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
+                onClick={() => navigate("/dashboard")}
+              >
+                {user.userName?.charAt(0).toUpperCase()}
+              </div>
+            </div>
+          ) : (
+            <Button title="Login" onClick={() => navigate("/login")} className={``} />
+          )}
         </div>
       </nav>
     </header>
