@@ -17,8 +17,8 @@ router.route("/refresh-token").post(refreshAccessToken);
 
 router.route("/current-user").get(verifyJWT , getCurrentUser);
 
-router.route("/changeCurrentPassword").put(changeCurrentPassword);
+router.route("/change-password").put(verifyJWT , changeCurrentPassword);
 
-router.route("/updateDetails").put(updateAccountDetails);
+router.route("/update-details").put(verifyJWT , updateAccountDetails);
 
 export default router
