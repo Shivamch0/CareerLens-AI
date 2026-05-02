@@ -25,9 +25,11 @@ function Login() {
         const res = await loginUser(values);
         console.log(res);
 
-        if (res?.success) {
-          navigate("/onboarding");
-        }
+       if(res.data.user.onboardingCompleted){
+        navigate("/dashboard")
+       }else{
+        navigate("/onboarding")
+       }
       } catch (error) {
         console.error(error.response?.data?.message || error.message);
       }
