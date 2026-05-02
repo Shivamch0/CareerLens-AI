@@ -10,4 +10,13 @@ const loginUser = async (data) => {
     return res.data;
 }
 
+const logoutUser = async (data) => {
+    const res = await api.post("/users/logout" , data)
+    return res.data
+}
+
+const refreshToken = async () => {
+    const res = await api.post("/users/refresh-token" , )
+}
+
 export {registerUser , loginUser}
