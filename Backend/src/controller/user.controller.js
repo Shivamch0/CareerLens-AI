@@ -89,11 +89,13 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if(existingToken){
     try {
-      const decoded = jwt.verify(existingToken , process.env.ACCESS_TOKEN_SECRET);
+      jwt.verify(existingToken , process.env.ACCESS_TOKEN_SECRET);
 
-      if(decoded){
-        throw new ApiError(400 , "User already logged in ")
-      }
+      return res.status(200)
+                .json({
+                  success : false,
+                  message : "User Already logged in "
+                })
     } catch (error) {
       console.log(error)
     }
