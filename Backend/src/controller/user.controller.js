@@ -85,22 +85,6 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Username or email is required...");
   }
 
-  const existingToken = req.cookies?.accessToken;
-
-  if(existingToken){
-    try {
-      jwt.verify(existingToken , process.env.ACCESS_TOKEN_SECRET);
-
-      return res.status(200)
-                .json({
-                  success : false,
-                  message : "User Already logged in "
-                })
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   //find the user
   const user = await User.findOne({
     $or: [{ userName }, { email }],
@@ -147,7 +131,9 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: loggedInUser },
+        { 
+          user: loggedInUser ,
+         },
         "User Logged in Successfully...",
       ),
     );

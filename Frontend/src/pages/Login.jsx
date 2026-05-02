@@ -22,18 +22,14 @@ function Login() {
     },
     onSubmit: async (values) => {
       try {
-        const user = await currentUser();
+        const res = await loginUser(values);
+        console.log(res);
 
-        if (user?.sucess) {
-          alert("User already Logged In...");
-          navigate("/dashboard");
-          return;
+        if (res?.success) {
+          navigate("/onboarding");
         }
-        await loginUser();
-        navigate("/onboarding");
       } catch (error) {
-        await loginUser(values);
-        navigate("/onboarding");
+        console.error(error.response?.data?.message || error.message);
       }
     },
   });
