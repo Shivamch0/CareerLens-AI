@@ -1,7 +1,12 @@
 // Hooks Imports
+import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+
+import { logout } from "../../Redux State/Slice/authSlice";
+import { logoutUser } from "../../api/auth.api.js"
 
 // Components Imports
 import Button from "../Button/Button";
@@ -10,13 +15,29 @@ import Button from "../Button/Button";
 import logo from "../../assets/Logo.png";
 
 function Navbar() {
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef();
+  const dispatch = useDispatch()
+
   const navigate = useNavigate();
   const { theme, toggleTheme, isDark } = useTheme();
+
   const user = useSelector((state) => state.auth.user);
 
   const handleNavigate = () => {
     navigate("/");
   };
+
+  const handleLogout = async () =>{
+    try {
+      await logoutUser();
+      dispatch(logout())
+      setOpen(false)
+      navigate("/login")
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
   return (
     <header className=" p-2">
@@ -72,16 +93,81 @@ function Navbar() {
 
         <div className="flex gap-5 items-center">
           {user ? (
-            <div>
+            <div className="relative" ref={menuRef}>
               <div
                 className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => setOpen(!open)}
               >
                 {user.userName?.charAt(0).toUpperCase()}
               </div>
+
+              {open && (
+                <div className="absolute right-0 mt-2 w-48 bg-gray-400 text-white font-semibold shadow-lg rounded-lg py-2 z-50">
+                  <div
+                    onClick={() => navigate("/profile")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Profile
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/dashboard")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Dashboard
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/settings")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Settings
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/skills")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Skills
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/resume")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Resume
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/interview")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Interview
+                  </div>
+
+                  <div
+                    onClick={() => navigate("/help")}
+                    className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Help
+                  </div>
+
+                  {/* 🔥 Logout */}
+                  <div
+                    onClick={handleLogout}
+                    className="px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Logout
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
-            <Button title="Login" onClick={() => navigate("/login")} className={``} />
+            <Button
+              title="Login"
+              onClick={() => navigate("/login")}
+              className={``}
+            />
           )}
         </div>
       </nav>
