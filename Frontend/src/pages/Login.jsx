@@ -26,15 +26,11 @@ function Login() {
     onSubmit: async (values) => {
       try {
         const res = await loginUser(values);
-        console.log(res.data);
+        const user = res.data.data.user; 
         
-        dispatch(setUser(res.data.user));
+        dispatch(setUser(user));
 
-       if(res.data.user.onboardingCompleted){
-        navigate("/dashboard")
-       }else{
-        navigate("/onboarding")
-       }
+      navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding")
       } catch (error) {
         console.error(error.response?.data?.message || error.message);
       }
