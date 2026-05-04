@@ -27,7 +27,7 @@ const saveJourney = asyncHandler (async (req , res) => {
 });
 
 const saveInterests = asyncHandler ( async (req , res) => {
-    const { interests , otherInterests } = req.body;
+    let { interests , otherInterests } = req.body;
     if(!Array.isArray(interests)){
         interests = []
     }

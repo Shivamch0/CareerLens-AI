@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
+import { saveInterests } from "../../api/onboarding.api.js";
 
 // Components Imports
 import DashboardButton from "../../components/Button/DashboardButton";
@@ -22,8 +23,15 @@ const Interests = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate("/onboarding-final");
+  const handleNavigate = async () => {
+    try {
+      await saveInterests({
+        interests : selected , otherInterests : otherInterest
+      })
+      navigate("/onboarding-final");
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+    }
   };
 
   const toggleOption = (id) => {
