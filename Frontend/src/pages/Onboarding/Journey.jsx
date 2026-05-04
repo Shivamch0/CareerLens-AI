@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom";
+import { saveJourney } from "../../api/onboarding.api.js"
 
 // Components Imoports
 import DashboardButton from "../../components/Button/DashboardButton";
@@ -16,8 +17,14 @@ const Journey = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate("/onboarding-interests");
+  const handleNavigate = async () => {
+    
+    try {
+      await saveJourney({ careerStage : selected});
+      navigate("/onboarding-interests");
+    } catch (error) {
+      console.error(error.response?.data?.message || error.message);
+    }
   };
 
   const handleClick = (id) => {
