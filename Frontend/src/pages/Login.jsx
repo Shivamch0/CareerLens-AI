@@ -26,7 +26,7 @@ function Login() {
     onSubmit: async (values) => {
       try {
         const res = await loginUser(values);
-        const user = res.data.data.user; 
+        const user = res.data.user; 
         
         dispatch(setUser(user));
 
