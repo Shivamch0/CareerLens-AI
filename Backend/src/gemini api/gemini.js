@@ -6,8 +6,13 @@ const model = genAi.getGenerativeModel({
     model : "gemini-1.5-flash"
 });
 
-export const generateResponse = async (promt) => {
-    const result = await model.generateContent(prompt)
-    const response = await result.response;
-    return response.text();
+export const generateResponse = async (prompt) => {
+   try {
+     const result = await model.generateContent(prompt)
+     const response = await result.response;
+     return response.text();
+   } catch (error) {
+    console.log(`AI Error ${error}`)
+    throw error;
+   }
 }
