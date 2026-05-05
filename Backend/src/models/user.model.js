@@ -58,7 +58,11 @@ const userSchema = new mongoose.Schema(
       ]
     },
     interestTest : {
-
+      scores : {
+        type : Map,
+        of : Number
+      },
+      domainantInterest : String
     },
     refreshToken: {
       type: String,
