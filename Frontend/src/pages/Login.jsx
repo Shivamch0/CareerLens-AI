@@ -51,7 +51,7 @@ function Login() {
           <LinkComponent
             route="/login"
             content="Log in"
-            className={`${isDark ? " text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : "bg-blue-500 hover:bg-blue-700"}`}
+            className={`${isDark ? " text-white bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90" : " text-white bg-blue-500 hover:bg-blue-700"}`}
           />
           <LinkComponent route="/signup" content="Sign up" />
         </div>
@@ -87,7 +87,7 @@ function Login() {
           <Button
             type="submit"
             title="Submit"
-            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90 py-3 text-white" : "bg-blue-500 py-3 hover:bg-blue-700"}`}
+            className={`${isDark ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:brightness-90 py-3 text-white" : "text-white bg-blue-500 py-3 hover:bg-blue-700"}`}
           />
         </form>
 

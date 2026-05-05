@@ -46,6 +46,20 @@ const userSchema = new mongoose.Schema(
       type : Boolean,
       default : false
     },
+    aptitudeTest : {
+      score : Number,
+      totalQuestions : Number,
+      answers : [
+        {
+          questionId : String,
+          selectedOptions : String,
+          isCorrect : Boolean
+        }
+      ]
+    },
+    interestTest : {
+
+    },
     refreshToken: {
       type: String,
     },

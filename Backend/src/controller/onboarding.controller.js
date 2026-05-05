@@ -66,6 +66,7 @@ const saveSkills = asyncHandler( async (req , res) => {
             .json(new ApiResponse(200 , user , "Skills saved successfully..."))
 })
 
+// After all the tests completed
 const completeOnboarding = asyncHandler ( async ( req , res) => {
     const user = await User.findByIdAndUpdate(
         req.user._id,
