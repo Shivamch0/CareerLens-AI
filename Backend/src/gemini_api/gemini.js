@@ -1,7 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ApiError } from "../utils/ApiError.js";
 
-if(process.env.GEMINI_API_KEY){
+if(!process.env.GEMINI_API_KEY){
     throw new ApiError(400 , "Gemini API is not defined")
 }
 
@@ -22,7 +22,7 @@ export const generateResponse = async (prompt) => {
 
      return text;
    } catch (error) {
-    console.log("AI Error" , error.message || error)
+    console.log("AI Error: " , error.message || error)
     throw error;
    }
 }
