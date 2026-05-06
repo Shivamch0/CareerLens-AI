@@ -53,7 +53,7 @@ Return ONLY JSON array (no explanation):
 ]
 `;
 
-const careerRecommendationPrompt = `
+const careerRecommendationPrompt = (careerStage , education , interests , interestTest , aptitudeTest) => `
 You are an intelligent AI career counselor.
 
 Analyze the user profile carefully and recommend the BEST career paths or education paths.

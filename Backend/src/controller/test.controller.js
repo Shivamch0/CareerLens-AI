@@ -1,6 +1,6 @@
 import { generateResponse } from "../gemini_api/gemini.js";
 import { parseAIResponse } from "../gemini_api/parser.js";
-import { interestPrompt, aptitudePrompt } from "../gemini_api/prompt.js";
+import { interestPrompt, aptitudePrompt , careerRecommendationPrompt } from "../gemini_api/prompt.js";
 import { User } from "../models/user.model.js";
 
 // Utils Imports
@@ -141,4 +141,38 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Interest test submitted successfully"));
 });
 
-export { generateAptitudeQuestions, generateInterestQuestions , submitAptitudeTest , submitInterestTest };
+const getCareerRecommendations = asyncHandler(async (req , res) => {
+  const user = await User.findById(req.user._id).select(
+    "-password -refreshToken"
+  );
+
+  if(!user){
+    throw new ApiError(400 , "User not found...")
+  }
+
+  if(!user.interestTest){
+    throw new ApiError(400 , "Interest test not completed...")
+  }
+
+  if(!user.aptitudeTest){
+    throw new ApiError(400 , "Aptitude test not completed...")
+  }
+
+  const { interests , careerStage , education , interestTest , aptitudeTest} = user;
+
+  const prompt = careerRecommendationPrompt(careerStage , education , interests , interestTest , aptitudeTest);
+
+  const aiText = await generateResponse(prompt);
+  let recommendations;
+  try {
+    recommendations = parseAIResponse(aiText);
+  } catch (error) {
+     throw new ApiError(500, "Failed to parse AI recommendations...");
+  } 
+
+  return res.status(200)
+          .json(new ApiResponse(200 , recommendations , "Career Recommendations generate successfully..."))
+
+});
+
+export { generateAptitudeQuestions, generateInterestQuestions , submitAptitudeTest , submitInterestTest , getCareerRecommendations };
