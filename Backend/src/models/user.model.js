@@ -62,7 +62,7 @@ const userSchema = new mongoose.Schema(
         type : Map,
         of : Number
       },
-      domainantInterest : String
+      dominantInterest : String
     },
     refreshToken: {
       type: String,
