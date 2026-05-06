@@ -24,9 +24,10 @@ app.use(cookieParser()); // Can access user Cookies and send Cookies to user bro
 // routes Imports
 import userRoute from "./routes/user.route.js"
 import onboardingRoute from './routes/onboarding.route.js'
+import testRoute from './routes/test.routes.js'
 
-app.use('/api/v1/users' , userRoute)
-app.use('/api/v1/onboarding' , onboardingRoute)
-console.log("CORS ORIGIN:", process.env.CORS_ORIGIN);
+app.use('/api/v1/users' , userRoute);
+app.use('/api/v1/onboarding' , onboardingRoute);
+app.use('/api/v1/test' , testRoute)
 
 export { app };
