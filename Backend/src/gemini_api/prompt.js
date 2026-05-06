@@ -53,14 +53,21 @@ Return ONLY JSON array (no explanation):
 ]
 `;
 
-const careerRecommendationPrompt = (careerStage , education , interests , interestTest , aptitudeTest) => `
-You are an intelligent AI career counselor.
+const careerRecommendationPrompt = (
+  careerStage,
+  education,
+  interests,
+  interestTest,
+  aptitudeTest,
+) => `
+You are an intelligent AI career counselor and education advisor.
 
-Analyze the user profile carefully and recommend the BEST career paths or education paths.
+Analyze the complete user profile carefully and recommend the MOST suitable career or education paths.
 
 USER PROFILE:
 
-Career Stage: ${careerStage}
+Career Stage:
+${careerStage}
 
 Education:
 - Degree: ${education?.degree || "Not Provided"}
@@ -69,7 +76,6 @@ Education:
 
 Selected Interests:
 ${interests?.join(", ") || "None"}
-
 
 Interest Test Result:
 - Dominant Interest: ${interestTest?.dominantInterest || "None"}
@@ -81,57 +87,80 @@ Aptitude Test:
 - Score: ${aptitudeTest?.score || 0}
 - Total Questions: ${aptitudeTest?.totalQuestions || 0}
 
-IMPORTANT RULES:
+IMPORTANT ANALYSIS RULES:
 
 1. If user is in "school":
-   - prioritize streams, subjects, colleges, entrance exams, and future paths
-   - THEN suggest careers
+   - prioritize streams, subjects, entrance exams, colleges, and future education paths
+   - THEN suggest suitable careers
 
 2. If user is in "bachelors":
-   - prioritize internships, skills, certifications, higher studies, and careers
+   - prioritize internships, certifications, higher studies, and career opportunities
 
 3. If user is in "masters":
-   - prioritize specialization, research, advanced careers
+   - prioritize specialization, advanced careers, and research opportunities
 
 4. If user is "graduate":
-   - prioritize jobs, career roles, industry paths
+   - prioritize jobs, industry roles, and career growth opportunities
 
 5. If user is "switcher":
-   - prioritize transition roadmap and transferable careers
+   - prioritize career transition paths and transferable opportunities
 
 6. Consider ALL interests dynamically.
 Even custom interests like:
 - animation
-- music
-- sports
 - gaming
 - filmmaking
+- sports
+- music
+- design
+- content creation
 etc.
 
-7. Recommendations must be personalized based on:
+7. Recommendations must be personalized using:
 - interests
-- aptitude
+- aptitude performance
 - education
-- skills
 - career stage
 
-Return ONLY valid JSON array.
+8. Recommend ONLY the TOP 3 to 5 most suitable options.
 
-FORMAT:
+9. suitabilityPercentage must be realistic and different for every recommendation.
+
+10. Higher aptitude score and stronger interest alignment should increase suitabilityPercentage.
+
+11. Keep recommendations realistic and achievable.
+
+12. DO NOT include markdown, explanations, or extra text outside JSON.
+
+RETURN FORMAT:
 
 [
   {
-    "title": "Software Developer",
+    "title": "AI Engineer",
     "type": "career",
-    "reason": "Strong technology interest and good aptitude in logical reasoning.",
+    "suitabilityPercentage": 87,
+    "reason": "Your strong technology interest and analytical aptitude indicate high potential for AI-related careers.",
     "roadmap": [
-      "Learn JavaScript",
-      "Build projects",
+      "Learn Python",
+      "Study Machine Learning",
+      "Build AI projects",
       "Apply for internships"
+    ]
+  },
+  {
+    "title": "B.Tech in Computer Science",
+    "type": "education",
+    "suitabilityPercentage": 82,
+    "reason": "Your strong logical aptitude and technology-oriented interests make Computer Science a suitable education path.",
+    "roadmap": [
+      "Prepare for entrance exams",
+      "Improve mathematics fundamentals",
+      "Explore programming basics"
     ]
   }
 ]
 
+Return ONLY raw valid JSON array.
 `;
 
-export { interestPrompt , aptitudePrompt , careerRecommendationPrompt}
+export { interestPrompt, aptitudePrompt, careerRecommendationPrompt };
