@@ -2,7 +2,7 @@ const interestPrompt = (interests) => `
 Generate multiple-choice questions based on these interests: ${interests.join(", ")}.
 
 Rules:
-- For EACH interest, generate EXACTLY 3 questions.
+- For EACH interest, generate EXACTLY 3 questions and (do not include the other keyword in interests as Interests).
 - Total questions = 3 × number of interests.
 - Each question must belong to its respective interest category.
 - Difficulty: beginner to intermediate.
