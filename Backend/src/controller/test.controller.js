@@ -1,6 +1,6 @@
-import { generateResponse } from "../gemini_api/gemini.js";
-import { parseAIResponse } from "../gemini_api/parser.js";
-import { interestPrompt, aptitudePrompt , careerRecommendationPrompt } from "../gemini_api/prompt.js";
+import { generateResponse } from "../Ai_api/ai.js";
+import { parseAIResponse } from "../Ai_api/parser.js";
+import { interestPrompt, aptitudePrompt , careerRecommendationPrompt } from "../Ai_api/prompt.js";
 import { User } from "../models/user.model.js";
 
 // Utils Imports
