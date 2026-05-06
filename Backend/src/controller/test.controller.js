@@ -141,4 +141,4 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Interest test submitted successfully"));
 });
 
-export { generateAptitudeQuestions, generateInterestQuestions };
+export { generateAptitudeQuestions, generateInterestQuestions , submitAptitudeTest , submitInterestTest };
