@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { ApiError } from "../utils/ApiError.js";
+import dotenv from "dotenv"
+dotenv.config()
 
 if(!process.env.GEMINI_API_KEY){
     throw new ApiError(400 , "Gemini API is not defined")
