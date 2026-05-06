@@ -53,4 +53,85 @@ Return ONLY JSON array (no explanation):
 ]
 `;
 
-export { interestPrompt , aptitudePrompt}
+const careerRecommendationPrompt = `
+You are an intelligent AI career counselor.
+
+Analyze the user profile carefully and recommend the BEST career paths or education paths.
+
+USER PROFILE:
+
+Career Stage: ${careerStage}
+
+Education:
+- Degree: ${education?.degree || "Not Provided"}
+- Branch: ${education?.branch || "Not Provided"}
+- Marks: ${education?.marks || "Not Provided"}
+
+Selected Interests:
+${interests?.join(", ") || "None"}
+
+
+Interest Test Result:
+- Dominant Interest: ${interestTest?.dominantInterest || "None"}
+
+Interest Scores:
+${JSON.stringify(Object.fromEntries(interestTest?.scores || []), null, 2)}
+
+Aptitude Test:
+- Score: ${aptitudeTest?.score || 0}
+- Total Questions: ${aptitudeTest?.totalQuestions || 0}
+
+IMPORTANT RULES:
+
+1. If user is in "school":
+   - prioritize streams, subjects, colleges, entrance exams, and future paths
+   - THEN suggest careers
+
+2. If user is in "bachelors":
+   - prioritize internships, skills, certifications, higher studies, and careers
+
+3. If user is in "masters":
+   - prioritize specialization, research, advanced careers
+
+4. If user is "graduate":
+   - prioritize jobs, career roles, industry paths
+
+5. If user is "switcher":
+   - prioritize transition roadmap and transferable careers
+
+6. Consider ALL interests dynamically.
+Even custom interests like:
+- animation
+- music
+- sports
+- gaming
+- filmmaking
+etc.
+
+7. Recommendations must be personalized based on:
+- interests
+- aptitude
+- education
+- skills
+- career stage
+
+Return ONLY valid JSON array.
+
+FORMAT:
+
+[
+  {
+    "title": "Software Developer",
+    "type": "career",
+    "reason": "Strong technology interest and good aptitude in logical reasoning.",
+    "roadmap": [
+      "Learn JavaScript",
+      "Build projects",
+      "Apply for internships"
+    ]
+  }
+]
+
+`;
+
+export { interestPrompt , aptitudePrompt , careerRecommendationPrompt}
