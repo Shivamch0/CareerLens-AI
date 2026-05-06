@@ -1,6 +1,10 @@
 import { generateResponse } from "../Ai_api/ai.js";
 import { parseAIResponse } from "../Ai_api/parser.js";
-import { interestPrompt, aptitudePrompt , careerRecommendationPrompt } from "../Ai_api/prompt.js";
+import {
+  interestPrompt,
+  aptitudePrompt,
+  careerRecommendationPrompt,
+} from "../Ai_api/prompt.js";
 import { User } from "../models/user.model.js";
 
 // Utils Imports
@@ -18,6 +22,11 @@ const generateInterestQuestions = asyncHandler(async (req, res) => {
   const prompt = interestPrompt(interests);
 
   const aiText = await generateResponse(prompt);
+
+  if (!aiText || aiText.startsWith("Failed")) {
+    throw new ApiError(500, "AI generation failed...");
+  }
+
   let questions;
   try {
     questions = parseAIResponse(aiText);
@@ -40,6 +49,11 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
   const prompt = aptitudePrompt(careerStage);
 
   const aiText = await generateResponse(prompt);
+
+  if (!aiText || aiText.startsWith("Failed")) {
+    throw new ApiError(500, "AI generation failed...");
+  }
+
   let questions;
   try {
     questions = parseAIResponse(aiText);
@@ -110,7 +124,7 @@ const submitInterestTest = asyncHandler(async (req, res) => {
       scores[category] = 0;
     }
 
-    scores[category] += 1;
+    scores[category] += ans.weight || 1;
   });
 
   const keys = Object.keys(scores);
@@ -141,38 +155,62 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, user, "Interest test submitted successfully"));
 });
 
-const getCareerRecommendations = asyncHandler(async (req , res) => {
+const getCareerRecommendations = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id).select(
-    "-password -refreshToken"
+    "-password -refreshToken",
   );
 
-  if(!user){
-    throw new ApiError(400 , "User not found...")
+  if (!user) {
+    throw new ApiError(400, "User not found...");
   }
 
-  if(!user.interestTest){
-    throw new ApiError(400 , "Interest test not completed...")
+  if (!user.interestTest) {
+    throw new ApiError(400, "Interest test not completed...");
   }
 
-  if(!user.aptitudeTest){
-    throw new ApiError(400 , "Aptitude test not completed...")
+  if (!user.aptitudeTest) {
+    throw new ApiError(400, "Aptitude test not completed...");
   }
 
-  const { interests , careerStage , education , interestTest , aptitudeTest} = user;
+  const { interests, careerStage, education, interestTest, aptitudeTest } =
+    user;
 
-  const prompt = careerRecommendationPrompt(careerStage , education , interests , interestTest , aptitudeTest);
+  const prompt = careerRecommendationPrompt(
+    careerStage,
+    education,
+    interests,
+    interestTest,
+    aptitudeTest,
+  );
 
   const aiText = await generateResponse(prompt);
+
+  if (!aiText || aiText.startsWith("Failed")) {
+    throw new ApiError(500, "AI generation failed...");
+  }
+
   let recommendations;
   try {
     recommendations = parseAIResponse(aiText);
   } catch (error) {
-     throw new ApiError(500, "Failed to parse AI recommendations...");
-  } 
+    throw new ApiError(500, "Failed to parse AI recommendations...");
+  }
 
-  return res.status(200)
-          .json(new ApiResponse(200 , recommendations , "Career Recommendations generate successfully..."))
-
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        recommendations,
+        "Career Recommendations generate successfully...",
+      ),
+    );
 });
 
-export { generateAptitudeQuestions, generateInterestQuestions , submitAptitudeTest , submitInterestTest , getCareerRecommendations };
+export {
+  generateAptitudeQuestions,
+  generateInterestQuestions,
+  submitAptitudeTest,
+  submitInterestTest,
+  getCareerRecommendations,
+};

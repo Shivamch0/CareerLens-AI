@@ -81,7 +81,7 @@ Interest Test Result:
 - Dominant Interest: ${interestTest?.dominantInterest || "None"}
 
 Interest Scores:
-${JSON.stringify(Object.fromEntries(interestTest?.scores || []), null, 2)}
+${JSON.stringify(interestTest?.scores || {}, null, 2)}
 
 Aptitude Test:
 - Score: ${aptitudeTest?.score || 0}

@@ -1,7 +1,7 @@
-import OpenAI from "openai";
 import { ApiError } from "../utils/ApiError.js";
 import dotenv from "dotenv";
 dotenv.config();
+import OpenAI from "openai";
 
 const client = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
@@ -10,8 +10,9 @@ const client = new OpenAI({
 
 export const generateResponse = async (prompt) => {
   try {
+
     const completion = await client.chat.completions.create({
-      model: "deepseek/deepseek-chat-v3-0324:free",
+      model: "openrouter/free",
 
       messages: [
         {
@@ -20,14 +21,16 @@ export const generateResponse = async (prompt) => {
         },
       ],
 
-      temperature: 0.7,
-      max_tokens: 1000,
+      temperature: 0.5,
+      max_tokens: 800,
     });
 
-    return completion.choices[0].message.content;
-  } catch (error) {
-    console.log("OpenRouter Error:", error);
+    return completion?.choices?.[0]?.message?.content || null;
 
-    return "Failed to generate AI response";
+  } catch (error) {
+
+    console.error("OpenRouter Error:", error);
+
+    return null;
   }
 };
