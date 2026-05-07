@@ -23,7 +23,7 @@ function SignUp() {
     onSubmit: (values) => {
       try {
         const res = registerUser(values);
-        toast.success(res.message)
+        toast.success(res.message || "User Registered")
         setTimeout(() => {
           navigate("/login")
         } , 1000)

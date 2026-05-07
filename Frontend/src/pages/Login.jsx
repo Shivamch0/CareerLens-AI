@@ -31,7 +31,7 @@ function Login() {
 
         dispatch(setUser(user));
 
-        toast.success(res.message);
+        toast.success(res.message || "User Logged In ");
 
         setTimeout(() => {
           navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding");
