@@ -52,7 +52,8 @@ const userSchema = new mongoose.Schema(
       answers : [
         {
           questionId : String,
-          selectedOptions : String,
+          selectedOptionsIndex : Number,
+          correctAnswerIndex : Number,
           isCorrect : Boolean
         }
       ]

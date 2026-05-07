@@ -67,22 +67,52 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
 });
 
 const submitAptitudeTest = asyncHandler(async (req, res) => {
-  const { answers } = req.body;
+
+  const { answers, questions: storedQuestions } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
     throw new ApiError(400, "Answers are required...");
   }
 
+  if (
+    !storedQuestions ||
+    !Array.isArray(storedQuestions)
+  ) {
+    throw new ApiError(
+      400,
+      "Stored questions are required..."
+    );
+  }
+
   let score = 0;
 
   const evaluatedAnswers = answers.map((ans) => {
-    const isCorrect = ans.selectedOption === ans.correctAnswer;
 
-    if (isCorrect) score++;
+    const originalQuestion = storedQuestions.find(
+      (q) => q.id === ans.questionId
+    );
+
+    if (!originalQuestion) {
+      throw new ApiError(400, "Question not found");
+    }
+
+    const isCorrect =
+      ans.selectedOptionIndex ===
+      originalQuestion.correctAnswerIndex;
+
+    if (isCorrect) {
+      score++;
+    }
 
     return {
       questionId: ans.questionId,
-      selectedOptions: ans.selectedOption,
+
+      selectedOptionIndex:
+        ans.selectedOptionIndex,
+
+      correctAnswerIndex:
+        originalQuestion.correctAnswerIndex,
+
       isCorrect,
     };
   });
@@ -93,19 +123,27 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
       $set: {
         aptitudeTest: {
           score,
-          totalQuestions: answers.length,
+          totalQuestions: storedQuestions.length,
           answers: evaluatedAnswers,
         },
       },
     },
-    { new: true },
+    { new: true }
   ).select("-password");
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, user, "Aptitude test submitted successfully..."),
-    );
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        score,
+        totalQuestions: storedQuestions.length,
+        percentage: Math.round(
+          (score / storedQuestions.length) * 100
+        ),
+      },
+      "Aptitude test submitted successfully"
+    )
+  );
 });
 
 const submitInterestTest = asyncHandler(async (req, res) => {

@@ -20,7 +20,7 @@ Return ONLY valid JSON array (no explanation, no text):
   {
     "question": "string",
     "options": ["A", "B", "C", "D"],
-    "correctAnswer": "A",
+    "correctAnswerIndex": 0,
     "category": "technology"
   }
 ]
@@ -48,7 +48,7 @@ Return ONLY JSON array (no explanation):
   {
     "question": "string",
     "options": ["A", "B", "C", "D"],
-    "correctAnswer": "A"
+    "correctAnswerIndex": 0
   }
 ]
 `;
