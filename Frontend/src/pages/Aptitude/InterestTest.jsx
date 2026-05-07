@@ -21,6 +21,7 @@ const InterestTest = () => {
     const fetchQuestions = async () => {
       try {
         const response = await interestQuestions();
+        console.log(response)
         const data = response.data
 
         setQuestions(data);
@@ -33,6 +34,8 @@ const InterestTest = () => {
         setLoading(false)
       }
     }
+
+    fetchQuestions();
   } , [])
 
   return (
