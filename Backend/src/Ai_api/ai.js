@@ -1,35 +1,34 @@
-import { ApiError } from "../utils/ApiError.js";
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
-import OpenAI from "openai";
 
-const client = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ApiError } from "../utils/ApiError.js"
+
+const geminiApi = process.env.GEMINI_API_KEY;
+if(!geminiApi){
+  throw new ApiError(400 , "Api key is not provided...")
+}
+
+const genAI = new GoogleGenerativeAI(geminiApi);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.5-flash",
 });
 
 export const generateResponse = async (prompt) => {
   try {
 
-    const completion = await client.chat.completions.create({
-      model: "openrouter/free",
+    const result = await model.generateContent(prompt);
 
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
+    const response = await result.response;
 
-      temperature: 0.5,
-      max_tokens: 800,
-    });
+    const text = response.text();
 
-    return completion?.choices?.[0]?.message?.content || null;
+    return text;
 
   } catch (error) {
 
-    console.error("OpenRouter Error:", error);
+    console.error("Gemini Error:", error);
 
     return null;
   }
