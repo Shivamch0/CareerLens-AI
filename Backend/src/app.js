@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import errorMiddleware from "./middleware/error.middleware.js";
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -29,5 +30,7 @@ import testRoute from './routes/test.routes.js'
 app.use('/api/v1/users' , userRoute);
 app.use('/api/v1/onboarding' , onboardingRoute);
 app.use('/api/v1/test' , testRoute)
+
+app.use(errorMiddleware)
 
 export { app };

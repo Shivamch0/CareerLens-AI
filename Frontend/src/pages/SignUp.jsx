@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { useTheme } from "../Provider/ThemeProvider";
 import { registerUser } from "../api/auth.api.js";
 import { useNavigate } from "react-router-dom";
+import toast , { Toaster } from 'react-hot-toast';
 
 // Components Imports
 import LinkComponent from "../components/Button/LinkComponent";
@@ -21,6 +22,7 @@ function SignUp() {
     },
     onSubmit: (values) => {
       registerUser(values);
+      
       navigate("/login")
     },
   });
@@ -28,6 +30,7 @@ function SignUp() {
     <div>
 
       <div className="text-center mt-5">
+        <Toaster />
        <h2 className={`font-bold text-4xl ${isDark ? "text-white" : "text-blue-800"} `}>
           Welcome to CareerLens
         </h2>

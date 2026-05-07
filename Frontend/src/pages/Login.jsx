@@ -37,7 +37,7 @@ function Login() {
           navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding");
         }, 1000);
       } catch (error) {
-        console.error(error.response?.data?.message || error.message);
+        toast.error(error.response?.data?.message || error.message);
       }
     },
   });
