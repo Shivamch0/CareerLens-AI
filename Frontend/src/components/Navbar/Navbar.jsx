@@ -46,8 +46,8 @@ function Navbar() {
 
   return (
     <>
-      <Toaster />
       <header className=" p-2">
+        <Toaster />
         <nav className="flex items-center justify-between">
           <div
             className="flex items-center cursor-pointer"
