@@ -22,7 +22,7 @@ function SignUp() {
     },
     onSubmit: (values) => {
       registerUser(values);
-      
+      // toast.success("User Logout Success")
       navigate("/login")
     },
   });
