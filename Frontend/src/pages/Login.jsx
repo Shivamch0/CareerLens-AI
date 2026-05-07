@@ -5,6 +5,7 @@ import { useTheme } from "../Provider/ThemeProvider";
 import { loginUser, currentUser } from "../api/auth.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Redux State/Slice/authSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 // Components Imports
 import LinkComponent from "../components/Button/LinkComponent";
@@ -16,7 +17,7 @@ import lightBgImage from "../assets/Light_image.png";
 function Login() {
   const { isDark } = useTheme();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const { values, handleSubmit, handleChange } = useFormik({
     initialValues: {
@@ -26,11 +27,15 @@ function Login() {
     onSubmit: async (values) => {
       try {
         const res = await loginUser(values);
-        const user = res.data.user; 
-        
+        const user = res.data.user;
+
         dispatch(setUser(user));
 
-      navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding")
+        toast.success("User Logged In Successfully...");
+
+        setTimeout(() => {
+          navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding");
+        }, 1000);
       } catch (error) {
         console.error(error.response?.data?.message || error.message);
       }
@@ -40,6 +45,7 @@ function Login() {
   return (
     <div>
       <div className="text-center mt-5">
+        <Toaster />
         <h2
           className={`font-bold text-4xl ${isDark ? "text-white" : "text-blue-800"} `}
         >
