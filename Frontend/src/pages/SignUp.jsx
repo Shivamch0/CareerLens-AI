@@ -21,9 +21,15 @@ function SignUp() {
       password : ""
     },
     onSubmit: (values) => {
-      registerUser(values);
-      // toast.success("User Logout Success")
-      navigate("/login")
+      try {
+        const res = registerUser(values);
+        toast.success(res.message)
+        setTimeout(() => {
+          navigate("/login")
+        } , 1000)
+      } catch (error) {
+        toast(error.response?.data?.message || error.message)
+      }
     },
   });
   return (
