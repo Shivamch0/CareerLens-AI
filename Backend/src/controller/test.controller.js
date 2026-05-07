@@ -30,6 +30,10 @@ const generateInterestQuestions = asyncHandler(async (req, res) => {
   let questions;
   try {
     questions = parseAIResponse(aiText);
+    questions = questions.map((q, index) => ({
+      id: index + 1,
+      ...q
+    }));
   } catch (err) {
     throw new ApiError(500, "Failed to parse AI response");
   }
@@ -57,6 +61,10 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
   let questions;
   try {
     questions = parseAIResponse(aiText);
+    questions = questions.map((q, index) => ({
+      id: index + 1,
+      ...q
+    }));
   } catch (err) {
     throw new ApiError(500, "Failed to parse AI response");
   }
