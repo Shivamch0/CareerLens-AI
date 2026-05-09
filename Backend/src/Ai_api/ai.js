@@ -12,7 +12,7 @@ if(!geminiApi){
 const genAI = new GoogleGenerativeAI(geminiApi);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-pro-latest",
+  model: "gemini-1.5-flash-latest",
 });
 
 export const generateResponse = async (prompt) => {
