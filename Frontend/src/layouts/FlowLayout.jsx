@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 
 const FlowLayout = () => {
 
-   let testType = "";
-  const TEST_DURATION = testType === "aptitude" ? 3600 : testType === "interest" ? null : 300;
+  let testType = "";
+  const TEST_DURATION = testType === "Aptitude" ? 3600 : testType === "Interest" ? null : 300;
 
   const [timeLeft, setTimeLeft] = useState(() => {
     if (!testType) return null;
@@ -54,9 +54,9 @@ const FlowLayout = () => {
   const storageKey = `${testType}EndTime`;
 
   if (path.includes("aptitudetest")) {
-    testType = "aptitude";
+    testType = "Aptitude";
   } else if (path.includes("intereststest")) {
-    testType = "interest";
+    testType = "Interest";
   }
 
   return (
