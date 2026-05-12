@@ -83,14 +83,14 @@ return (
         {currentQ === questions.length - 1 ? (
           <Button
             title="Submit"
-            disabled={submitted || !answers[currentQuestion.id]}
+            disabled={submitted || answers[currentQuestion.id] === undefined}
             onClick={handleSubmit}
             className="py-2 bg-green-500 text-white font-semibold"
           />
         ) : (
           <Button
             title="Next"
-            disabled={submitted || !answers[currentQuestion.id]}
+            disabled={submitted || answers[currentQuestion.id] === undefined}
             onClick={() =>
               currentQ < questions.length - 1 &&
               setCurrentQ((prev) => prev + 1)
