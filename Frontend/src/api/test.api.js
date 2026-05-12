@@ -10,4 +10,19 @@ const aptitudeQuestions = async () => {
     return res.data
 }
 
-export { interestQuestions , aptitudeQuestions }
+const submitInterestTest = async (answers) => {
+    const res = await api.post("/test/interest-submit", { answers });
+    return res.data;
+}
+
+const submitAptitudeTest = async ({ answers, questions }) => {
+    const res = await api.post("/test/aptitude-submit", { answers, questions });
+    return res.data;
+}
+
+export {
+    interestQuestions,
+    aptitudeQuestions,
+    submitInterestTest,
+    submitAptitudeTest,
+}

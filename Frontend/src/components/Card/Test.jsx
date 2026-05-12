@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  submitAptitudeTest,
+  submitInterestTest,
+} from "../../api/test.api.js";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
@@ -7,37 +11,73 @@ import Button from "../Button/Button";
 
 // Others Imports
 import { FaLongArrowAltLeft } from "react-icons/fa";
-import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = ({ type, timeLeft, questions , options }) => {
+const Test = ({ type, timeLeft, questions = [] }) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const navigate = useNavigate();
 
   const tips = "Tips";
-  if (!questions || questions.length === 0) {
-  return null;
-}
+
+  const buildAnswersPayload = useCallback(() => {
+    return questions
+      .filter((question) => answers[question.id] !== undefined)
+      .map((question) => ({
+        questionId: question.id,
+        selectedOptionIndex: answers[question.id],
+        category: question.category,
+      }));
+  }, [answers, questions]);
+
+  const handleSubmit = useCallback(async () => {
+    if (submitted) return;
+
+    const answersPayload = buildAnswersPayload();
+
+    try {
+      setSubmitted(true);
+      setSubmitError("");
+
+      localStorage.setItem(`${type}Answers`, JSON.stringify(answersPayload));
+
+      if (type === "interest") {
+        await submitInterestTest(answersPayload);
+      } else if (type === "aptitude") {
+        await submitAptitudeTest({
+          answers: answersPayload,
+          questions,
+        });
+      }
+
+      navigate("../progress");
+    } catch (error) {
+      console.log(error);
+      setSubmitted(false);
+      setSubmitError(
+        error?.response?.data?.message ||
+          "Unable to submit your test. Please try again.",
+      );
+    }
+  }, [buildAnswersPayload, navigate, questions, submitted, type]);
 
   useEffect(() => {
     if (!submitted && timeLeft !== undefined && timeLeft === 0) {
-      handleSubmit();
+      const timeout = setTimeout(() => {
+        handleSubmit();
+      }, 0);
+
+      return () => clearTimeout(timeout);
     }
-  }, [timeLeft, submitted]);
+  }, [handleSubmit, timeLeft, submitted]);
 
   const currentQuestion = questions[currentQ] || {};
 
-  const handleSubmit = () => {
-
-    localStorage.setItem(
-      `${type}Answers`,
-      JSON.stringify(answers)
-    );
-
-    // navigate("/progress");
-  };
+  if (!questions || questions.length === 0) {
+    return null;
+  }
 
 
 return (
@@ -102,6 +142,11 @@ return (
           />
         )}
       </div>
+      {submitError && (
+        <p className="mt-3 px-4 text-sm font-semibold text-red-500">
+          {submitError}
+        </p>
+      )}
     </div>
   </section>
 );
