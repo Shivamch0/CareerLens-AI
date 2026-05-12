@@ -16,7 +16,10 @@ const Test = ({ type, timeLeft, questions , options }) => {
 
   const navigate = useNavigate();
 
-  const tips = "Tips"
+  const tips = "Tips";
+  if (!questions || questions.length === 0) {
+  return null;
+}
 
   useEffect(() => {
     if (!submitted && timeLeft !== undefined && timeLeft === 0) {
