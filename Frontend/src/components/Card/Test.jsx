@@ -64,12 +64,8 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   }, [buildAnswersPayload, navigate, questions, submitted, type]);
 
   useEffect(() => {
-    if (!submitted && timeLeft !== undefined && timeLeft === 0) {
-      const timeout = setTimeout(() => {
+    if (!submitted &&  timeLeft === 0) {
         handleSubmit();
-      }, 0);
-
-      return () => clearTimeout(timeout);
     }
   }, [handleSubmit, timeLeft, submitted]);
 

@@ -3,16 +3,28 @@ import FlowNavbar from "../components/Navbar/FlowNavbar";
 import { useState, useEffect } from "react";
 
 const FlowLayout = () => {
-
+  const location = useLocation();
+  const path = location.pathname;
+  
   let testType = "";
-  const TEST_DURATION = testType === "Aptitude" ? 3600 : testType === "Interest" ? null : 300;
+
+  if (path.includes("aptitudetest")) {
+    testType = "Aptitude";
+  } else if (path.includes("intereststest")) {
+    testType = "Interest";
+  }
+
+  const TEST_DURATION =
+    testType === "Aptitude" ? 1800 : testType === "Interest" ? 1800 : 300;
+
+  const storageKey = `${testType}EndTime`;
 
   const [timeLeft, setTimeLeft] = useState(() => {
     if (!testType) return null;
     const savedEnd = localStorage.getItem(storageKey);
 
     if (savedEnd) {
-      const remaining = Math.floor((savedEnd - Date.now()) / 1000);
+      const remaining = Math.floor((Number(savedEnd) - Date.now()) / 1000);
       return remaining > 0 ? remaining : 0;
     }
 
@@ -20,6 +32,8 @@ const FlowLayout = () => {
   });
 
   useEffect(() => {
+    if (!testType) return;
+
     const existing = localStorage.getItem(storageKey);
 
     if (!existing) {
@@ -28,9 +42,9 @@ const FlowLayout = () => {
     }
   }, []);
 
-  const location = useLocation();
-
   useEffect(() => {
+    if (!testType) return;
+
     const timer = setInterval(() => {
       const endTime = localStorage.getItem(storageKey);
 
@@ -48,16 +62,6 @@ const FlowLayout = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const path = location.pathname;
-
-  const storageKey = `${testType}EndTime`;
-
-  if (path.includes("aptitudetest")) {
-    testType = "Aptitude";
-  } else if (path.includes("intereststest")) {
-    testType = "Interest";
-  }
 
   return (
     <>
