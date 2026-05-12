@@ -9,7 +9,7 @@ import Button from "../Button/Button";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { FaLongArrowAltRight } from "react-icons/fa";
 
-const Test = ({ type, timeLeft, questions }) => {
+const Test = ({ type, timeLeft, questions , options }) => {
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
