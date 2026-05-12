@@ -1,20 +1,20 @@
 import { ApiError } from "../utils/ApiError.js";
 
 export const parseAIResponse = (text) => {
+
   try {
 
-    // 1. Check empty response
     if (!text || typeof text !== "string") {
       throw new ApiError(400, "Empty AI response");
     }
 
-    // 2. Remove markdown formatting
+    // Remove markdown formatting
     let cleaned = text
-      .replace(/```json/g, "")
+      .replace(/```json/gi, "")
       .replace(/```/g, "")
       .trim();
 
-    // 3. Extract JSON array safely
+    // Extract JSON array
     const jsonMatch = cleaned.match(/\[[\s\S]*\]/);
 
     if (!jsonMatch) {
@@ -23,10 +23,9 @@ export const parseAIResponse = (text) => {
 
     cleaned = jsonMatch[0];
 
-    // 4. Parse JSON
+    // Parse JSON
     const parsedData = JSON.parse(cleaned);
 
-    // 5. Validate array
     if (!Array.isArray(parsedData)) {
       throw new ApiError(400, "AI response is not an array");
     }

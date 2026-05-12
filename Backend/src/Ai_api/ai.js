@@ -1,35 +1,103 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { ApiError } from "../utils/ApiError.js"
+import Groq from "groq-sdk";
 
-const geminiApi = process.env.GEMINI_API_KEY;
-if(!geminiApi){
-  throw new ApiError(400 , "Api key is not provided...")
+const groqApi = process.env.GROK_CLOUD_API;
+
+if (!groqApi) {
+  throw new Error("GROQ_API_KEY is missing in .env");
 }
 
-const genAI = new GoogleGenerativeAI(geminiApi);
-
-const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash", 
+const groq = new Groq({
+  apiKey: groqApi,
 });
 
 export const generateResponse = async (prompt) => {
+
   try {
 
-    const result = await model.generateContent(prompt);
+    if (!prompt) {
+      throw new Error("Prompt is required");
+    }
 
-    const response = await result.response;
+    console.log("Sending request to Groq...");
 
-    const text = response.text();
+    const completion = await groq.chat.completions.create({
 
-    return text;
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a strict JSON API. Always return valid raw JSON only. Never use markdown or explanations.",
+        },
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+
+      model: "llama-3.3-70b-versatile",
+
+      temperature: 0.4,
+
+      max_tokens: 4096,
+
+      top_p: 1,
+
+      stream: false,
+    });
+
+    const text = completion?.choices?.[0]?.message?.content;
+
+    if (!text) {
+      throw new Error("Empty response received from Groq");
+    }
+
+    return {
+      success: true,
+      message: "AI response generated successfully",
+      data: text,
+    };
 
   } catch (error) {
 
-    console.error("Gemini Error:", error);
+    console.error("Groq Error:", error);
 
-    return null;
+    // RATE LIMIT
+    if (error.status === 429) {
+
+      return {
+        success: false,
+        status: 429,
+        message: "Groq rate limit exceeded. Please try again later.",
+      };
+    }
+
+    // AUTH ERROR
+    if (error.status === 401) {
+
+      return {
+        success: false,
+        status: 401,
+        message: "Invalid Groq API Key.",
+      };
+    }
+
+    // NETWORK ERROR
+    if (error.code === "ENOTFOUND") {
+
+      return {
+        success: false,
+        status: 500,
+        message: "Network error. Check your internet connection.",
+      };
+    }
+
+    return {
+      success: false,
+      status: 500,
+      message: error?.message || "Something went wrong with Groq API",
+    };
   }
 };

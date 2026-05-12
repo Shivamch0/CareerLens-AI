@@ -21,20 +21,25 @@ const generateInterestQuestions = asyncHandler(async (req, res) => {
 
   const prompt = interestPrompt(interests);
 
-  const aiText = await generateResponse(prompt);
+  const aiResponse = await generateResponse(prompt);
 
-  if (!aiText || aiText.startsWith("Failed")) {
-    throw new ApiError(500, "AI generation failed...");
+  if(!aiResponse.success){
+    throw new ApiError(
+      aiResponse.status || 500,
+      aiResponse.message || "AI generation failed..."
+    );
   }
 
   let questions;
   try {
-    questions = parseAIResponse(aiText);
+    questions = parseAIResponse(aiResponse.data);
     questions = questions.map((q, index) => ({
       id: index + 1,
       ...q
     }));
   } catch (err) {
+    console.error(err);
+
     throw new ApiError(500, "Failed to parse AI response");
   }
 

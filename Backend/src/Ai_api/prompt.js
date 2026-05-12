@@ -1,20 +1,23 @@
-const interestPrompt = (interests) => `
-Generate multiple-choice questions based on these interests: ${interests.join(", ")}.
+const interestPrompt = (interests) =>  `
+Generate multiple-choice questions based on these interests:
 
-Rules:
-- For EACH interest, generate EXACTLY 3 questions and (do not include the other keyword in interests as Interests).
+${interests.join(", ")}
+
+STRICT RULES:
+- Return ONLY raw valid JSON array.
+- DO NOT use markdown.
+- DO NOT use explanations.
+- DO NOT wrap response in code blocks.
+
+QUESTION RULES:
+- Generate EXACTLY 3 questions per interest.
 - Total questions = 3 × number of interests.
-- Each question must belong to its respective interest category.
-- Difficulty: beginner to intermediate.
+- Each question must belong only to its category.
+- Beginner to intermediate difficulty.
 - Each question must have exactly 4 options.
-- Provide correctAnswer.
-- Include "category" field (must match the interest).
+- correctAnswerIndex must be 0-3.
 
-Example:
-If interests = ["technology", "business"]
-→ total questions = 6 (3 per interest)
-
-Return ONLY valid JSON array (no explanation, no text):
+FORMAT:
 
 [
   {
