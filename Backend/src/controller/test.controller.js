@@ -139,6 +139,7 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
           totalQuestions: storedQuestions.length,
           answers: evaluatedAnswers,
         },
+        "onboarding.journeyCompleted" : true
       },
     },
     { new: true }
@@ -196,6 +197,7 @@ const submitInterestTest = asyncHandler(async (req, res) => {
           scores,
           dominantInterest,
         },
+        "onboarding.journeyCompleted" : true
       },
     },
     { new: true },
