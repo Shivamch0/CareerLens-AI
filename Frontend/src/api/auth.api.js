@@ -20,7 +20,7 @@ const refreshToken = async () => {
     return res.data;
 }
 
-const currentUser = async () => {
+const getCurrentUser = async () => {
     const res = await api.get('/users/current-user');
     return res.data;
 }
@@ -35,4 +35,4 @@ const changeDetails = async (data) => {
     return res.data
 }
 
-export {registerUser , loginUser , logoutUser , refreshToken , currentUser , changeDetails , changePassword}
+export {registerUser , loginUser , logoutUser , refreshToken , getCurrentUser , changeDetails , changePassword}

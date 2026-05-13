@@ -9,11 +9,19 @@ import AptitudeCard from "../../components/Card/AptitudeCard";
 // Other Imports
 import brain from "../../assets/brain.png";
 import greenHeart from "../../assets/greenHeart.png";
+import InterestTest from "./InterestTest";
 
 const Assessment = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user)
+
+  console.log(user)
+
+  const aptitudeCompleted = user?.onboarding?.aptitudeTestCompleted;
+  const interestCompleted = user?.onboarding?.interestTestCompleted;
+
+  console.log(aptitudeCompleted , interestCompleted)
 
   const handleAptitude = () => {
     navigate("../aptitudetest")

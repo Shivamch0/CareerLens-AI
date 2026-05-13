@@ -1,6 +1,10 @@
 // Hooks Import
 import { useTheme } from "./Provider/ThemeProvider";
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setUser } from "./Redux State/Slice/authSlice.js";
+import { getCurrentUser } from "./api/auth.api.js";
 
 // Conponents Imports
 // Layout
@@ -32,6 +36,22 @@ import Response from "./pages/Aptitude/Response";
 
 function App() {
   const { isDark } = useTheme();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const restoreUser = async () => {
+      try {
+        const res = await getCurrentUser();
+        // console.log(res.data)
+
+        dispatch(setUser(res.data));
+      } catch (error) {
+        console.log("User not logged in");
+      }
+    };
+
+    restoreUser();
+  }, []);
 
   return (
     <div
@@ -63,38 +83,36 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
         ""
       )}
 
-        <section className="px-0 sm:px-6 md:px-10">
-          {/*  PAGES */}
-          <main className="relative z-20 mt-2 sm:mt-5">
-            <Routes>
-              <Route element={<MainLayout />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+      <section className="px-0 sm:px-6 md:px-10">
+        {/*  PAGES */}
+        <main className="relative z-20 mt-2 sm:mt-5">
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/dashboard" element={<Dashboard />} />
 
-                <Route path="/onboarding" element={<Onboarding />} />
-                <Route path="/onboarding-journey" element={<Journey />} />
-                <Route path="/onboarding-interests" element={<Interests />} />
-                <Route path="/onboarding-final" element={<FinalOnboarding />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/onboarding-journey" element={<Journey />} />
+              <Route path="/onboarding-interests" element={<Interests />} />
+              <Route path="/onboarding-final" element={<FinalOnboarding />} />
+            </Route>
+
+            <Route element={<FlowLayout />}>
+              <Route path="/aptitude" element={<Aptitude />}>
+                <Route index element={null} />
+                <Route path="assessment" element={<Assessment />} />
+                <Route path="aptitudetest" element={<AptitudeTest />} />
+                <Route path="intereststest" element={<InterestTest />} />
+                <Route path="completed" element={<Completed />} />
+                <Route path="progress" element={<Progress />} />
+                <Route path="response" element={<Response />} />
               </Route>
-
-              <Route element={<FlowLayout />}>
-                
-
-                <Route path="/aptitude" element={<Aptitude />}>
-                  <Route index element={null} />
-                  <Route path="assessment" element={<Assessment />} />
-                  <Route path="aptitudetest" element={<AptitudeTest />} />
-                  <Route path="intereststest" element={<InterestTest />} />
-                  <Route path="completed" element={<Completed />} />
-                  <Route path="progress" element={<Progress />} />
-                  <Route path="response" element={<Response />} />
-                </Route>
-              </Route>
-            </Routes>
-          </main>
-        </section>
+            </Route>
+          </Routes>
+        </main>
+      </section>
     </div>
   );
 }
