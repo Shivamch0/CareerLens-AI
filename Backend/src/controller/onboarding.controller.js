@@ -44,7 +44,7 @@ const saveInterests = asyncHandler ( async (req , res) => {
 
     const user = await User.findByIdAndUpdate(
         req.user._id,
-        {$set : {interests : uniqueInterests , "onboarding.journeyCompleted" : true}},
+        {$set : {interests : uniqueInterests , "onboarding.interestsCompleted" : true}},
         {new : true}
     ).select("-password")
 
