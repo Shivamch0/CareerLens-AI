@@ -42,21 +42,30 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["school", "bachelors", "masters", "graduate", "switcher"],
     },
+     onboarding: {
+      journeyCompleted: {
+        type: Boolean,
+        default: false,
+      },
+
+      interestsCompleted: {
+        type: Boolean,
+        default: false,
+      },
+
+      aptitudeTestCompleted: {
+        type: Boolean,
+        default: false,
+      },
+
+      interestTestCompleted: {
+        type: Boolean,
+        default: false,
+      },
+    },
     onboardingCompleted: {
       type: Boolean,
       default: false,
-    },
-    onboardingStep: {
-      type: String,
-      enum: [
-        "career-stage",
-        "interests",
-        "skills",
-        "interest-test",
-        "aptitude-test",
-        "completed",
-      ],
-      default: "career-stage",
     },
     aptitudeTest: {
       score: Number,
