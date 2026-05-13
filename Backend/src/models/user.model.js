@@ -38,32 +38,44 @@ const userSchema = new mongoose.Schema(
       branch: String,
       marks: String,
     },
-    careerStage : {
-      type : String,
-      enum : ["school" , "bachelors" , "masters" , 'graduate' , 'switcher']
+    careerStage: {
+      type: String,
+      enum: ["school", "bachelors", "masters", "graduate", "switcher"],
     },
-     onboardingCompleted: {
-      type : Boolean,
-      default : false
+    onboardingCompleted: {
+      type: Boolean,
+      default: false,
     },
-    aptitudeTest : {
-      score : Number,
-      totalQuestions : Number,
-      answers : [
+    onboardingStep: {
+      type: String,
+      enum: [
+        "career-stage",
+        "interests",
+        "skills",
+        "interest-test",
+        "aptitude-test",
+        "completed",
+      ],
+      default: "career-stage",
+    },
+    aptitudeTest: {
+      score: Number,
+      totalQuestions: Number,
+      answers: [
         {
-          questionId : String,
-          selectedOptionsIndex : Number,
-          correctAnswerIndex : Number,
-          isCorrect : Boolean
-        }
-      ]
+          questionId: String,
+          selectedOptionsIndex: Number,
+          correctAnswerIndex: Number,
+          isCorrect: Boolean,
+        },
+      ],
     },
-    interestTest : {
-      scores : {
-        type : Map,
-        of : Number
+    interestTest: {
+      scores: {
+        type: Map,
+        of: Number,
       },
-      dominantInterest : String
+      dominantInterest: String,
     },
     refreshToken: {
       type: String,
@@ -72,9 +84,9 @@ const userSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-userSchema.pre("save", async function(next) {
-  if (!this.isModified("password")) return ;
-  
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return;
+
   this.password = await bcrypt.hash(this.password, 10);
 });
 
