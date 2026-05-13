@@ -1,7 +1,7 @@
 // Hooks Import
+import { useEffect, useState } from "react";
 import { useTheme } from "./Provider/ThemeProvider";
 import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./Redux State/Slice/authSlice.js";
 import { getCurrentUser } from "./api/auth.api.js";
@@ -37,21 +37,31 @@ import Response from "./pages/Aptitude/Response";
 function App() {
   const { isDark } = useTheme();
   const dispatch = useDispatch();
+  const [ authLoading , setAuthLoading ] = useState(true)
 
   useEffect(() => {
     const restoreUser = async () => {
       try {
         const res = await getCurrentUser();
-        // console.log(res.data)
 
         dispatch(setUser(res.data));
       } catch (error) {
         console.log("User not logged in");
+      }finally{
+        setAuthLoading(false)
       }
     };
 
     restoreUser();
   }, []);
+
+  if (authLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div
