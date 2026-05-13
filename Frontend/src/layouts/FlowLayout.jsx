@@ -5,13 +5,14 @@ import { useState, useEffect } from "react";
 const FlowLayout = () => {
   const location = useLocation();
   const path = location.pathname;
+  const [timeLeft, setTimeLeft] = useState(null);
   
   let testType = "";
 
   if (path.includes("aptitudetest")) {
-    testType = "Aptitude";
+    testType = "aptitude";
   } else if (path.includes("intereststest")) {
-    testType = "Interest";
+    testType = "interest";
   }
 
   const TEST_DURATION =
@@ -19,28 +20,23 @@ const FlowLayout = () => {
 
   const storageKey = `${testType}EndTime`;
 
-  const [timeLeft, setTimeLeft] = useState(() => {
-    if (!testType) return null;
-    const savedEnd = localStorage.getItem(storageKey);
-
-    if (savedEnd) {
-      const remaining = Math.floor((Number(savedEnd) - Date.now()) / 1000);
-      return remaining > 0 ? remaining : 0;
-    }
-
-    return TEST_DURATION;
-  });
-
   useEffect(() => {
     if (!testType) return;
 
-    const existing = localStorage.getItem(storageKey);
+    let endTime = localStorage.getItem(storageKey);
 
-    if (!existing) {
-      const endTime = Date.now() + TEST_DURATION * 1000;
+    // FIRST TIME TEST START
+    if (!endTime) {
+      endTime = Date.now() + TEST_DURATION * 1000;
+
       localStorage.setItem(storageKey, endTime);
     }
-  }, []);
+
+    // SET INITIAL TIMER
+    const remaining = Math.floor((Number(endTime) - Date.now()) / 1000);
+
+    setTimeLeft(remaining > 0 ? remaining : 0);
+  }, [storageKey, TEST_DURATION, testType]);
 
   useEffect(() => {
     if (!testType) return;
@@ -61,7 +57,7 @@ const FlowLayout = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [storageKey, testType]);
 
   return (
     <>

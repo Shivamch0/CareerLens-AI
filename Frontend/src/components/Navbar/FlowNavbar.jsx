@@ -42,7 +42,9 @@ const FlowNavbar = ({ test = "", timeLeft }) => {
         {test && (
           <div className="items-center px-4">
             <p className="text-sm text-gray-600">Time left</p>
-            <h3 className="font-bold text-2xl text-blue-500">{formatTime(timeLeft)}</h3>
+            <h3 className="font-bold text-2xl text-blue-500">
+              {timeLeft !== null ? formatTime(timeLeft) : "Loading..."}
+            </h3>
           </div>
         )}
       </nav>

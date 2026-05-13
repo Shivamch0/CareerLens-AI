@@ -4,7 +4,7 @@ import Option from "../Other/Option";
 const QuestionCard = ({ data, selected, setSelected }) => {
   return (
     <div className="bg-white p-6 rounded-xl shadow-sm">
-      <h3 className="font-medium">{data.question}</h3>
+      <h3 className="font-medium mb-2">{data.question}</h3>
 
       <div className="space-y-3">
         {data.options?.map((opt , index) => (
