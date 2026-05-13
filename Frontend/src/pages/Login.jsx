@@ -34,9 +34,18 @@ function Login() {
         toast.success(res.message || "User Logged In ");
 
         setTimeout(() => {
-          navigate(user.onboardingCompleted ? "/dashboard" : "/onboarding");
+          if (!user.onboarding?.journeyCompleted) {
+            navigate("/onboarding-journey");
+          } else if (!user.onboarding?.interestsCompleted) {
+            navigate("/onboarding-interests");
+          }
+
+          // ONBOARDING COMPLETED
+          else {
+            navigate("/aptitude/assessment");
+          }
         }, 1000);
-        toast.remove()
+        toast.remove();
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
       }

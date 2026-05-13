@@ -1,6 +1,7 @@
 // Hooks Imports
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useNavigate } from "react-router-dom"
+import { useSelector } from "react-redux";
 
 // Components Imports
 import AptitudeCard from "../../components/Card/AptitudeCard";
@@ -12,6 +13,7 @@ import greenHeart from "../../assets/greenHeart.png";
 const Assessment = () => {
   const { isDark } = useTheme();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user)
 
   const handleAptitude = () => {
     navigate("../aptitudetest")
