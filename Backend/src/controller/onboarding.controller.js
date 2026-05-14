@@ -17,7 +17,7 @@ const saveJourney = asyncHandler (async (req , res) => {
             careerStage,
             "onboarding.journeyCompleted" : true,
         }},
-        {new : true}
+        {returnDocument : "after"}
     ).select("-password")
 
     if(!user){
@@ -45,7 +45,7 @@ const saveInterests = asyncHandler ( async (req , res) => {
     const user = await User.findByIdAndUpdate(
         req.user._id,
         {$set : {interests : uniqueInterests , "onboarding.interestsCompleted" : true}},
-        {new : true}
+        {returnDocument : "after"}
     ).select("-password")
 
     return res.status(200)
@@ -62,7 +62,7 @@ const saveSkills = asyncHandler( async (req , res) => {
     const user = await User.findByIdAndUpdate(
         req.user._id,
         {$set : {skills}},
-        {new : true}
+        {returnDocument : "after"}
     ).select("-password")
 
     return res.status(200)
@@ -74,7 +74,7 @@ const completeOnboarding = asyncHandler ( async ( req , res) => {
     const user = await User.findByIdAndUpdate(
         req.user._id,
         {$set : {onboardingCompleted : true}},
-        {new : true}
+        {returnDocument : "after"}
     ).select("-password")
 
     return res.status(200)
