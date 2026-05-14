@@ -16,7 +16,7 @@ const FlowLayout = () => {
   }
 
   const TEST_DURATION =
-    testType === "Aptitude" ? 1800 : testType === "Interest" ? 1800 : 300;
+    testType === "aptitude" ? 1800 : testType === "interest" ? 1800 : 300;
 
   const storageKey = `${testType}EndTime`;
 
@@ -46,7 +46,7 @@ const FlowLayout = () => {
 
       if (!endTime) return;
 
-      const remaining = Math.floor((endTime - Date.now()) / 1000);
+      const remaining = Math.floor((Number(endTime) - Date.now()) / 1000);
 
       if (remaining <= 0) {
         setTimeLeft(0);

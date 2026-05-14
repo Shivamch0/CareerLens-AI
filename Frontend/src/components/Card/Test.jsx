@@ -58,7 +58,10 @@ const Test = ({ type, timeLeft, questions = [] }) => {
       localStorage.setItem(`${type}Answers`, JSON.stringify(answers));
 
       if (type === "interest") {
-        await submitInterestTest(answersPayload);
+        await submitInterestTest({
+          answers : answersPayload,
+          questions,
+        });
       } else if (type === "aptitude") {
         await submitAptitudeTest({
           answers: answersPayload,
@@ -87,12 +90,15 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   useEffect(() => {
     if (timeLeft === null || timeLeft === undefined) return;
 
-    if (!submitted && timeLeft <= 0) {
+    if(submitted) return;
+
+    if (timeLeft <= 0) {
       if (Object.keys(answers).length === 0) return;
 
+      setSubmitted
       handleSubmit();
     }
-  }, [handleSubmit, timeLeft, submitted , answers]);
+  }, [timeLeft]);
 
   const currentQuestion = questions[currentQ] || {};
 
