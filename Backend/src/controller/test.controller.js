@@ -121,18 +121,6 @@ const evaluateAnswers = (answers, questions) => {
     });
   });
 
-  console.log({
-    score,
-
-    totalQuestions: questions.length,
-
-    percentage: Math.round((score / questions.length) * 100),
-
-    categoryScores,
-
-    evaluatedAnswers,
-  })
-
   return {
     score,
 
@@ -147,34 +135,18 @@ const evaluateAnswers = (answers, questions) => {
 };
 
 const submitAptitudeTest = asyncHandler(async (req, res) => {
-
-  const {
-    answers,
-    questions: storedQuestions
-  } = req.body;
+  const { answers, questions: storedQuestions } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(
-      400,
-      "Answers are required..."
-    );
+    throw new ApiError(400, "Answers are required...");
   }
 
-  if (
-    !storedQuestions ||
-    !Array.isArray(storedQuestions)
-  ) {
-    throw new ApiError(
-      400,
-      "Questions are required..."
-    );
+  if (!storedQuestions || !Array.isArray(storedQuestions)) {
+    throw new ApiError(400, "Questions are required...");
   }
 
   // Evaluate Answers
-  const result = evaluateAnswers(
-    answers,
-    storedQuestions
-  );
+  const result = evaluateAnswers(answers, storedQuestions);
 
   // Save Result
   const user = await User.findByIdAndUpdate(
@@ -184,24 +156,19 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
         aptitudeTest: {
           score: result.score,
 
-          totalQuestions:
-            result.totalQuestions,
+          totalQuestions: result.totalQuestions,
 
-          percentage:
-            result.percentage,
+          percentage: result.percentage,
 
-          categoryScores:
-            result.categoryScores,
+          categoryScores: result.categoryScores,
 
-          answers:
-            result.evaluatedAnswers,
+          answers: result.evaluatedAnswers,
         },
 
-        "onboarding.aptitudeTestCompleted":
-          true,
+        "onboarding.aptitudeTestCompleted": true,
       },
     },
-    { new: true }
+    { new: true },
   ).select("-password");
 
   return res.status(200).json(
@@ -210,65 +177,38 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
       {
         score: result.score,
 
-        totalQuestions:
-          result.totalQuestions,
+        totalQuestions: result.totalQuestions,
 
-        percentage:
-          result.percentage,
+        percentage: result.percentage,
 
-        categoryScores:
-          result.categoryScores,
+        categoryScores: result.categoryScores,
 
-        answers:
-          result.evaluatedAnswers,
+        answers: result.evaluatedAnswers,
       },
 
-      "Aptitude test submitted successfully"
-    )
+      "Aptitude test submitted successfully",
+    ),
   );
 });
 
 const submitInterestTest = asyncHandler(async (req, res) => {
-  console.log(req.body)
-
-  const {
-    answers,
-    questions: storedQuestions
-  } = req.body;
+  const { answers, questions: storedQuestions } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(
-      400,
-      "Answers are required..."
-    );
+    throw new ApiError(400, "Answers are required...");
   }
 
-  if (
-    !storedQuestions ||
-    !Array.isArray(storedQuestions)
-  ) {
-    throw new ApiError(
-      400,
-      "Questions are required..."
-    );
+  if (!storedQuestions || !Array.isArray(storedQuestions)) {
+    throw new ApiError(400, "Questions are required...");
   }
 
   // Evaluate Answers
-  const result = evaluateAnswers(
-    answers,
-    storedQuestions
-  );
+  const result = evaluateAnswers(answers, storedQuestions);
 
   // Find Dominant Interest
-  const dominantInterest =
-    Object.keys(
-      result.categoryScores
-    ).reduce((a, b) =>
-      result.categoryScores[a] >
-      result.categoryScores[b]
-        ? a
-        : b
-    );
+  const dominantInterest = Object.keys(result.categoryScores).reduce((a, b) =>
+    result.categoryScores[a] > result.categoryScores[b] ? a : b,
+  );
 
   // Save Result
   const user = await User.findByIdAndUpdate(
@@ -276,29 +216,23 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     {
       $set: {
         interestTest: {
-          scores:
-            result.categoryScores,
+          scores: result.categoryScores,
 
           dominantInterest,
 
-          score:
-            result.score,
+          score: result.score,
 
-          totalQuestions:
-            result.totalQuestions,
+          totalQuestions: result.totalQuestions,
 
-          percentage:
-            result.percentage,
+          percentage: result.percentage,
 
-          answers:
-            result.evaluatedAnswers,
+          answers: result.evaluatedAnswers,
         },
 
-        "onboarding.interestTestCompleted":
-          true,
+        "onboarding.interestTestCompleted": true,
       },
     },
-    { new: true }
+    { new: true },
   ).select("-password");
 
   return res.status(201).json(
@@ -307,24 +241,19 @@ const submitInterestTest = asyncHandler(async (req, res) => {
       {
         dominantInterest,
 
-        score:
-          result.score,
+        score: result.score,
 
-        totalQuestions:
-          result.totalQuestions,
+        totalQuestions: result.totalQuestions,
 
-        percentage:
-          result.percentage,
+        percentage: result.percentage,
 
-        categoryScores:
-          result.categoryScores,
+        categoryScores: result.categoryScores,
 
-        answers:
-          result.evaluatedAnswers,
+        answers: result.evaluatedAnswers,
       },
 
-      "Interest test submitted successfully"
-    )
+      "Interest test submitted successfully",
+    ),
   );
 });
 
