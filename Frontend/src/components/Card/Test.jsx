@@ -27,8 +27,12 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   useEffect(() => {
     const savedAnswers = localStorage.getItem(`${type}Answers`);
 
-    if (savedAnswers) {
+    const endTime = localStorage.getItem(`${type}EndTime`);
+
+    if (savedAnswers && endTime && Number(endTime) > Date.now()) {
       setAnswers(JSON.parse(savedAnswers));
+    } else {
+      localStorage.removeItem(`${type}Answers`);
     }
   }, [type]);
 
@@ -107,7 +111,6 @@ const Test = ({ type, timeLeft, questions = [] }) => {
     if (timeLeft <= 0) {
       if (Object.keys(answers).length === 0) return;
 
-      setSubmitted;
       handleSubmit();
     }
   }, [timeLeft]);
