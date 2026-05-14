@@ -121,6 +121,18 @@ const evaluateAnswers = (answers, questions) => {
     });
   });
 
+  console.log({
+    score,
+
+    totalQuestions: questions.length,
+
+    percentage: Math.round((score / questions.length) * 100),
+
+    categoryScores,
+
+    evaluatedAnswers,
+  })
+
   return {
     score,
 
@@ -217,6 +229,7 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
 });
 
 const submitInterestTest = asyncHandler(async (req, res) => {
+  console.log(req.body)
 
   const {
     answers,
@@ -288,7 +301,7 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     { new: true }
   ).select("-password");
 
-  return res.status(200).json(
+  return res.status(201).json(
     new ApiResponse(
       200,
       {

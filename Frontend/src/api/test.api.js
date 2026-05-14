@@ -10,13 +10,13 @@ const aptitudeQuestions = async () => {
     return res.data
 }
 
-const submitInterestTest = async (answers) => {
-    const res = await api.post("/test/interest-submit", { answers });
+const submitInterestTest = async (data) => {
+    const res = await api.post("/test/interest-submit", data);
     return res.data;
 }
 
-const submitAptitudeTest = async ({ answers, questions }) => {
-    const res = await api.post("/test/aptitude-submit", { answers, questions });
+const submitAptitudeTest = async (data) => {
+    const res = await api.post("/test/aptitude-submit", data);
     return res.data;
 }
 

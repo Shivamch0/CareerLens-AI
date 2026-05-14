@@ -35,7 +35,20 @@ const FlowLayout = () => {
     // SET INITIAL TIMER
     const remaining = Math.floor((Number(endTime) - Date.now()) / 1000);
 
-    setTimeLeft(remaining > 0 ? remaining : 0);
+    if(remaining <= 0){
+      localStorage.removeItem(storageKey);
+
+      endTime = Date.now() + TEST_DURATION * 1000;
+
+      localStorage.setItem({
+        storageKey , 
+        endTime
+      });
+      setTimeLeft(TEST_DURATION);
+    }else{
+      setTimeLeft(remaining);
+    }
+
   }, [storageKey, TEST_DURATION, testType]);
 
   useEffect(() => {
@@ -49,6 +62,7 @@ const FlowLayout = () => {
       const remaining = Math.floor((Number(endTime) - Date.now()) / 1000);
 
       if (remaining <= 0) {
+        location
         setTimeLeft(0);
         clearInterval(timer);
       } else {
