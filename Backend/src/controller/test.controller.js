@@ -135,119 +135,184 @@ const evaluateAnswers = (answers, questions) => {
 };
 
 const submitAptitudeTest = asyncHandler(async (req, res) => {
-  const { answers, questions: storedQuestions } = req.body;
+
+  const {
+    answers,
+    questions: storedQuestions
+  } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(400, "Answers are required...");
-  }
-
-  if (!storedQuestions || !Array.isArray(storedQuestions)) {
-    throw new ApiError(400, "Stored questions are required...");
-  }
-
-  let score = 0;
-
-  const evaluatedAnswers = answers.map((ans) => {
-    const originalQuestion = storedQuestions.find(
-      (q) => q.id === ans.questionId,
+    throw new ApiError(
+      400,
+      "Answers are required..."
     );
+  }
 
-    if (!originalQuestion) {
-      throw new ApiError(400, "Question not found");
-    }
+  if (
+    !storedQuestions ||
+    !Array.isArray(storedQuestions)
+  ) {
+    throw new ApiError(
+      400,
+      "Questions are required..."
+    );
+  }
 
-    const isCorrect =
-      ans.selectedOptionIndex === originalQuestion.correctAnswerIndex;
+  // Evaluate Answers
+  const result = evaluateAnswers(
+    answers,
+    storedQuestions
+  );
 
-    if (isCorrect) {
-      score++;
-    }
-
-    return {
-      questionId: ans.questionId,
-
-      selectedOptionIndex: ans.selectedOptionIndex,
-
-      correctAnswerIndex: originalQuestion.correctAnswerIndex,
-
-      isCorrect,
-    };
-  });
-
+  // Save Result
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
         aptitudeTest: {
-          score,
-          totalQuestions: storedQuestions.length,
-          answers: evaluatedAnswers,
+          score: result.score,
+
+          totalQuestions:
+            result.totalQuestions,
+
+          percentage:
+            result.percentage,
+
+          categoryScores:
+            result.categoryScores,
+
+          answers:
+            result.evaluatedAnswers,
         },
-        "onboarding.aptitudeTestCompleted": true,
+
+        "onboarding.aptitudeTestCompleted":
+          true,
       },
     },
-    { new: true },
+    { new: true }
   ).select("-password");
 
   return res.status(200).json(
     new ApiResponse(
       200,
       {
-        score,
-        totalQuestions: storedQuestions.length,
-        percentage: Math.round((score / storedQuestions.length) * 100),
+        score: result.score,
+
+        totalQuestions:
+          result.totalQuestions,
+
+        percentage:
+          result.percentage,
+
+        categoryScores:
+          result.categoryScores,
+
+        answers:
+          result.evaluatedAnswers,
       },
-      "Aptitude test submitted successfully",
-    ),
+
+      "Aptitude test submitted successfully"
+    )
   );
 });
 
 const submitInterestTest = asyncHandler(async (req, res) => {
-  const { answers, questions } = req.body;
+
+  const {
+    answers,
+    questions: storedQuestions
+  } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
-    throw new ApiError(400, "Answers are required...");
+    throw new ApiError(
+      400,
+      "Answers are required..."
+    );
   }
 
-  let scores = {};
-
-  answers.forEach((ans) => {
-    const category = ans.category;
-
-    if (!scores[category]) {
-      scores[category] = 0;
-    }
-
-    scores[category] += ans.weight || 1;
-  });
-
-  const keys = Object.keys(scores);
-
-  if (keys.length === 0) {
-    throw new ApiError(400, "No valid answers provided");
+  if (
+    !storedQuestions ||
+    !Array.isArray(storedQuestions)
+  ) {
+    throw new ApiError(
+      400,
+      "Questions are required..."
+    );
   }
 
-  const dominantInterest = keys.reduce((a, b) =>
-    scores[a] > scores[b] ? a : b,
+  // Evaluate Answers
+  const result = evaluateAnswers(
+    answers,
+    storedQuestions
   );
 
+  // Find Dominant Interest
+  const dominantInterest =
+    Object.keys(
+      result.categoryScores
+    ).reduce((a, b) =>
+      result.categoryScores[a] >
+      result.categoryScores[b]
+        ? a
+        : b
+    );
+
+  // Save Result
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
         interestTest: {
-          scores,
+          scores:
+            result.categoryScores,
+
           dominantInterest,
+
+          score:
+            result.score,
+
+          totalQuestions:
+            result.totalQuestions,
+
+          percentage:
+            result.percentage,
+
+          answers:
+            result.evaluatedAnswers,
         },
-        "onboarding.interestTestCompleted": true,
+
+        "onboarding.interestTestCompleted":
+          true,
       },
     },
-    { new: true },
+    { new: true }
   ).select("-password");
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, user, "Interest test submitted successfully"));
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        dominantInterest,
+
+        score:
+          result.score,
+
+        totalQuestions:
+          result.totalQuestions,
+
+        percentage:
+          result.percentage,
+
+        categoryScores:
+          result.categoryScores,
+
+        answers:
+          result.evaluatedAnswers,
+      },
+
+      "Interest test submitted successfully"
+    )
+  );
 });
 
 const getCareerRecommendations = asyncHandler(async (req, res) => {
