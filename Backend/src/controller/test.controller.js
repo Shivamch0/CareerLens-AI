@@ -1,10 +1,7 @@
 import { generateResponse } from "../Ai_api/ai.js";
+import { aptitudeQuestionSets } from "../Ai_api/aptitudeQuestions.js";
 import { parseAIResponse } from "../Ai_api/parser.js";
-import {
-  interestPrompt,
-  aptitudePrompt,
-  careerRecommendationPrompt,
-} from "../Ai_api/prompt.js";
+import {interestPrompt, aptitudePrompt, careerRecommendationPrompt} from "../Ai_api/prompt.js";
 import { User } from "../models/user.model.js";
 
 // Utils Imports
@@ -55,25 +52,10 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
     throw new ApiError(400, "User career Stage not found...");
   }
 
-  const prompt = aptitudePrompt(careerStage);
+  const randomSetIndex = Math.floor(Math.random() * aptitudeQuestionSets.length);
 
-  const aiText = await generateResponse(prompt);
-
-  if (!aiText || aiText.startsWith("Failed")) {
-    throw new ApiError(500, "AI generation failed...");
-  }
-
-  let questions;
-  try {
-    questions = parseAIResponse(aiText);
-    questions = questions.map((q, index) => ({
-      id: index + 1,
-      ...q,
-    }));
-  } catch (err) {
-    throw new ApiError(500, "Failed to parse AI response");
-  }
-
+  const  questions = aptitudeQuestionSets[randomSetIndex];
+ 
   return res
     .status(200)
     .json(new ApiResponse(200, questions, "Aptitude questions generated..."));

@@ -6,10 +6,15 @@
   //Other Imports
   import { FaGlobe } from "react-icons/fa";
   import { FaSortNumericUpAlt } from "react-icons/fa";
+import { useState } from "react";
 
   const AptitudeTest = () => {
     const context = useOutletContext();
     const timeLeft = context?.timeLeft;
+
+    const [questions , setQuestons] = useState([]);
+
+    const [loading , setLoading] = useState(true);
 
     const sections = [
       {

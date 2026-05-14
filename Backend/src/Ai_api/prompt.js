@@ -29,33 +29,6 @@ FORMAT:
 ]
 `;
 
-const aptitudePrompt = (careerStage) => `
-    Generate 5 aptitude multiple-choice questions based on the user's career stage: "${careerStage}".
-
-Difficulty rules:
-- school → very basic (class 8–10 level)
-- bachelors → moderate (logical reasoning + basic math)
-- masters → advanced (analytical + problem solving)
-- graduate → job-level aptitude (reasoning + quantitative)
-- switcher → practical + logical + real-world scenarios
-
-Requirements:
-- Each question must have 4 options.
-- Provide correctAnswer.
-- Questions must match difficulty level.
-- Keep language clear and simple.
-
-Return ONLY JSON array (no explanation):
-
-[
-  {
-    "question": "string",
-    "options": ["A", "B", "C", "D"],
-    "correctAnswerIndex": 0
-  }
-]
-`;
-
 const careerRecommendationPrompt = (
   careerStage,
   education,
@@ -166,4 +139,4 @@ RETURN FORMAT:
 Return ONLY raw valid JSON array.
 `;
 
-export { interestPrompt, aptitudePrompt, careerRecommendationPrompt };
+export { interestPrompt, careerRecommendationPrompt };
