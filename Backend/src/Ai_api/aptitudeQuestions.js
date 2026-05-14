@@ -17,15 +17,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 3,
-      question: "HTML stands for?",
-      options: [
-        "Hyper Text Markup Language",
-        "High Transfer Machine Language",
-        "Hyperlink Text Mark Language",
-        "Home Tool Markup Language",
-      ],
-      correctAnswerIndex: 0,
-      category: "technical",
+      question: "Choose the synonym of 'Happy'.",
+      options: ["Sad", "Joyful", "Weak", "Angry"],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 4,
@@ -43,10 +38,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 6,
-      question: "CSS is used for?",
-      options: ["Database", "Styling webpages", "Server", "Operating System"],
-      correctAnswerIndex: 1,
-      category: "technical",
+      question: "Choose the antonym of 'Strong'.",
+      options: ["Powerful", "Bold", "Weak", "Brave"],
+      correctAnswerIndex: 2,
+      category: "verbal",
     },
     {
       id: 7,
@@ -64,10 +59,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 9,
-      question: "React is mainly used for?",
-      options: ["Backend", "Frontend", "Database", "Networking"],
+      question: "Choose the correct spelling.",
+      options: ["Enviroment", "Environment", "Envirnment", "Enviornment"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 10,
@@ -85,11 +80,12 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 12,
-      question: "JavaScript is a?",
-      options: ["Programming Language", "Database", "Compiler", "Browser"],
+      question: "Choose the synonym of 'Quick'.",
+      options: ["Fast", "Slow", "Lazy", "Weak"],
       correctAnswerIndex: 0,
-      category: "technical",
+      category: "verbal",
     },
+
     {
       id: 13,
       question: "What is 100 ÷ 5?",
@@ -106,10 +102,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 15,
-      question: "Which symbol is used for comments in JavaScript?",
-      options: ["//", "##", "<!-- -->", "**"],
-      correctAnswerIndex: 0,
-      category: "technical",
+      question: "Choose the antonym of 'Expand'.",
+      options: ["Increase", "Shrink", "Grow", "Stretch"],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 16,
@@ -127,10 +123,15 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 18,
-      question: "MongoDB is a?",
-      options: ["Database", "Language", "Framework", "Server"],
-      correctAnswerIndex: 0,
-      category: "technical",
+      question: "Choose the correct sentence.",
+      options: [
+        "He go to school daily.",
+        "He goes to school daily.",
+        "He going to school daily.",
+        "He gone to school daily.",
+      ],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 19,
@@ -155,10 +156,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 22,
-      question: "Which company created Java?",
-      options: ["Microsoft", "Sun Microsystems", "Google", "Apple"],
+      question: "Choose the synonym of 'Tiny'.",
+      options: ["Huge", "Small", "Long", "Tall"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 23,
@@ -183,10 +184,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 26,
-      question: "Which HTML tag is used for links?",
-      options: ["<a>", "<img>", "<h1>", "<p>"],
-      correctAnswerIndex: 0,
-      category: "technical",
+      question: "Choose the antonym of 'Ancient'.",
+      options: ["Historic", "Old", "Modern", "Traditional"],
+      correctAnswerIndex: 2,
+      category: "verbal",
     },
     {
       id: 27,
@@ -211,10 +212,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 30,
-      question: "Node.js is used for?",
-      options: ["Frontend", "Backend", "Design", "Animation"],
+      question: "Choose the correct spelling.",
+      options: ["Recieve", "Receive", "Receeve", "Receve"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
   ],
 
@@ -229,10 +230,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 2,
-      question: "Which keyword declares a constant in JavaScript?",
-      options: ["let", "var", "const", "static"],
-      correctAnswerIndex: 2,
-      category: "technical",
+      question: "Choose the synonym of 'Brilliant'.",
+      options: ["Dull", "Bright", "Weak", "Dark"],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 3,
@@ -257,10 +258,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 6,
-      question: "Which tag creates a paragraph in HTML?",
-      options: ["<div>", "<p>", "<a>", "<span>"],
+      question: "Choose the antonym of 'Rich'.",
+      options: ["Wealthy", "Poor", "Healthy", "Strong"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 7,
@@ -278,10 +279,15 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 9,
-      question: "Which company developed React?",
-      options: ["Google", "Meta", "Amazon", "Netflix"],
+      question: "Choose the correct sentence.",
+      options: [
+        "They is playing football.",
+        "They are playing football.",
+        "They was playing football.",
+        "They plays football.",
+      ],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 10,
@@ -299,10 +305,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 12,
-      question: "Which language runs in the browser?",
-      options: ["Python", "C++", "JavaScript", "Java"],
-      correctAnswerIndex: 2,
-      category: "technical",
+      question: "Choose the synonym of 'Easy'.",
+      options: ["Hard", "Simple", "Complex", "Difficult"],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 13,
@@ -320,10 +326,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 15,
-      question: "Which database is relational?",
-      options: ["MongoDB", "MySQL", "Redis", "Firebase"],
+      question: "Choose the antonym of 'Bright'.",
+      options: ["Shiny", "Dark", "Clear", "Light"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 16,
@@ -348,10 +354,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 19,
-      question: "Which hook is used for state in React?",
-      options: ["useRef", "useState", "useMemo", "useEffect"],
+      question: "Choose the correct spelling.",
+      options: ["Succesful", "Successful", "Succesfull", "Succes"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 20,
@@ -369,10 +375,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 22,
-      question: "Which operator checks equality in JavaScript?",
-      options: ["==", "===", "=", "!="],
+      question: "Choose the synonym of 'Large'.",
+      options: ["Tiny", "Huge", "Weak", "Short"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
     {
       id: 23,
@@ -397,10 +403,10 @@ export const aptitudeQuestionSets = [
     },
     {
       id: 26,
-      question: "Which CSS property changes text color?",
-      options: ["font-size", "background", "color", "display"],
-      correctAnswerIndex: 2,
-      category: "technical",
+      question: "Choose the antonym of 'Clean'.",
+      options: ["Fresh", "Dirty", "Pure", "Clear"],
+      correctAnswerIndex: 1,
+      category: "verbal",
     },
     {
       id: 27,
@@ -424,11 +430,11 @@ export const aptitudeQuestionSets = [
       category: "logical",
     },
     {
-      id: 30,
-      question: "Express.js is used with?",
-      options: ["Python", "Node.js", "Java", "PHP"],
+      id: 24,
+      question: "Choose the antonym of 'Clean'.",
+      options: ["Fresh", "Dirty", "Pure", "Clear"],
       correctAnswerIndex: 1,
-      category: "technical",
+      category: "verbal",
     },
   ],
 
