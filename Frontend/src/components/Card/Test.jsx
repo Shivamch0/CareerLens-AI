@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { submitAptitudeTest, submitInterestTest } from "../../api/test.api.js";
+import { useSelector } from "react-redux";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
@@ -14,6 +15,10 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
+  const user = useSelector((state) => state.auth.user)
+
+  const aptitudeCompleted = user?.onboarding?.aptitudeTestCompleted;
+  const interestCompleted = user?.onboarding?.interestTestCompleted;
 
   const navigate = useNavigate();
 
@@ -62,11 +67,21 @@ const Test = ({ type, timeLeft, questions = [] }) => {
           answers : answersPayload,
           questions,
         });
+        localStorage.removeItem("Interest_Questions");
+        if (!aptitudeCompleted) {
+          navigate("../assessment");
+        }else{
+
+        }
       } else if (type === "aptitude") {
         await submitAptitudeTest({
           answers: answersPayload,
           questions,
         });
+        localStorage.removeItem("Aptitude_Questions");
+        if(!interestCompleted){
+          navigate("../assessment");
+        }
       }
 
         localStorage.removeItem(`${type}Answers`);
@@ -75,8 +90,8 @@ const Test = ({ type, timeLeft, questions = [] }) => {
           `${type === "interest" ? "interest" : "aptitude"}EndTime`,
         );
 
+         navigate("../progress");
 
-      navigate("../progress");
     } catch (error) {
       console.log(error);
       setSubmitted(false);
