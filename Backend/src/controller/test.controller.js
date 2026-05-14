@@ -1,13 +1,13 @@
 import { generateResponse } from "../Ai_api/ai.js";
 import { aptitudeQuestionSets } from "../Ai_api/aptitudeQuestions.js";
 import { parseAIResponse } from "../Ai_api/parser.js";
-import {interestPrompt, aptitudePrompt, careerRecommendationPrompt} from "../Ai_api/prompt.js";
+import {interestPrompt, careerRecommendationPrompt} from "../Ai_api/prompt.js";
 import { User } from "../models/user.model.js";
 
 // Utils Imports
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/asyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js"; 
 
 const generateInterestQuestions = asyncHandler(async (req, res) => {
   const interests = req.user.interests;

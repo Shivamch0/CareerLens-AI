@@ -15,7 +15,7 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const user = useSelector((state) => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   const aptitudeCompleted = user?.onboarding?.aptitudeTestCompleted;
   const interestCompleted = user?.onboarding?.interestTestCompleted;
@@ -24,17 +24,17 @@ const Test = ({ type, timeLeft, questions = [] }) => {
 
   const tips = "Tips";
 
-   useEffect(() => {
-     const savedAnswers = localStorage.getItem(`${type}Answers`);
+  useEffect(() => {
+    const savedAnswers = localStorage.getItem(`${type}Answers`);
 
-     if (savedAnswers) {
-       setAnswers(JSON.parse(savedAnswers));
-     }
-   }, [type]);
+    if (savedAnswers) {
+      setAnswers(JSON.parse(savedAnswers));
+    }
+  }, [type]);
 
-    useEffect(() => {
-      localStorage.setItem(`${type}Answers`, JSON.stringify(answers));
-    }, [answers, type]);
+  useEffect(() => {
+    localStorage.setItem(`${type}Answers`, JSON.stringify(answers));
+  }, [answers, type]);
 
   const buildAnswersPayload = useCallback(() => {
     return questions
@@ -64,34 +64,31 @@ const Test = ({ type, timeLeft, questions = [] }) => {
 
       if (type === "interest") {
         await submitInterestTest({
-          answers : answersPayload,
+          answers: answersPayload,
           questions,
         });
         localStorage.removeItem("Interest_Questions");
-        if (!aptitudeCompleted) {
-          navigate("../assessment");
-        }else{
-
-        }
       } else if (type === "aptitude") {
         await submitAptitudeTest({
           answers: answersPayload,
           questions,
         });
         localStorage.removeItem("Aptitude_Questions");
-        if(!interestCompleted){
-          navigate("../assessment");
-        }
       }
 
-        localStorage.removeItem(`${type}Answers`);
+      localStorage.removeItem(`${type}Answers`);
 
-        localStorage.removeItem(
-          `${type === "interest" ? "interest" : "aptitude"}EndTime`,
-        );
+      localStorage.removeItem(
+        `${type === "interest" ? "interest" : "aptitude"}EndTime`,
+      );
 
-         navigate("../progress");
-
+      if (type === "interest" && !aptitudeCompleted) {
+        navigate("../assessment");
+      } else if (type === "aptitude" && !interestCompleted) {
+        navigate("../assessment");
+      } else {
+        navigate("../progress");
+      }
     } catch (error) {
       console.log(error);
       setSubmitted(false);
@@ -100,17 +97,17 @@ const Test = ({ type, timeLeft, questions = [] }) => {
           "Unable to submit your test. Please try again.",
       );
     }
-  }, [buildAnswersPayload, navigate, questions, submitted, type , answers]);
+  }, [buildAnswersPayload, navigate, questions, submitted, type, answers]);
 
   useEffect(() => {
     if (timeLeft === null || timeLeft === undefined) return;
 
-    if(submitted) return;
+    if (submitted) return;
 
     if (timeLeft <= 0) {
       if (Object.keys(answers).length === 0) return;
 
-      setSubmitted
+      setSubmitted;
       handleSubmit();
     }
   }, [timeLeft]);
