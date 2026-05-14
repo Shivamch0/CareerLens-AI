@@ -23,10 +23,10 @@ const generateInterestQuestions = asyncHandler(async (req, res) => {
 
   const aiResponse = await generateResponse(prompt);
 
-  if(!aiResponse.success){
+  if (!aiResponse.success) {
     throw new ApiError(
       aiResponse.status || 500,
-      aiResponse.message || "AI generation failed..."
+      aiResponse.message || "AI generation failed...",
     );
   }
 
@@ -35,7 +35,7 @@ const generateInterestQuestions = asyncHandler(async (req, res) => {
     questions = parseAIResponse(aiResponse.data);
     questions = questions.map((q, index) => ({
       id: index + 1,
-      ...q
+      ...q,
     }));
   } catch (err) {
     console.error(err);
@@ -68,7 +68,7 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
     questions = parseAIResponse(aiText);
     questions = questions.map((q, index) => ({
       id: index + 1,
-      ...q
+      ...q,
     }));
   } catch (err) {
     throw new ApiError(500, "Failed to parse AI response");
@@ -79,30 +79,77 @@ const generateAptitudeQuestions = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, questions, "Aptitude questions generated..."));
 });
 
-const submitAptitudeTest = asyncHandler(async (req, res) => {
+const evaluateAnswers = (answers, questions) => {
+  let score = 0;
 
+  let categoryScores = {};
+
+  const evaluatedAnswers = [];
+
+  answers.forEach((ans) => {
+    const originalQuestion = questions.find((q) => q.id === ans.questionId);
+
+    if (!originalQuestion) return;
+
+    const isCorrect =
+      ans.selectedOptionIndex === originalQuestion.correctAnswerIndex;
+
+    const category = originalQuestion.category;
+
+    // Initialize category
+    if (!categoryScores[category]) {
+      categoryScores[category] = 0;
+    }
+
+    // Increase score
+    if (isCorrect) {
+      score++;
+
+      categoryScores[category] += 1;
+    }
+
+    evaluatedAnswers.push({
+      questionId: ans.questionId,
+
+      selectedOptionIndex: ans.selectedOptionIndex,
+
+      correctAnswerIndex: originalQuestion.correctAnswerIndex,
+
+      category,
+
+      isCorrect,
+    });
+  });
+
+  return {
+    score,
+
+    totalQuestions: questions.length,
+
+    percentage: Math.round((score / questions.length) * 100),
+
+    categoryScores,
+
+    evaluatedAnswers,
+  };
+};
+
+const submitAptitudeTest = asyncHandler(async (req, res) => {
   const { answers, questions: storedQuestions } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
     throw new ApiError(400, "Answers are required...");
   }
 
-  if (
-    !storedQuestions ||
-    !Array.isArray(storedQuestions)
-  ) {
-    throw new ApiError(
-      400,
-      "Stored questions are required..."
-    );
+  if (!storedQuestions || !Array.isArray(storedQuestions)) {
+    throw new ApiError(400, "Stored questions are required...");
   }
 
   let score = 0;
 
   const evaluatedAnswers = answers.map((ans) => {
-
     const originalQuestion = storedQuestions.find(
-      (q) => q.id === ans.questionId
+      (q) => q.id === ans.questionId,
     );
 
     if (!originalQuestion) {
@@ -110,8 +157,7 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
     }
 
     const isCorrect =
-      ans.selectedOptionIndex ===
-      originalQuestion.correctAnswerIndex;
+      ans.selectedOptionIndex === originalQuestion.correctAnswerIndex;
 
     if (isCorrect) {
       score++;
@@ -120,11 +166,9 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
     return {
       questionId: ans.questionId,
 
-      selectedOptionIndex:
-        ans.selectedOptionIndex,
+      selectedOptionIndex: ans.selectedOptionIndex,
 
-      correctAnswerIndex:
-        originalQuestion.correctAnswerIndex,
+      correctAnswerIndex: originalQuestion.correctAnswerIndex,
 
       isCorrect,
     };
@@ -139,10 +183,10 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
           totalQuestions: storedQuestions.length,
           answers: evaluatedAnswers,
         },
-        "onboarding.aptitudeTestCompleted" : true
+        "onboarding.aptitudeTestCompleted": true,
       },
     },
-    { new: true }
+    { new: true },
   ).select("-password");
 
   return res.status(200).json(
@@ -151,17 +195,15 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
       {
         score,
         totalQuestions: storedQuestions.length,
-        percentage: Math.round(
-          (score / storedQuestions.length) * 100
-        ),
+        percentage: Math.round((score / storedQuestions.length) * 100),
       },
-      "Aptitude test submitted successfully"
-    )
+      "Aptitude test submitted successfully",
+    ),
   );
 });
 
 const submitInterestTest = asyncHandler(async (req, res) => {
-  const { answers } = req.body;
+  const { answers, questions } = req.body;
 
   if (!answers || !Array.isArray(answers)) {
     throw new ApiError(400, "Answers are required...");
@@ -197,7 +239,7 @@ const submitInterestTest = asyncHandler(async (req, res) => {
           scores,
           dominantInterest,
         },
-        "onboarding.interestTestCompleted" : true
+        "onboarding.interestTestCompleted": true,
       },
     },
     { new: true },
