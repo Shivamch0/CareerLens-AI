@@ -32,7 +32,6 @@ const InterestTest = () => {
             Array.isArray(parsed.data) &&
             now < parsed.expiry
           ) {
-            console.log("Using cached questions");
 
             setQuestions(parsed.data);
 
@@ -41,19 +40,12 @@ const InterestTest = () => {
             return;
           }
 
-          // CACHE EXPIRED
-          console.log("Cache expired");
-
           localStorage.removeItem("Interest_Questions");
         }
-
-        // API CALL
-        console.log("Fetching new questions...");
 
         const response = await interestQuestions();
 
         const data = response.data;
-        console.log(response.data)
 
         setQuestions(data);
 

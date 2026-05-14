@@ -21,7 +21,6 @@ export const generateResponse = async (prompt) => {
       throw new Error("Prompt is required");
     }
 
-    console.log("Sending request to Groq...");
 
     const completion = await groq.chat.completions.create({
 

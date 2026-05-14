@@ -16,12 +16,10 @@ const Assessment = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user)
 
-  console.log(user)
 
   const aptitudeCompleted = user?.onboarding?.aptitudeTestCompleted;
   const interestCompleted = user?.onboarding?.interestTestCompleted;
 
-  console.log(aptitudeCompleted , interestCompleted)
 
   const handleAptitude = () => {
     navigate("../aptitudetest")
