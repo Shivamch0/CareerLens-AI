@@ -40,10 +40,10 @@ const FlowLayout = () => {
 
       endTime = Date.now() + TEST_DURATION * 1000;
 
-      localStorage.setItem({
-        storageKey , 
-        endTime
-      });
+      localStorage.setItem(
+        storageKey, 
+        String(endTime)
+      )
       setTimeLeft(TEST_DURATION);
     }else{
       setTimeLeft(remaining);
