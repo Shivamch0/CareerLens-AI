@@ -18,6 +18,7 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import Resume from "./pages/Resume";
 
 //Onboarding
 import Onboarding from "./pages/Onboarding/Onboarding";
@@ -106,6 +107,7 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/resume" element={<Resume />} />
 
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/onboarding-journey" element={<Journey />} />
