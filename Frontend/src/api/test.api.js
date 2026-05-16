@@ -20,9 +20,15 @@ const submitAptitudeTest = async (data) => {
     return res.data;
 }
 
+const getCareerRecommendations = async () => {
+    const res = await api.get("/test/career-recommendations");
+    return res.data;
+}
+
 export {
     interestQuestions,
     aptitudeQuestions,
     submitInterestTest,
     submitAptitudeTest,
+    getCareerRecommendations,
 }

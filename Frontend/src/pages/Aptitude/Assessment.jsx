@@ -9,7 +9,6 @@ import AptitudeCard from "../../components/Card/AptitudeCard";
 // Other Imports
 import brain from "../../assets/brain.png";
 import greenHeart from "../../assets/greenHeart.png";
-import InterestTest from "./InterestTest";
 
 const Assessment = () => {
   const { isDark } = useTheme();
@@ -21,13 +20,16 @@ const Assessment = () => {
   const interestCompleted = user?.onboarding?.interestTestCompleted;
 
 
+  const completedCount = [aptitudeCompleted, interestCompleted].filter(Boolean).length;
+  const allCompleted = completedCount === 2;
+
   const handleAptitude = () => {
-    navigate("../aptitudetest")
-  }
+    navigate(aptitudeCompleted ? "../progress" : "../aptitudetest")
+  };
 
   const handleInterests = () => {
-    navigate("../intereststest")
-  }
+    navigate(interestCompleted ? "../progress" : "../intereststest")
+  };
 
   return (
     <section
@@ -35,18 +37,22 @@ const Assessment = () => {
     >
       <h2 className={`text-4xl font-bold mb-2`}>Assessment Overview</h2>
       <p className="text-base text-gray-500 mb-2">
-        The test is divided into 2 sections
+        {allCompleted
+          ? "Both sections are complete. Your progress is ready."
+          : `Complete both sections to unlock your report. ${completedCount}/2 done.`}
       </p>
-      <div className="flex justify-center p-4  gap-4">
+      <div className="flex flex-col justify-center gap-4 p-4 sm:flex-row">
         <AptitudeCard
           image={brain}
           title="Aptitude Test"
-          para="Measures your logical, numerical, verbal, and analytical ablities"
+          para="Measures your logical, numerical, verbal, and analytical abilities"
           question={25}
           minute={30}
           style={` ${isDark ? "bg-gray-600/40  border-purple-400/40" : "bg-white border border-gray-200"}`}
           bgColor={`bg-blue-100`}
           progressColor={`bg-blue-600`}
+          progress={aptitudeCompleted ? 100 : 0}
+          completed={aptitudeCompleted}
           fn={handleAptitude}
         />
         <AptitudeCard
@@ -58,12 +64,16 @@ const Assessment = () => {
           style={` ${isDark ? "bg-gray-600/40  border-purple-400/40" : "bg-white border border-gray-200"}`}
           bgColor={`bg-green-100`}
           progressColor={`bg-green-600`}
+          progress={interestCompleted ? 100 : 0}
+          completed={interestCompleted}
           fn={handleInterests}
         />
       </div>
-      <div className={`py-4 w-150 bg-blue-200 text-sm font-bold rounded-2xl`}>
+      <div className={`w-full max-w-2xl rounded-2xl bg-blue-100 px-4 py-4 text-sm font-bold text-blue-900`}>
         <p>
-          You can't pause the assessment. Please ensure you have enough time.
+          {allCompleted
+            ? "Review your progress to process your final career insights."
+            : "You can't pause an active test. Please ensure you have enough time before starting."}
         </p>
       </div>
     </section>

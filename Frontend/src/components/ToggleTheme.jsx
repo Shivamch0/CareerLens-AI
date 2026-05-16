@@ -1,9 +1,9 @@
 
 // Components Imports
-import { ThemeProvider, useTheme } from "../Provider/ThemeProvider"
+import { useTheme } from "../Provider/ThemeProvider"
 
 function ThemeToggleButton(){
-  const { theme , toggleTheme , isDark } = useTheme();
+  const { toggleTheme , isDark } = useTheme();
 
   return(
     <button
@@ -27,7 +27,7 @@ function ThemeToggleButton(){
 
 
 
-function ToggleTheme({isDark}) {
+function ToggleTheme() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">

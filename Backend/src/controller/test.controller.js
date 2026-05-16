@@ -157,6 +157,7 @@ const submitAptitudeTest = asyncHandler(async (req, res) => {
     new ApiResponse(
       200,
       {
+        user,
         score: result.score,
 
         totalQuestions: result.totalQuestions,
@@ -221,6 +222,7 @@ const submitInterestTest = asyncHandler(async (req, res) => {
     new ApiResponse(
       200,
       {
+        user,
         dominantInterest,
 
         score: result.score,
@@ -267,16 +269,20 @@ const getCareerRecommendations = asyncHandler(async (req, res) => {
     aptitudeTest,
   );
 
-  const aiText = await generateResponse(prompt);
+  const aiResponse = await generateResponse(prompt);
 
-  if (!aiText || aiText.startsWith("Failed")) {
-    throw new ApiError(500, "AI generation failed...");
+  if (!aiResponse.success) {
+    throw new ApiError(
+      aiResponse.status || 500,
+      aiResponse.message || "AI generation failed...",
+    );
   }
 
   let recommendations;
   try {
-    recommendations = parseAIResponse(aiText);
+    recommendations = parseAIResponse(aiResponse.data);
   } catch (error) {
+    console.error(error);
     throw new ApiError(500, "Failed to parse AI recommendations...");
   }
 

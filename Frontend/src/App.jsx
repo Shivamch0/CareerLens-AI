@@ -45,7 +45,7 @@ function App() {
         const res = await getCurrentUser();
 
         dispatch(setUser(res.data));
-      } catch (error) {
+      } catch {
         console.log("User not logged in");
       }finally{
         setAuthLoading(false)
@@ -53,7 +53,7 @@ function App() {
     };
 
     restoreUser();
-  }, []);
+  }, [dispatch]);
 
   if (authLoading) {
     return (

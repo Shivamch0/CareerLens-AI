@@ -1,5 +1,5 @@
 // Hooks Imports
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../Provider/ThemeProvider";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ function Navbar() {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { isDark } = useTheme();
 
   const user = useSelector((state) => state.auth.user);
 

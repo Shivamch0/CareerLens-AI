@@ -70,11 +70,17 @@ const userSchema = new mongoose.Schema(
     aptitudeTest: {
       score: Number,
       totalQuestions: Number,
+      percentage: Number,
+      categoryScores: {
+        type: Map,
+        of: Number,
+      },
       answers: [
         {
           questionId: String,
-          selectedOptionsIndex: Number,
+          selectedOptionIndex: Number,
           correctAnswerIndex: Number,
+          category: String,
           isCorrect: Boolean,
         },
       ],
@@ -85,6 +91,18 @@ const userSchema = new mongoose.Schema(
         of: Number,
       },
       dominantInterest: String,
+      score: Number,
+      totalQuestions: Number,
+      percentage: Number,
+      answers: [
+        {
+          questionId: String,
+          selectedOptionIndex: Number,
+          correctAnswerIndex: Number,
+          category: String,
+          isCorrect: Boolean,
+        },
+      ],
     },
     refreshToken: {
       type: String,

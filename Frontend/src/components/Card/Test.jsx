@@ -2,6 +2,8 @@ import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { submitAptitudeTest, submitInterestTest } from "../../api/test.api.js";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../Redux State/Slice/authSlice.js";
 
 // Components Imports
 import QuestionCard from "./QuestionCard";
@@ -16,6 +18,7 @@ const Test = ({ type, timeLeft, questions = [] }) => {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
 
   const aptitudeCompleted = user?.onboarding?.aptitudeTestCompleted;
   const interestCompleted = user?.onboarding?.interestTestCompleted;
@@ -67,16 +70,22 @@ const Test = ({ type, timeLeft, questions = [] }) => {
       localStorage.setItem(`${type}Answers`, JSON.stringify(answers));
 
       if (type === "interest") {
-        await submitInterestTest({
+        const response = await submitInterestTest({
           answers: answersPayload,
           questions,
         });
+        if (response.data?.user) {
+          dispatch(setUser(response.data.user));
+        }
         localStorage.removeItem("Interest_Questions");
       } else if (type === "aptitude") {
-        await submitAptitudeTest({
+        const response = await submitAptitudeTest({
           answers: answersPayload,
           questions,
         });
+        if (response.data?.user) {
+          dispatch(setUser(response.data.user));
+        }
         localStorage.removeItem("Aptitude_Questions");
       }
 
@@ -101,7 +110,17 @@ const Test = ({ type, timeLeft, questions = [] }) => {
           "Unable to submit your test. Please try again.",
       );
     }
-  }, [buildAnswersPayload, navigate, questions, submitted, type, answers]);
+  }, [
+    answers,
+    aptitudeCompleted,
+    buildAnswersPayload,
+    dispatch,
+    interestCompleted,
+    navigate,
+    questions,
+    submitted,
+    type,
+  ]);
 
   useEffect(() => {
     if (timeLeft === null || timeLeft === undefined) return;
@@ -113,7 +132,7 @@ const Test = ({ type, timeLeft, questions = [] }) => {
 
       handleSubmit();
     }
-  }, [timeLeft]);
+  }, [answers, handleSubmit, submitted, timeLeft]);
 
   const currentQuestion = questions[currentQ] || {};
 

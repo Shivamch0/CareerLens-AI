@@ -11,14 +11,27 @@ const AptitudeCard = ({
   bgColor,
   progressColor,
   fn,
+  completed = false,
 }) => {
   const { isDark } = useTheme();
 
   return (
     <div
-      className={` w-70 rounded-2xl  shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition hover:shadow-md border ${style ? style : ""} `}
+      className={`w-70 rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition hover:shadow-md border ${style ? style : ""}`}
       onClick={fn}
     >
+      <div className="mb-3 flex w-full justify-end">
+        <span
+          className={`rounded-full px-3 py-1 text-xs font-bold ${
+            completed
+              ? "bg-green-100 text-green-700"
+              : "bg-amber-100 text-amber-700"
+          }`}
+        >
+          {completed ? "Done" : "Pending"}
+        </span>
+      </div>
+
       <div
         className={`w-30 h-30 rounded-full flex items-center justify-center mb-4 ${bgColor}`}
       >

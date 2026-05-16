@@ -62,7 +62,6 @@ const FlowLayout = () => {
       const remaining = Math.floor((Number(endTime) - Date.now()) / 1000);
 
       if (remaining <= 0) {
-        location
         setTimeLeft(0);
         clearInterval(timer);
       } else {

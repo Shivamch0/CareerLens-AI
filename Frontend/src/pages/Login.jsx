@@ -2,7 +2,7 @@
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../Provider/ThemeProvider";
-import { loginUser, getCurrentUser } from "../api/auth.api";
+import { loginUser } from "../api/auth.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "../Redux State/Slice/authSlice";
 import toast, { Toaster } from "react-hot-toast";
