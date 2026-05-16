@@ -15,8 +15,8 @@ app.use(
   }),
 );
 
-app.use(express.json({ limit: "16kb" })); // access to json data
-app.use(express.urlencoded({ extended: true, limit: "16kb" })); // access to URl data
+app.use(express.json({ limit: "1mb" })); // access to json data
+app.use(express.urlencoded({ extended: true, limit: "1mb" })); // access to URl data
 // app.use("/uploads" , express.static("uploads"))  
 
 app.use(cookieParser()); // Can access user Cookies and send Cookies to user browser
@@ -26,10 +26,12 @@ app.use(cookieParser()); // Can access user Cookies and send Cookies to user bro
 import userRoute from "./routes/user.route.js"
 import onboardingRoute from './routes/onboarding.route.js'
 import testRoute from './routes/test.routes.js'
+import resumeRoute from "./routes/resume.route.js"
 
 app.use('/api/v1/users' , userRoute);
 app.use('/api/v1/onboarding' , onboardingRoute);
 app.use('/api/v1/test' , testRoute)
+app.use('/api/v1/resume' , resumeRoute)
 
 app.use(errorMiddleware)
 

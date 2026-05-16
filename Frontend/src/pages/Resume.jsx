@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import {
   FaBriefcase,
@@ -14,6 +14,12 @@ import {
 } from "react-icons/fa";
 
 import { useTheme } from "../Provider/ThemeProvider";
+import {
+  analyzeResume as analyzeResumeApi,
+  getLatestResume,
+  saveResume,
+  uploadResume,
+} from "../api/resume.api";
 
 const initialResume = {
   name: "",
@@ -33,10 +39,54 @@ function Resume() {
   const [resume, setResume] = useState(initialResume);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [resumeText, setResumeText] = useState("");
+  const [remoteAnalysis, setRemoteAnalysis] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const generatedResumeText = useMemo(() => buildResumeText(resume), [resume]);
   const analyzedText = resumeText.trim() || generatedResumeText;
-  const analysis = useMemo(() => analyzeResume(analyzedText), [analyzedText]);
+  const localAnalysis = useMemo(() => analyzeResumeLocally(analyzedText), [analyzedText]);
+  const analysis = remoteAnalysis || localAnalysis;
+  const suggestionCount = analysis.groups.reduce(
+    (total, group) => total + (group.suggestions?.length || 0),
+    0,
+  );
+
+  useEffect(() => {
+    const fetchResume = async () => {
+      try {
+        const response = await getLatestResume();
+        const savedResume = response.data;
+
+        if (!savedResume) return;
+
+        if (savedResume.generatedResume) {
+          setResume(normalizeResume(savedResume.generatedResume));
+        }
+
+        if (savedResume.extractedText) {
+          setResumeText(savedResume.extractedText);
+        }
+
+        if (savedResume.analysis?.groups?.length) {
+          setRemoteAnalysis({
+            score: savedResume.analysis.score || 0,
+            groups: savedResume.analysis.groups,
+          });
+        }
+      } catch (error) {
+        if (error.response?.status !== 401) {
+          toast.error(error.response?.data?.message || error.message);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResume();
+  }, []);
 
   const updateField = (field, value) => {
     setResume((current) => ({ ...current, [field]: value }));
@@ -69,19 +119,56 @@ function Resume() {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    setUploadedFile(file);
+    try {
+      setUploading(true);
+      setUploadedFile(file);
+      const response = await uploadResume(file);
+      setResumeText(response.data?.extractedText || "");
+      setRemoteAnalysis(null);
+      toast.success(response.message || "Resume uploaded and parsed");
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
 
-    if (file.type === "text/plain" || file.name.toLowerCase().endsWith(".txt")) {
-      const text = await file.text();
-      setResumeText(text);
-      toast.success("Resume text loaded for analysis");
+  const handleSave = async () => {
+    try {
+      setSaving(true);
+      const response = await saveResume(resume);
+      setResumeText(response.data?.extractedText || generatedResumeText);
+      toast.success(response.message || "Resume saved successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleAnalyze = async () => {
+    if (!analyzedText.trim()) {
+      toast.error("Add resume content before analyzing");
       return;
     }
 
-    toast(
-      "File attached. Paste the resume text below for detailed analysis.",
-      { icon: "i" },
-    );
+    try {
+      setAnalyzing(true);
+      const response = await analyzeResumeApi({
+        resumeText: analyzedText,
+        targetRole: resume.title,
+      });
+
+      setRemoteAnalysis({
+        score: response.data?.score || 0,
+        groups: response.data?.groups || [],
+      });
+      toast.success(response.message || "Resume analyzed successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const downloadResume = () => {
@@ -134,7 +221,7 @@ function Resume() {
               />
               <Metric
                 label="Suggestions"
-                value={analysis.suggestions.length}
+                value={suggestionCount}
                 icon={<FaLightbulb />}
                 isDark={isDark}
               />
@@ -145,6 +232,11 @@ function Resume() {
         <div className="mt-5 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-5">
             <Panel title="Build from scratch" icon={<FaFileAlt />} isDark={isDark}>
+              {loading && (
+                <p className={`mb-4 text-sm font-semibold ${isDark ? "text-gray-300" : "text-gray-500"}`}>
+                  Loading saved resume...
+                </p>
+              )}
               <div className="grid gap-4 md:grid-cols-2">
                 <Field label="Full name" value={resume.name} onChange={(value) => updateField("name", value)} isDark={isDark} />
                 <Field label="Target role" value={resume.title} onChange={(value) => updateField("title", value)} isDark={isDark} />
@@ -221,6 +313,16 @@ function Resume() {
                   </div>
                 )}
               />
+
+              <button
+                type="button"
+                onClick={handleSave}
+                disabled={saving}
+                className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+              >
+                <FaCheckCircle />
+                {saving ? "Saving..." : "Save Resume"}
+              </button>
             </Panel>
           </div>
 
@@ -238,8 +340,13 @@ function Resume() {
                   {uploadedFile ? uploadedFile.name : "Upload resume"}
                 </span>
                 <span className={`mt-1 text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>
-                  TXT files are read automatically. For PDF/DOCX, paste text below.
+                  TXT, PDF, and DOCX files are parsed on the backend.
                 </span>
+                {uploading && (
+                  <span className="mt-2 text-sm font-bold text-blue-600">
+                    Uploading and extracting text...
+                  </span>
+                )}
                 <input
                   type="file"
                   accept=".txt,.pdf,.doc,.docx"
@@ -256,6 +363,16 @@ function Resume() {
                 rows={8}
                 isDark={isDark}
               />
+
+              <button
+                type="button"
+                onClick={handleAnalyze}
+                disabled={analyzing}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <FaSearch />
+                {analyzing ? "Analyzing..." : "Analyze with AI"}
+              </button>
             </Panel>
 
             <Panel title="Analysis" icon={<FaSearch />} isDark={isDark}>
@@ -273,8 +390,8 @@ function Resume() {
               </div>
 
               <div className="space-y-3">
-                {analysis.suggestions.map((suggestion) => (
-                  <Suggestion key={suggestion.title} item={suggestion} isDark={isDark} />
+                {analysis.groups.map((group) => (
+                  <AnalysisGroup key={group.category} group={group} isDark={isDark} />
                 ))}
               </div>
             </Panel>
@@ -428,12 +545,36 @@ const ResumeSection = ({
   </div>
 );
 
+const AnalysisGroup = ({ group, isDark }) => (
+  <div
+    className={`rounded-2xl border p-4 ${
+      isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+    }`}
+  >
+    <div className="mb-3 flex items-center justify-between gap-4">
+      <h4 className="font-bold">{group.category}</h4>
+      <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+        {group.score || 0}%
+      </span>
+    </div>
+    <div className="space-y-3">
+      {(group.suggestions || []).map((item) => (
+        <Suggestion key={`${group.category}-${item.title}`} item={item} isDark={isDark} />
+      ))}
+    </div>
+  </div>
+);
+
 const Suggestion = ({ item, isDark }) => (
   <div
     className={`rounded-2xl border p-4 ${
-      item.done
+      item.done === true
         ? "border-green-200 bg-green-50 text-green-800"
-        : isDark
+        : item.priority === "High"
+          ? isDark
+            ? "border-red-400/30 bg-red-500/10 text-red-100"
+            : "border-red-200 bg-red-50 text-red-800"
+          : isDark
           ? "border-white/10 bg-white/5 text-gray-200"
           : "border-amber-200 bg-amber-50 text-amber-800"
     }`}
@@ -442,7 +583,12 @@ const Suggestion = ({ item, isDark }) => (
       <span className="mt-1">{item.done ? <FaCheckCircle /> : <FaLightbulb />}</span>
       <div>
         <p className="font-bold">{item.title}</p>
-        <p className="mt-1 text-sm leading-5">{item.detail}</p>
+        <p className="mt-1 text-sm leading-5">
+          {item.improvement || item.detail}
+        </p>
+        {item.issue && (
+          <p className="mt-2 text-xs font-semibold opacity-80">{item.issue}</p>
+        )}
       </div>
     </div>
   </div>
@@ -479,7 +625,7 @@ const buildResumeText = (resume) => {
   return lines.filter((line, index) => line || lines[index - 1]).join("\n").trim();
 };
 
-const analyzeResume = (text) => {
+const analyzeResumeLocally = (text) => {
   const lower = text.toLowerCase();
   const wordCount = text.split(/\s+/).filter(Boolean).length;
   const checks = [
@@ -524,8 +670,24 @@ const analyzeResume = (text) => {
 
   return {
     score: Math.round((doneCount / checks.length) * 100),
-    suggestions: checks,
+    groups: [
+      {
+        category: "Content",
+        score: Math.round((doneCount / checks.length) * 100),
+        suggestions: checks,
+      },
+    ],
   };
 };
+
+const normalizeResume = (resume) => ({
+  ...initialResume,
+  ...resume,
+  education: resume.education?.length ? resume.education : initialResume.education,
+  experience: resume.experience?.length
+    ? resume.experience
+    : initialResume.experience,
+  projects: resume.projects?.length ? resume.projects : initialResume.projects,
+});
 
 export default Resume;
