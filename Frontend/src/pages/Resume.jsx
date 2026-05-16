@@ -44,6 +44,7 @@ function Resume() {
   const [saving, setSaving] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState("");
   const [analysisError, setAnalysisError] = useState("");
@@ -200,14 +201,25 @@ function Resume() {
     }
   };
 
-  const downloadResume = () => {
-    const blob = createResumePdf(generatedResumeText || "Resume");
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${slugify(resume.name || "career-lens")}-resume.pdf`;
-    link.click();
-    URL.revokeObjectURL(url);
+  const downloadResume = async () => {
+    try {
+      setDownloading(true);
+      const [{ pdf }, { default: ResumePdf }] = await Promise.all([
+        import("@react-pdf/renderer"),
+        import("../components/Resume/ResumePdf"),
+      ]);
+      const blob = await pdf(<ResumePdf resume={resume} />).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${slugify(resume.name || "career-lens")}-resume.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      toast.error(error.message || "Unable to generate PDF");
+    } finally {
+      setDownloading(false);
+    }
   };
 
   return (
@@ -503,10 +515,11 @@ function Resume() {
               <button
                 type="button"
                 onClick={downloadResume}
-                className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700"
+                disabled={downloading}
+                className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <FaDownload />
-                Download PDF Resume
+                {downloading ? "Generating PDF..." : "Download PDF Resume"}
               </button>
             </Panel>
           </div>
@@ -913,94 +926,6 @@ const normalizeHeading = (value) =>
     .replace(/[^a-z ]/g, "")
     .replace(/\s+/g, " ")
     .trim();
-
-const createResumePdf = (text) => {
-  const pageWidth = 612;
-  const pageHeight = 792;
-  const margin = 54;
-  const lineHeight = 15;
-  const maxChars = 88;
-  const wrappedLines = text
-    .split(/\r?\n/)
-    .flatMap((line) => wrapPdfLine(line || " ", maxChars));
-  const linesPerPage = Math.floor((pageHeight - margin * 2) / lineHeight);
-  const pages = [];
-
-  for (let index = 0; index < wrappedLines.length; index += linesPerPage) {
-    pages.push(wrappedLines.slice(index, index + linesPerPage));
-  }
-
-  const objects = [];
-
-  objects.push("<< /Type /Catalog /Pages 2 0 R >>");
-  objects.push(`<< /Type /Pages /Kids [${pages.map((_, index) => `${3 + index * 2} 0 R`).join(" ")}] /Count ${pages.length} >>`);
-
-  pages.forEach((pageLines, index) => {
-    const pageObject = 3 + index * 2;
-    const contentObject = pageObject + 1;
-    const stream = [
-      "BT",
-      "/F1 11 Tf",
-      `${margin} ${pageHeight - margin} Td`,
-      ...pageLines.flatMap((line, lineIndex) => [
-        lineIndex === 0 ? "" : `0 -${lineHeight} Td`,
-        `(${escapePdfText(line)}) Tj`,
-      ]),
-      "ET",
-    ]
-      .filter(Boolean)
-      .join("\n");
-
-    objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${3 + pages.length * 2} 0 R >> >> /Contents ${contentObject} 0 R >>`);
-    objects.push(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
-  });
-
-  objects.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
-
-  let pdf = "%PDF-1.4\n";
-  const offsets = [0];
-
-  objects.forEach((object, index) => {
-    offsets.push(pdf.length);
-    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
-  });
-
-  const xrefOffset = pdf.length;
-  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
-  offsets.slice(1).forEach((offset) => {
-    pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
-  });
-  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
-
-  return new Blob([pdf], { type: "application/pdf" });
-};
-
-const wrapPdfLine = (line, maxChars) => {
-  const words = line.split(/\s+/);
-  const lines = [];
-  let current = "";
-
-  words.forEach((word) => {
-    const next = current ? `${current} ${word}` : word;
-
-    if (next.length > maxChars) {
-      if (current) lines.push(current);
-      current = word;
-    } else {
-      current = next;
-    }
-  });
-
-  if (current) lines.push(current);
-  return lines.length ? lines : [" "];
-};
-
-const escapePdfText = (value) =>
-  value
-    .replace(/[^\x20-\x7E]/g, "")
-    .replace(/\\/g, "\\\\")
-    .replace(/\(/g, "\\(")
-    .replace(/\)/g, "\\)");
 
 const slugify = (value) =>
   value
