@@ -1,3 +1,5 @@
+import { useTheme } from "../../Provider/ThemeProvider";
+
 const CircularProgress = ({
   percentage = 52,
   size = 200,
@@ -6,6 +8,7 @@ const CircularProgress = ({
   trackColor = "#E5E7EB",
   label = "Completed",
 }) => {
+  const { isDark } = useTheme();
   const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
   const radius = size / 2;
   const normalizedRadius = radius - stroke * 0.5;
@@ -43,10 +46,12 @@ const CircularProgress = ({
       </svg>
 
       <div className="absolute flex flex-col items-center">
-        <span className="text-2xl font-semibold text-gray-800">
+        <span className={`text-2xl font-semibold ${isDark ? "text-white" : "text-gray-800"}`}>
           {clampedPercentage}%
         </span>
-        <span className="text-gray-500 text-sm">{label}</span>
+        <span className={`text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>
+          {label}
+        </span>
       </div>
     </div>
   );

@@ -16,6 +16,8 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 //Onboarding
 import Onboarding from "./pages/Onboarding/Onboarding";
@@ -102,6 +104,8 @@ h-[150px] sm:h-[220px] md:h-[260px] lg:h-[300px]
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
 
               <Route path="/onboarding" element={<Onboarding />} />
               <Route path="/onboarding-journey" element={<Journey />} />

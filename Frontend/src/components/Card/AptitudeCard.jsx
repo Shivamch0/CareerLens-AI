@@ -44,7 +44,9 @@ const AptitudeCard = ({
         {title}
       </h3>
 
-      <p className={`text-sm text-gray-500 mt-2 leading-relaxed`}>{para}</p>
+      <p className={`text-sm mt-2 leading-relaxed ${isDark ? "text-gray-300" : "text-gray-500"}`}>
+        {para}
+      </p>
 
       <div
         className={`flex gap-2 mt-4 text-sm font-medium ${isDark ? "text-white" : "text-gray-600"}`}
@@ -54,7 +56,7 @@ const AptitudeCard = ({
         <span>{minute} Min</span>
       </div>
 
-      <div className="w-full h-2 bg-gray-200 rounded-full mt-4 overflow-hidden">
+      <div className={`w-full h-2 rounded-full mt-4 overflow-hidden ${isDark ? "bg-white/10" : "bg-gray-200"}`}>
         <div
           className={`h-full ${progressColor} rounded-full`}
           style={{ width: `${progress}%` }}

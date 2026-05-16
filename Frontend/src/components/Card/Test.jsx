@@ -5,10 +5,12 @@ import { FaFlag, FaLightbulb, FaLongArrowAltLeft, FaRegClock } from "react-icons
 
 import { submitAptitudeTest, submitInterestTest } from "../../api/test.api.js";
 import { setUser } from "../../Redux State/Slice/authSlice.js";
+import { useTheme } from "../../Provider/ThemeProvider";
 import Button from "../Button/Button";
 import QuestionCard from "./QuestionCard";
 
 const Test = ({ type, timeLeft, questions = [] }) => {
+  const { isDark } = useTheme();
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
@@ -147,13 +149,17 @@ const Test = ({ type, timeLeft, questions = [] }) => {
 
   return (
     <section className="flex-1 px-0 sm:px-4 lg:px-6">
-      <div className="rounded-3xl border border-gray-200 bg-white p-4 shadow-sm sm:p-5">
+      <div
+        className={`rounded-3xl border p-4 shadow-sm sm:p-5 ${
+          isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+        }`}
+      >
         <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <p className="text-sm font-bold uppercase tracking-wide text-blue-600">
               {formattedType}
             </p>
-            <h2 className="mt-1 text-2xl font-bold text-gray-900">
+            <h2 className={`mt-1 text-2xl font-bold ${isDark ? "text-white" : "text-gray-900"}`}>
               Question {currentQ + 1} of {questions.length}
             </h2>
           </div>
@@ -165,7 +171,11 @@ const Test = ({ type, timeLeft, questions = [] }) => {
               </div>
               <p className="mt-1 text-lg font-bold">{formatTime(timeLeft)}</p>
             </div>
-            <div className="rounded-2xl bg-gray-50 px-4 py-3 text-gray-700">
+            <div
+              className={`rounded-2xl px-4 py-3 ${
+                isDark ? "bg-white/5 text-gray-200" : "bg-gray-50 text-gray-700"
+              }`}
+            >
               <p className="text-xs font-bold uppercase tracking-wide">
                 Answered
               </p>
@@ -178,17 +188,21 @@ const Test = ({ type, timeLeft, questions = [] }) => {
 
         <div className="mb-5 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-center">
           <div>
-            <div className="mb-2 flex items-center justify-between text-xs font-semibold text-gray-500">
+            <div
+              className={`mb-2 flex items-center justify-between text-xs font-semibold ${
+                isDark ? "text-gray-300" : "text-gray-500"
+              }`}
+            >
               <span>Current progress</span>
               <span>{progress}%</span>
             </div>
-            <div className="h-2 overflow-hidden rounded-full bg-gray-200">
+            <div className={`h-2 overflow-hidden rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}>
               <div
                 className="h-full rounded-full bg-blue-600 transition-all duration-500"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-gray-100">
+            <div className={`mt-2 h-1 overflow-hidden rounded-full ${isDark ? "bg-white/10" : "bg-gray-100"}`}>
               <div
                 className="h-full rounded-full bg-green-500 transition-all duration-500"
                 style={{ width: `${answeredProgress}%` }}
@@ -196,7 +210,13 @@ const Test = ({ type, timeLeft, questions = [] }) => {
             </div>
           </div>
 
-          <button className="flex items-center justify-center gap-2 rounded-2xl border border-gray-200 px-4 py-3 text-sm font-bold text-gray-600 transition hover:bg-gray-50">
+          <button
+            className={`flex items-center justify-center gap-2 rounded-2xl border px-4 py-3 text-sm font-bold transition ${
+              isDark
+                ? "border-white/10 text-gray-200 hover:bg-white/10"
+                : "border-gray-200 text-gray-600 hover:bg-gray-50"
+            }`}
+          >
             <FaFlag className="text-amber-500" /> Report
           </button>
         </div>

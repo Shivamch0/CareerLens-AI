@@ -1,10 +1,17 @@
 import Section from "../Card/Section";
+import { useTheme } from "../../Provider/ThemeProvider";
 
 const SideBar = ({sections}) => {
+  const { isDark } = useTheme();
+
   return (
     <aside className="w-full lg:w-76">
-      <div className="rounded-3xl border border-gray-200 bg-gray-50 p-4">
-        <p className="mb-4 text-sm font-bold uppercase tracking-wide text-gray-500">
+      <div
+        className={`rounded-3xl border p-4 ${
+          isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+        }`}
+      >
+        <p className={`mb-4 text-sm font-bold uppercase tracking-wide ${isDark ? "text-gray-300" : "text-gray-500"}`}>
           Sections
         </p>
         <div className="space-y-3">
@@ -22,7 +29,11 @@ const SideBar = ({sections}) => {
               />
             ))
           ) : (
-            <p className="rounded-2xl bg-white p-4 text-sm font-semibold text-gray-500">
+            <p
+              className={`rounded-2xl p-4 text-sm font-semibold ${
+                isDark ? "bg-white/5 text-gray-300" : "bg-white text-gray-500"
+              }`}
+            >
               Answer honestly across all prompts. Your selections build the
               interest profile.
             </p>

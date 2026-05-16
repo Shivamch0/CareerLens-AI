@@ -37,17 +37,17 @@ const Aptitude = () => {
               >
                 Aptitude and Interests Test
               </h2>
-              <p className="text-sm font-semibold leading-6 text-gray-500 mb-5">
+              <p className={`text-sm font-semibold leading-6 mb-5 ${isDark ? "text-gray-300" : "text-gray-500"}`}>
                 This assessment helps us understand your aptitude strengths and
                 interests so CareerLens can suggest better paths for you.
               </p>
 
-              <div className="flex p-3 items-center gap-3 mb-2 rounded-2xl bg-gray-50">
+              <div className={`flex p-3 items-center gap-3 mb-2 rounded-2xl ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
                 <span className="p-3 bg-blue-100 rounded-xl">
                   <FaRegClock className="text-lg text-gray-600" />
                 </span>
                 <span>
-                  <p className="text-sm text-gray-500">Duration</p>
+                  <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>Duration</p>
                   <p
                     className={`font-bold text-base ${isDark ? "text-white" : ""}`}
                   >
@@ -56,12 +56,12 @@ const Aptitude = () => {
                 </span>
               </div>
 
-              <div className="flex p-3 items-center gap-3 mb-2 rounded-2xl bg-gray-50">
+              <div className={`flex p-3 items-center gap-3 mb-2 rounded-2xl ${isDark ? "bg-white/5" : "bg-gray-50"}`}>
                 <span className="p-3 bg-blue-100 rounded-xl">
                   <AiOutlineBars className="text-lg text-gray-600" />
                 </span>
                 <span>
-                  <p className="text-sm text-gray-500">Total Questions</p>
+                  <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>Total Questions</p>
                   <p
                     className={`font-bold text-base ${isDark ? "text-white" : ""}`}
                   >

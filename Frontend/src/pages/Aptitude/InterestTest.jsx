@@ -5,8 +5,10 @@ import { interestQuestions } from "../../api/test.api.js";
 
 import Test from "../../components/Card/Test";
 import SideBar from "../../components/Navbar/SideBar";
+import { useTheme } from "../../Provider/ThemeProvider";
 
 const InterestTest = () => {
+  const { isDark } = useTheme();
   const context = useOutletContext();
 
   const timeLeft = context?.timeLeft;
@@ -74,7 +76,7 @@ const InterestTest = () => {
   // LOADING
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className={`flex-1 flex items-center justify-center ${isDark ? "text-white" : "text-gray-900"}`}>
         <p>Loading questions...</p>
       </div>
     );

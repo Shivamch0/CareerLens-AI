@@ -9,8 +9,10 @@ import { aptitudeQuestions } from "../../api/test.api.js";
 // Other Imports
 import { FaGlobe } from "react-icons/fa";
 import { FaSortNumericUpAlt } from "react-icons/fa";
+import { useTheme } from "../../Provider/ThemeProvider";
 
 const AptitudeTest = () => {
+  const { isDark } = useTheme();
   const context = useOutletContext();
 
   const timeLeft = context?.timeLeft;
@@ -97,7 +99,7 @@ const AptitudeTest = () => {
   // LOADING
   if (loading) {
     return (
-      <div className="flex-1 flex items-center justify-center">
+      <div className={`flex-1 flex items-center justify-center ${isDark ? "text-white" : "text-gray-900"}`}>
         <p>Loading questions...</p>
       </div>
     );

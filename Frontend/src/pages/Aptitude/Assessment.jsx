@@ -69,9 +69,9 @@ const Assessment = () => {
           </div>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
-            <MiniStat icon={<FaRegClock />} label="Duration" value="55-60 min" />
-            <MiniStat icon={<FaRoute />} label="Flow" value="2 sections" />
-            <MiniStat icon={<FaCheckCircle />} label="Result" value="Career report" />
+            <MiniStat icon={<FaRegClock />} label="Duration" value="55-60 min" isDark={isDark} />
+            <MiniStat icon={<FaRoute />} label="Flow" value="2 sections" isDark={isDark} />
+            <MiniStat icon={<FaCheckCircle />} label="Result" value="Career report" isDark={isDark} />
           </div>
         </div>
 
@@ -141,15 +141,19 @@ const Assessment = () => {
   );
 };
 
-const MiniStat = ({ icon, label, value }) => (
-  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-700 shadow-sm">
+const MiniStat = ({ icon, label, value, isDark }) => (
+  <div
+    className={`rounded-2xl border p-4 ${
+      isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+    }`}
+  >
+    <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl text-blue-700 shadow-sm ${isDark ? "bg-white/10" : "bg-white"}`}>
       {icon}
     </div>
-    <p className="text-xs font-bold uppercase tracking-wide text-gray-400">
+    <p className={`text-xs font-bold uppercase tracking-wide ${isDark ? "text-gray-300" : "text-gray-400"}`}>
       {label}
     </p>
-    <p className="mt-1 font-bold text-gray-900">{value}</p>
+    <p className="mt-1 font-bold">{value}</p>
   </div>
 );
 

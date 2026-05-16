@@ -11,9 +11,11 @@ import {
   FaRoute,
 } from "react-icons/fa";
 
+import { useTheme } from "../../Provider/ThemeProvider";
 import { getCareerRecommendations } from "../../api/test.api";
 
 const Response = () => {
+  const { isDark } = useTheme();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const [recommendations, setRecommendations] = useState([]);
@@ -87,18 +89,22 @@ const Response = () => {
   const topRecommendation = recommendations[0];
 
   return (
-    <section className="px-4 pb-10 sm:px-6 lg:px-8">
+    <section className={`px-4 pb-10 sm:px-6 lg:px-8 ${isDark ? "text-white" : "text-gray-900"}`}>
       <div className="mx-auto w-full max-w-6xl">
-        <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-8">
+        <div
+          className={`rounded-3xl border p-5 shadow-sm sm:p-8 ${
+            isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+          }`}
+        >
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
               <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-green-600">
                 Career insights
               </p>
-              <h2 className="text-2xl font-bold text-gray-900 sm:text-4xl">
+              <h2 className="text-2xl font-bold sm:text-4xl">
                 Your assessment report is ready
               </h2>
-              <p className="mt-3 text-sm leading-6 text-gray-500 sm:text-base">
+              <p className={`mt-3 text-sm leading-6 sm:text-base ${isDark ? "text-gray-300" : "text-gray-500"}`}>
                 We combined your interests, aptitude performance, and education
                 profile to suggest practical next steps.
               </p>
@@ -109,11 +115,13 @@ const Response = () => {
                 label="Aptitude"
                 value={`${aptitude?.percentage || 0}%`}
                 icon={<FaChartLine />}
+                isDark={isDark}
               />
               <SummaryStat
                 label="Interest"
                 value={interest?.dominantInterest || "Mapped"}
                 icon={<FaLightbulb />}
+                isDark={isDark}
               />
             </div>
           </div>
@@ -158,13 +166,17 @@ const Response = () => {
         </div>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[1.35fr_0.9fr]">
-          <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+          <div
+            className={`rounded-3xl border p-5 shadow-sm sm:p-6 ${
+              isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+            }`}
+          >
             <div className="mb-5 flex items-center justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-900">
+                <h3 className="text-xl font-bold">
                   Suggested roles and paths
                 </h3>
-                <p className="mt-1 text-sm text-gray-500">
+                <p className={`mt-1 text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>
                   Ranked by fit with your current profile.
                 </p>
               </div>
@@ -174,7 +186,7 @@ const Response = () => {
             <div className="space-y-4">
               {(recommendations.length ? recommendations : fallbackRoles).map(
                 (item) => (
-                  <RecommendationCard key={item.title} item={item} />
+                  <RecommendationCard key={item.title} item={item} isDark={isDark} />
                 ),
               )}
             </div>
@@ -186,26 +198,33 @@ const Response = () => {
               icon={<FaCheck />}
               items={strengths.length ? strengths : ["Interest profile mapped"]}
               tone="green"
+              isDark={isDark}
             />
             <InsightPanel
               title="Skill gaps"
               icon={<FaGraduationCap />}
               items={skillGaps}
               tone="amber"
+              isDark={isDark}
             />
             <InsightPanel
               title="Next actions"
               icon={<FaRoute />}
               items={nextActions}
               tone="blue"
+              isDark={isDark}
             />
           </div>
         </div>
 
-        <div className="mt-5 flex flex-col gap-3 rounded-3xl border border-gray-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <div
+          className={`mt-5 flex flex-col gap-3 rounded-3xl border p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between ${
+            isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+          }`}
+        >
           <div>
-            <h3 className="font-bold text-gray-900">Keep building momentum</h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <h3 className="font-bold">Keep building momentum</h3>
+            <p className={`mt-1 text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}>
               Use this report as your first roadmap, then revisit it as your
               skills grow.
             </p>
@@ -232,29 +251,33 @@ const fallbackRoles = [
   },
 ];
 
-const SummaryStat = ({ label, value, icon }) => (
-  <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4">
-    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white text-blue-600 shadow-sm">
+const SummaryStat = ({ label, value, icon, isDark }) => (
+  <div
+    className={`rounded-2xl border p-4 ${
+      isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+    }`}
+  >
+    <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-xl text-blue-600 shadow-sm ${isDark ? "bg-white/10" : "bg-white"}`}>
       {icon}
     </div>
     <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
       {label}
     </p>
-    <p className="mt-1 truncate text-lg font-bold text-gray-900">{value}</p>
+    <p className="mt-1 truncate text-lg font-bold">{value}</p>
   </div>
 );
 
-const RecommendationCard = ({ item }) => (
-  <article className="rounded-2xl border border-gray-200 p-4">
+const RecommendationCard = ({ item, isDark }) => (
+  <article className={`rounded-2xl border p-4 ${isDark ? "border-white/10 bg-white/5" : "border-gray-200"}`}>
     <div className="flex items-start justify-between gap-4">
       <div>
         <div className="flex items-center gap-2">
-          <h4 className="font-bold text-gray-900">{item.title}</h4>
+          <h4 className="font-bold">{item.title}</h4>
           <span className="rounded-full bg-blue-50 px-2 py-1 text-xs font-bold capitalize text-blue-700">
             {item.type}
           </span>
         </div>
-        <p className="mt-2 text-sm leading-6 text-gray-500">{item.reason}</p>
+        <p className={`mt-2 text-sm leading-6 ${isDark ? "text-gray-300" : "text-gray-500"}`}>{item.reason}</p>
       </div>
       <span className="shrink-0 rounded-xl bg-green-50 px-3 py-2 text-sm font-bold text-green-700">
         {item.suitabilityPercentage}%
@@ -265,7 +288,9 @@ const RecommendationCard = ({ item }) => (
       {(item.roadmap || []).slice(0, 4).map((step) => (
         <span
           key={step}
-          className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600"
+          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+            isDark ? "bg-white/10 text-gray-200" : "bg-gray-100 text-gray-600"
+          }`}
         >
           {step}
         </span>
@@ -274,7 +299,7 @@ const RecommendationCard = ({ item }) => (
   </article>
 );
 
-const InsightPanel = ({ title, icon, items, tone }) => {
+const InsightPanel = ({ title, icon, items, tone, isDark }) => {
   const tones = {
     green: "bg-green-50 text-green-700 border-green-100",
     amber: "bg-amber-50 text-amber-700 border-amber-100",
@@ -282,18 +307,27 @@ const InsightPanel = ({ title, icon, items, tone }) => {
   };
 
   return (
-    <div className="rounded-3xl border border-gray-200 bg-white p-5 shadow-sm">
+    <div
+      className={`rounded-3xl border p-5 shadow-sm ${
+        isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+      }`}
+    >
       <div className="mb-4 flex items-center gap-3">
         <div
           className={`flex h-10 w-10 items-center justify-center rounded-xl border ${tones[tone]}`}
         >
           {icon}
         </div>
-        <h3 className="font-bold text-gray-900">{title}</h3>
+        <h3 className="font-bold">{title}</h3>
       </div>
       <div className="space-y-3">
         {items.map((item) => (
-          <div key={item} className="flex gap-3 text-sm leading-5 text-gray-600">
+          <div
+            key={item}
+            className={`flex gap-3 text-sm leading-5 ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            }`}
+          >
             <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gray-400" />
             <p>{item}</p>
           </div>

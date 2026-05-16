@@ -246,22 +246,59 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
 });
 
 const updateAccountDetails = asyncHandler(async (req, res) => {
-  const { userName, email } = req.body;
+  const { userName, email, careerStage, education, interests, skills } =
+    req.body;
 
-  if (!userName || !email) {
-    throw new ApiError(400, "All fields are required...");
+  const updateFields = {};
+
+  if (typeof userName === "string" && userName.trim()) {
+    updateFields.userName = userName.trim();
+  }
+
+  if (typeof email === "string" && email.trim()) {
+    updateFields.email = email.trim().toLowerCase();
+  }
+
+  if (typeof careerStage === "string" && careerStage.trim()) {
+    updateFields.careerStage = careerStage;
+    updateFields["onboarding.journeyCompleted"] = true;
+  }
+
+  if (education && typeof education === "object") {
+    updateFields.education = {
+      degree: education.degree?.trim() || "",
+      branch: education.branch?.trim() || "",
+      marks: education.marks?.trim() || "",
+    };
+  }
+
+  if (Array.isArray(interests)) {
+    updateFields.interests = interests
+      .filter((interest) => typeof interest === "string")
+      .map((interest) => interest.trim())
+      .filter(Boolean);
+
+    if (updateFields.interests.length) {
+      updateFields["onboarding.interestsCompleted"] = true;
+    }
+  }
+
+  if (Array.isArray(skills)) {
+    updateFields.skills = skills
+      .filter((skill) => typeof skill === "string")
+      .map((skill) => skill.trim())
+      .filter(Boolean);
+  }
+
+  if (!Object.keys(updateFields).length) {
+    throw new ApiError(400, "At least one profile field is required...");
   }
 
   const user = await User.findByIdAndUpdate(
     req.user?._id,
-    {
-      $set: {
-        userName,
-        email,
-      },
-    },
-    { new: true },
-  ).select("-password");
+    { $set: updateFields },
+    { new: true, runValidators: true },
+  ).select("-password -refreshToken");
 
   return res
     .status(200)
