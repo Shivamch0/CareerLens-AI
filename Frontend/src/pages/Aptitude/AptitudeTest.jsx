@@ -45,20 +45,15 @@ const AptitudeTest = () => {
             return;
           }
 
-          // CACHE EXPIRED
           localStorage.removeItem("Aptitude_Questions");
         }
 
-        // API CALL
-        console.log("Fetching aptitude questions...");
-
         const response = await aptitudeQuestions();
 
-        const data = response.data.data;
+        const data = response.data;
 
         setQuestions(data);
 
-        // SAVE CACHE
         const ONE_DAY = 24 * 60 * 60 * 1000;
 
         const questionsData = {
