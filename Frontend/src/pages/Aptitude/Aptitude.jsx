@@ -27,20 +27,23 @@ const Aptitude = () => {
     <>
       {isBaseRoute ? (
         <>
-          <section className={`flex items-center`}>
-            <div className={``}>
+          <section className="grid gap-8 px-4 pb-10 lg:grid-cols-[1fr_0.9fr] lg:items-center">
+            <div className={`rounded-3xl border p-6 shadow-sm sm:p-8 ${isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"}`}>
+              <p className="mb-2 text-sm font-bold uppercase tracking-wide text-blue-600">
+                Career assessment
+              </p>
               <h2
                 className={`font-extrabold text-2xl sm:text-3xl md:text-4xl mb-4 ${isDark ? "text-white" : ""}`}
               >
                 Aptitude and Interests Test
               </h2>
-              <p className="text-sm font-bold text-gray-500 mb-2">
-                This assessment will help us understsnd your aptitude strengths
-                and interests to suggest best career paths for you
+              <p className="text-sm font-semibold leading-6 text-gray-500 mb-5">
+                This assessment helps us understand your aptitude strengths and
+                interests so CareerLens can suggest better paths for you.
               </p>
 
-              <div className="flex p-2 items-center gap-3 mb-2">
-                <span className="p-2 bg-blue-200 rounded-lg">
+              <div className="flex p-3 items-center gap-3 mb-2 rounded-2xl bg-gray-50">
+                <span className="p-3 bg-blue-100 rounded-xl">
                   <FaRegClock className="text-lg text-gray-600" />
                 </span>
                 <span>
@@ -53,8 +56,8 @@ const Aptitude = () => {
                 </span>
               </div>
 
-              <div className="flex p-2 items-center gap-3 mb-2">
-                <span className="p-2 bg-blue-200 rounded-lg">
+              <div className="flex p-3 items-center gap-3 mb-2 rounded-2xl bg-gray-50">
+                <span className="p-3 bg-blue-100 rounded-xl">
                   <AiOutlineBars className="text-lg text-gray-600" />
                 </span>
                 <span>
@@ -67,12 +70,12 @@ const Aptitude = () => {
                 </span>
               </div>
 
-              <div className="flex p-6 items-center gap-4 bg-blue-200 rounded-lg mb-4">
+              <div className="flex p-5 items-center gap-4 bg-blue-50 rounded-2xl mb-5">
                 <span>
                   <CiCircleInfo className="text-blue-700 text-2xl"/>
                 </span>
                 <div>
-                  <p className="text-blue-900 font-bold">No right or wrong in interest test.</p>
+                  <p className="text-blue-900 font-bold">There are no right or wrong answers in the interest test.</p>
                   <p className="text-blue-900 font-bold">Answer honestly for accurate results.</p>
                 </div>
               </div>
@@ -83,8 +86,8 @@ const Aptitude = () => {
               />
             </div>
 
-            <div>
-              <img src={notes02} className="w-lg" />
+            <div className={`rounded-3xl border p-6 shadow-sm ${isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"}`}>
+              <img src={notes02} alt="assessment notes" className="mx-auto w-full max-w-lg object-contain" />
             </div>
           </section>
         </>

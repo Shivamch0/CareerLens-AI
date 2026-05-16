@@ -81,7 +81,7 @@ const InterestTest = () => {
   }
 
   return (
-    <section className="flex gap-10">
+    <section className="flex flex-col gap-5 lg:flex-row">
       <SideBar sections={[]} />
 
       <Test type="interest" timeLeft={timeLeft} questions={questions} />

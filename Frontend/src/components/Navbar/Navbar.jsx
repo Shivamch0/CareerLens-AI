@@ -1,186 +1,158 @@
 // Hooks Imports
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "../../Provider/ThemeProvider";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  FaBookOpen,
+  FaBriefcase,
+  FaFileAlt,
+  FaGraduationCap,
+  FaMicrophone,
+  FaUser,
+} from "react-icons/fa";
 
+import { useTheme } from "../../Provider/ThemeProvider";
 import { logout } from "../../Redux State/Slice/authSlice";
 import { logoutUser } from "../../api/auth.api.js";
-
-// Components Imports
 import Button from "../Button/Button";
-
-//Other Imports
 import logo from "../../assets/Logo.png";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const { isDark } = useTheme();
-
   const user = useSelector((state) => state.auth.user);
-
-  const handleNavigate = () => {
-    navigate("/");
-  };
 
   const handleLogout = async () => {
     try {
       const res = await logoutUser();
       dispatch(logout());
       setOpen(false);
+      toast.success(res?.message || "Logged out");
 
-      toast.success(res?.message || "User logout ")
       setTimeout(() => {
         navigate("/login");
-      } , 1000);
+      }, 700);
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message)
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
+  const menuItems = [
+    { label: "Profile", route: "/profile" },
+    { label: "Dashboard", route: "/dashboard" },
+    { label: "Settings", route: "/settings" },
+    { label: "Skills", route: "/skills" },
+    { label: "Resume", route: "/resume" },
+    { label: "Interview", route: "/interview" },
+    { label: "Help", route: "/help" },
+  ];
+
   return (
-    <>
-      <header className=" p-2">
-        <Toaster />
-        <nav className="flex items-center justify-between">
-          <div
-            className="flex items-center cursor-pointer"
-            onClick={handleNavigate}
-          >
-            <img className="w-12 h-12 rounded-full" src={logo} alt="" />
-            <h3 className="text-lg md:text-2xl font-bold text-blue-600">
-              CAREER
-            </h3>
-            <p
-              className={`text-lg md:text-2xl font-bold ${isDark ? "text-white" : "text-blue-300"} `}
-            >
+    <header className="p-2">
+      <Toaster />
+      <nav
+        className={`mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-3xl border px-4 py-3 shadow-sm ${
+          isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+        }`}
+      >
+        <button
+          type="button"
+          className="flex items-center"
+          onClick={() => navigate("/")}
+        >
+          <img className="h-11 w-11 rounded-full" src={logo} alt="CareerLens" />
+          <span className="text-lg font-bold md:text-2xl">
+            <span className="text-blue-600">CAREER</span>
+            <span className={isDark ? "text-white" : "text-blue-300"}>
               LENS
-            </p>
-          </div>
-          <div
-            className={`hidden md:flex gap-6 lg:gap-10 py-1 px-4 rounded-full text-sm text-gray-400 ${isDark ? "bg-white/10 border-white/20" : "bg-gray-300"}`}
-          >
-            <Link
-              to={"/learning"}
-              className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
-            >
-              Learning
-            </Link>
-            <Link
-              to={"/courses"}
-              className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
-            >
-              Courses
-            </Link>
-            <Link
-              to={"/skills"}
-              className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
-            >
-              Skills
-            </Link>
-            <Link
-              to={"/interview"}
-              className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
-            >
-              Interview
-            </Link>
-            <Link
-              to={"/resume"}
-              className={`relative py-2 px-3 font-bold transform duration-300 hover:text-lg ${isDark ? "hover:text-gray-200" : "text-blue-800"}`}
-            >
-              Resume
-            </Link>
-          </div>
+            </span>
+          </span>
+        </button>
 
-          <div className="flex gap-5 items-center">
-            {user ? (
-              <div className="relative" ref={menuRef}>
+        <div className="hidden items-center gap-2 md:flex">
+          <NavLink to="/learning" icon={<FaBookOpen />} label="Learning" isDark={isDark} />
+          <NavLink to="/courses" icon={<FaGraduationCap />} label="Courses" isDark={isDark} />
+          <NavLink to="/skills" icon={<FaBriefcase />} label="Skills" isDark={isDark} />
+          <NavLink to="/interview" icon={<FaMicrophone />} label="Interview" isDark={isDark} />
+          <NavLink to="/resume" icon={<FaFileAlt />} label="Resume" isDark={isDark} />
+        </div>
+
+        <div className="flex items-center gap-3">
+          {user ? (
+            <div className="relative" ref={menuRef}>
+              <button
+                type="button"
+                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-blue-600 font-bold text-white shadow-sm"
+                onClick={() => setOpen(!open)}
+              >
+                {user.userName?.charAt(0).toUpperCase() || <FaUser />}
+              </button>
+
+              {open && (
                 <div
-                  className="w-10 h-10 rounded-full bg-blue-500 text-white flex items-center justify-center cursor-pointer"
-                  onClick={() => setOpen(!open)}
+                  className={`absolute right-0 z-50 mt-2 w-52 rounded-2xl border py-2 text-sm font-semibold shadow-lg ${
+                    isDark
+                      ? "border-white/10 bg-slate-900 text-white"
+                      : "border-gray-200 bg-white text-gray-700"
+                  }`}
                 >
-                  {user.userName?.charAt(0).toUpperCase()}
+                  {menuItems.map((item) => (
+                    <button
+                      key={item.label}
+                      type="button"
+                      onClick={() => {
+                        navigate(item.route);
+                        setOpen(false);
+                      }}
+                      className={`block w-full px-4 py-2 text-left transition ${
+                        isDark ? "hover:bg-white/10" : "hover:bg-gray-50"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className={`block w-full px-4 py-2 text-left font-bold text-red-500 transition ${
+                      isDark ? "hover:bg-white/10" : "hover:bg-red-50"
+                    }`}
+                  >
+                    Logout
+                  </button>
                 </div>
-
-                {open && (
-                  <div className="absolute right-0 mt-2 w-48 bg-gray-400 text-white font-semibold shadow-lg rounded-lg py-2 z-50">
-                    <div
-                      onClick={() => navigate("/profile")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Profile
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/dashboard")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Dashboard
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/settings")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Settings
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/skills")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Skills
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/resume")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Resume
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/interview")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Interview
-                    </div>
-
-                    <div
-                      onClick={() => navigate("/help")}
-                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Help
-                    </div>
-
-                    {/* 🔥 Logout */}
-                    <div
-                      onClick={handleLogout}
-                      className="px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                    >
-                      Logout
-                    </div>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Button
-                title="Login"
-                onClick={() => navigate("/login")}
-                className={``}
-              />
-            )}
-          </div>
-        </nav>
-      </header>
-    </>
+              )}
+            </div>
+          ) : (
+            <Button
+              title="Login"
+              onClick={() => navigate("/login")}
+              className="bg-blue-600 py-2 text-white hover:bg-blue-700"
+            />
+          )}
+        </div>
+      </nav>
+    </header>
   );
 }
+
+const NavLink = ({ to, icon, label, isDark }) => (
+  <Link
+    to={to}
+    className={`flex items-center gap-2 rounded-2xl px-3 py-2 text-sm font-bold transition ${
+      isDark
+        ? "text-gray-300 hover:bg-white/10 hover:text-white"
+        : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+    }`}
+  >
+    {icon}
+    {label}
+  </Link>
+);
 
 export default Navbar;

@@ -17,7 +17,7 @@ const AptitudeCard = ({
 
   return (
     <div
-      className={`w-70 rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition hover:shadow-md border ${style ? style : ""}`}
+      className={`rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer transition hover:shadow-md border ${style ? style : "w-70"}`}
       onClick={fn}
     >
       <div className="mb-3 flex w-full justify-end">

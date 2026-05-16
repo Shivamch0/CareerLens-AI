@@ -104,7 +104,7 @@ const AptitudeTest = () => {
   }
 
   return (
-    <section className="flex gap-10">
+    <section className="flex flex-col gap-5 lg:flex-row">
       <SideBar sections={sections} />
 
       <Test type="aptitude" timeLeft={timeLeft} questions={questions} />
