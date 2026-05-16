@@ -136,7 +136,10 @@ function Resume() {
           Math.round((progressEvent.loaded * 100) / progressEvent.total),
         );
       });
-      setResumeText(response.data?.extractedText || "");
+      const extractedText = response.data?.extractedText || "";
+
+      setResumeText(extractedText);
+      setResume((current) => mergeParsedResume(current, parseResumeText(extractedText)));
       setRemoteAnalysis(null);
       toast.success(response.message || "Resume uploaded and parsed");
     } catch (error) {
@@ -198,11 +201,11 @@ function Resume() {
   };
 
   const downloadResume = () => {
-    const blob = new Blob([generatedResumeText], { type: "text/plain" });
+    const blob = createResumePdf(generatedResumeText || "Resume");
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `${resume.name || "career-lens"}-resume.txt`;
+    link.download = `${slugify(resume.name || "career-lens")}-resume.pdf`;
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -354,6 +357,16 @@ function Resume() {
 
           <div className="space-y-5">
             <Panel title="Upload and analyze" icon={<FaUpload />} isDark={isDark}>
+              <div
+                className={`mb-4 grid gap-3 rounded-3xl border p-4 sm:grid-cols-3 ${
+                  isDark ? "border-white/10 bg-white/5" : "border-blue-100 bg-blue-50"
+                }`}
+              >
+                <StatusStep label="Upload" active={uploading} done={Boolean(resumeText)} isDark={isDark} />
+                <StatusStep label="Auto-fill" active={uploading} done={Boolean(resumeText)} isDark={isDark} />
+                <StatusStep label="Analyze" active={analyzing} done={Boolean(remoteAnalysis)} isDark={isDark} />
+              </div>
+
               <label
                 className={`flex cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed p-6 text-center transition ${
                   isDark
@@ -395,7 +408,7 @@ function Resume() {
               )}
               {resumeText && !uploadError && (
                 <InlineNotice tone="success" isDark={isDark}>
-                  Resume text is ready for analysis.
+                  Resume text is ready. CareerLens also filled the builder fields it could detect.
                 </InlineNotice>
               )}
 
@@ -430,6 +443,36 @@ function Resume() {
             </Panel>
 
             <Panel title="Analysis" icon={<FaSearch />} isDark={isDark}>
+              <div
+                className={`mb-5 rounded-3xl border p-5 ${
+                  isDark ? "border-white/10 bg-slate-950/40" : "border-gray-200 bg-gray-50"
+                }`}
+              >
+                <div className="mb-2 flex items-center justify-between text-sm font-bold">
+                  <span>Resume strength</span>
+                  <span>{analysis.score}%</span>
+                </div>
+                <div className={`h-4 overflow-hidden rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}>
+                  <div
+                    className={`h-full rounded-full transition-all ${
+                      analysis.score >= 75
+                        ? "bg-green-500"
+                        : analysis.score >= 50
+                          ? "bg-blue-600"
+                          : "bg-amber-500"
+                    }`}
+                    style={{ width: `${analysis.score}%` }}
+                  />
+                </div>
+                <p className={`mt-3 text-sm font-semibold ${isDark ? "text-gray-300" : "text-gray-600"}`}>
+                  {analysis.score >= 75
+                    ? "Strong foundation. Polish the high-priority suggestions."
+                    : analysis.score >= 50
+                      ? "Good start. A few targeted changes can lift this quickly."
+                      : "Needs structure and clearer proof of skills before applying."}
+                </p>
+              </div>
+
               {remoteAnalysis?.usedFallback && (
                 <InlineNotice tone="warning" isDark={isDark}>
                   AI analysis was unavailable, so this report uses rule-based resume checks.
@@ -440,19 +483,6 @@ function Resume() {
                   Analysis target role: {remoteAnalysis.targetRole}
                 </InlineNotice>
               )}
-              <div className="mb-5">
-                <div className="mb-2 flex items-center justify-between text-sm font-bold">
-                  <span>Resume strength</span>
-                  <span>{analysis.score}%</span>
-                </div>
-                <div className={`h-3 overflow-hidden rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}>
-                  <div
-                    className="h-full rounded-full bg-blue-600 transition-all"
-                    style={{ width: `${analysis.score}%` }}
-                  />
-                </div>
-              </div>
-
               <div className="space-y-3">
                 {analysis.groups.map((group) => (
                   <AnalysisGroup key={group.category} group={group} isDark={isDark} />
@@ -476,7 +506,7 @@ function Resume() {
                 className="mt-4 flex w-full items-center justify-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700"
               >
                 <FaDownload />
-                Download TXT Resume
+                Download PDF Resume
               </button>
             </Panel>
           </div>
@@ -511,6 +541,33 @@ const Metric = ({ label, value, icon, isDark }) => (
       {label}
     </p>
     <p className="text-xl font-bold">{value}</p>
+  </div>
+);
+
+const StatusStep = ({ label, active, done, isDark }) => (
+  <div
+    className={`flex items-center gap-3 rounded-2xl border px-4 py-3 ${
+      done
+        ? isDark
+          ? "border-green-400/30 bg-green-500/10 text-green-100"
+          : "border-green-100 bg-green-50 text-green-800"
+        : active
+          ? isDark
+            ? "border-blue-400/30 bg-blue-500/10 text-blue-100"
+            : "border-blue-100 bg-white text-blue-800"
+          : isDark
+            ? "border-white/10 bg-white/5 text-gray-300"
+            : "border-gray-200 bg-white text-gray-600"
+    }`}
+  >
+    <span
+      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl ${
+        done ? "bg-green-600 text-white" : active ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-600"
+      }`}
+    >
+      {done ? <FaCheckCircle /> : active ? <FaSearch /> : <FaFileAlt />}
+    </span>
+    <span className="text-sm font-bold">{label}</span>
   </div>
 );
 
@@ -711,6 +768,245 @@ const buildResumeText = (resume) => {
 
   return lines.filter((line, index) => line || lines[index - 1]).join("\n").trim();
 };
+
+const parseResumeText = (text) => {
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const email = text.match(/[\w.%+-]+@[\w.-]+\.[A-Za-z]{2,}/)?.[0] || "";
+  const phone = text.match(/(?:\+?\d[\d\s().-]{8,}\d)/)?.[0]?.trim() || "";
+  const name = lines.find((line) => !line.includes("@") && !/\d{5,}/.test(line)) || "";
+  const title = lines.find((line, index) => index > 0 && !line.includes("@") && !/\d{5,}/.test(line) && !isSectionHeading(line)) || "";
+
+  return {
+    name,
+    title,
+    email,
+    phone,
+    summary: extractSection(text, ["summary", "profile", "objective"]),
+    skills: extractSection(text, ["skills", "technical skills", "core skills"])
+      .split(/\n|,|•|-/)
+      .map((skill) => skill.trim())
+      .filter((skill) => skill && skill.length < 40)
+      .slice(0, 20)
+      .join(", "),
+    experience: sectionToItems(extractSection(text, ["experience", "work experience", "employment"])),
+    projects: sectionToItems(extractSection(text, ["projects", "project experience"])).map((item) => ({
+      name: item.role,
+      tech: "",
+      details: item.details,
+    })),
+    education: parseEducation(extractSection(text, ["education", "academic", "academics"])),
+  };
+};
+
+const mergeParsedResume = (current, parsed) => ({
+  ...current,
+  name: current.name || parsed.name,
+  title: current.title || parsed.title,
+  email: current.email || parsed.email,
+  phone: current.phone || parsed.phone,
+  summary: current.summary || parsed.summary,
+  skills: current.skills || parsed.skills,
+  experience: hasUsefulList(current.experience)
+    ? current.experience
+    : parsed.experience.length
+      ? parsed.experience
+      : current.experience,
+  projects: hasUsefulList(current.projects)
+    ? current.projects
+    : parsed.projects.length
+      ? parsed.projects
+      : current.projects,
+  education: hasUsefulList(current.education)
+    ? current.education
+    : parsed.education.length
+      ? parsed.education
+      : current.education,
+});
+
+const extractSection = (text, names) => {
+  const lines = text.split(/\r?\n/);
+  const startIndex = lines.findIndex((line) =>
+    names.some((name) => normalizeHeading(line) === normalizeHeading(name)),
+  );
+
+  if (startIndex === -1) return "";
+
+  const body = [];
+
+  for (const line of lines.slice(startIndex + 1)) {
+    if (body.length && isSectionHeading(line)) break;
+    if (line.trim()) body.push(line.trim());
+  }
+
+  return body.join("\n").trim();
+};
+
+const sectionToItems = (sectionText) => {
+  if (!sectionText) return [];
+
+  return sectionText
+    .split(/\n(?=[A-Z][^\n]{2,80})/)
+    .map((chunk) => chunk.trim())
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((chunk) => {
+      const [firstLine, ...details] = chunk.split(/\n/);
+
+      return {
+        role: firstLine || "",
+        company: "",
+        duration: "",
+        details: details.join("\n") || firstLine || "",
+      };
+    });
+};
+
+const parseEducation = (sectionText) => {
+  if (!sectionText) return [];
+
+  return sectionText
+    .split(/\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .slice(0, 3)
+    .map((line) => ({
+      school: line,
+      degree: "",
+      year: line.match(/\b(20\d{2}|19\d{2})\b/)?.[0] || "",
+    }));
+};
+
+const hasUsefulList = (items) =>
+  items?.some((item) =>
+    Object.values(item).some((value) => typeof value === "string" && value.trim()),
+  );
+
+const isSectionHeading = (line) => {
+  const heading = normalizeHeading(line);
+  return [
+    "summary",
+    "profile",
+    "objective",
+    "skills",
+    "technical skills",
+    "core skills",
+    "experience",
+    "work experience",
+    "employment",
+    "projects",
+    "project experience",
+    "education",
+    "academic",
+    "academics",
+    "certifications",
+    "achievements",
+  ].includes(heading);
+};
+
+const normalizeHeading = (value) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z ]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const createResumePdf = (text) => {
+  const pageWidth = 612;
+  const pageHeight = 792;
+  const margin = 54;
+  const lineHeight = 15;
+  const maxChars = 88;
+  const wrappedLines = text
+    .split(/\r?\n/)
+    .flatMap((line) => wrapPdfLine(line || " ", maxChars));
+  const linesPerPage = Math.floor((pageHeight - margin * 2) / lineHeight);
+  const pages = [];
+
+  for (let index = 0; index < wrappedLines.length; index += linesPerPage) {
+    pages.push(wrappedLines.slice(index, index + linesPerPage));
+  }
+
+  const objects = [];
+
+  objects.push("<< /Type /Catalog /Pages 2 0 R >>");
+  objects.push(`<< /Type /Pages /Kids [${pages.map((_, index) => `${3 + index * 2} 0 R`).join(" ")}] /Count ${pages.length} >>`);
+
+  pages.forEach((pageLines, index) => {
+    const pageObject = 3 + index * 2;
+    const contentObject = pageObject + 1;
+    const stream = [
+      "BT",
+      "/F1 11 Tf",
+      `${margin} ${pageHeight - margin} Td`,
+      ...pageLines.flatMap((line, lineIndex) => [
+        lineIndex === 0 ? "" : `0 -${lineHeight} Td`,
+        `(${escapePdfText(line)}) Tj`,
+      ]),
+      "ET",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    objects.push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 ${3 + pages.length * 2} 0 R >> >> /Contents ${contentObject} 0 R >>`);
+    objects.push(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
+  });
+
+  objects.push("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+
+  let pdf = "%PDF-1.4\n";
+  const offsets = [0];
+
+  objects.forEach((object, index) => {
+    offsets.push(pdf.length);
+    pdf += `${index + 1} 0 obj\n${object}\nendobj\n`;
+  });
+
+  const xrefOffset = pdf.length;
+  pdf += `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
+  offsets.slice(1).forEach((offset) => {
+    pdf += `${String(offset).padStart(10, "0")} 00000 n \n`;
+  });
+  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
+
+  return new Blob([pdf], { type: "application/pdf" });
+};
+
+const wrapPdfLine = (line, maxChars) => {
+  const words = line.split(/\s+/);
+  const lines = [];
+  let current = "";
+
+  words.forEach((word) => {
+    const next = current ? `${current} ${word}` : word;
+
+    if (next.length > maxChars) {
+      if (current) lines.push(current);
+      current = word;
+    } else {
+      current = next;
+    }
+  });
+
+  if (current) lines.push(current);
+  return lines.length ? lines : [" "];
+};
+
+const escapePdfText = (value) =>
+  value
+    .replace(/[^\x20-\x7E]/g, "")
+    .replace(/\\/g, "\\\\")
+    .replace(/\(/g, "\\(")
+    .replace(/\)/g, "\\)");
+
+const slugify = (value) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
 
 const analyzeResumeLocally = (text) => {
   const lower = text.toLowerCase();
