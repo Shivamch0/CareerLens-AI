@@ -65,7 +65,7 @@ const Aptitude = () => {
                   <p
                     className={`font-bold text-base ${isDark ? "text-white" : ""}`}
                   >
-                    55 Questions
+                    60 Questions
                   </p>
                 </span>
               </div>

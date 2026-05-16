@@ -77,7 +77,7 @@ const userSchema = new mongoose.Schema(
       },
       answers: [
         {
-          questionId: String,
+          questionId: Number,
           selectedOptionIndex: Number,
           correctAnswerIndex: Number,
           category: String,
@@ -96,7 +96,7 @@ const userSchema = new mongoose.Schema(
       percentage: Number,
       answers: [
         {
-          questionId: String,
+          questionId: Number,
           selectedOptionIndex: Number,
           correctAnswerIndex: Number,
           category: String,

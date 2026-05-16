@@ -25,8 +25,10 @@ const Interests = () => {
 
   const handleNavigate = async () => {
     try {
+      const selectedInterests = selected.filter((interest) => interest !== "others");
+
       await saveInterests({
-        interests : selected , otherInterests : otherInterest
+        interests : selectedInterests , otherInterests : otherInterest
       })
       navigate("/onboarding-final");
     } catch (error) {
@@ -40,7 +42,9 @@ const Interests = () => {
     );
   };
 
-  const isNextDisabled = selected.length ===0 || (selected.includes("others") && !otherInterest.trim());
+  const hasPresetInterest = selected.some((interest) => interest !== "others");
+  const hasCustomInterest = selected.includes("others") && otherInterest.trim();
+  const isNextDisabled = !hasPresetInterest && !hasCustomInterest;
 
   const options = [
     {

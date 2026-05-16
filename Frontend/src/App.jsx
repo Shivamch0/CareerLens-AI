@@ -44,7 +44,7 @@ function App() {
       try {
         const res = await getCurrentUser();
 
-        dispatch(setUser(res.data));
+        dispatch(setUser(res.data?.user || res.data));
       } catch {
         console.log("User not logged in");
       }finally{

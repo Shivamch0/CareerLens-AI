@@ -80,7 +80,7 @@ const Assessment = () => {
             image={brain}
             title="Aptitude Test"
             para="Measures your logical, numerical, verbal, and analytical abilities"
-            question={25}
+            question={30}
             minute={30}
             style={`w-full lg:w-80 ${
               isDark

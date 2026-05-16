@@ -189,9 +189,13 @@ const submitInterestTest = asyncHandler(async (req, res) => {
   const result = evaluateAnswers(answers, storedQuestions);
 
   // Find Dominant Interest
-  const dominantInterest = Object.keys(result.categoryScores).reduce((a, b) =>
-    result.categoryScores[a] > result.categoryScores[b] ? a : b,
-  );
+  const scoreCategories = Object.keys(result.categoryScores);
+
+  const dominantInterest = scoreCategories.length
+    ? scoreCategories.reduce((a, b) =>
+        result.categoryScores[a] > result.categoryScores[b] ? a : b,
+      )
+    : null;
 
   // Save Result
   const user = await User.findByIdAndUpdate(

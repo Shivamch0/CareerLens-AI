@@ -35,12 +35,26 @@ const saveInterests = asyncHandler ( async (req , res) => {
         interests = []
     }
 
-    // Add custom interests if needed
-    if(otherInterests && otherInterests.trim() !== ""){
-        interests.push(otherInterests.trim())
-    }
+    const selectedInterests = interests
+        .filter((interest) => typeof interest === "string")
+        .map((interest) => interest.trim())
+        .filter((interest) => interest && interest.toLowerCase() !== "others");
 
-    const uniqueInterests = [...new Set(interests)];
+    const customInterests = typeof otherInterests === "string"
+        ? otherInterests
+            .split(",")
+            .map((interest) => interest.trim())
+            .filter(Boolean)
+        : [];
+
+    const uniqueInterests = [
+        ...new Map(
+            [...selectedInterests, ...customInterests].map((interest) => [
+                interest.toLowerCase(),
+                interest,
+            ]),
+        ).values(),
+    ];
 
     const user = await User.findByIdAndUpdate(
         req.user._id,

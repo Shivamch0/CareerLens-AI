@@ -3,7 +3,7 @@ dotenv.config();
 
 import Groq from "groq-sdk";
 
-const groqApi = process.env.GROK_CLOUD_API;
+const groqApi = process.env.GROQ_API_KEY || process.env.GROK_CLOUD_API;
 
 if (!groqApi) {
   throw new Error("GROQ_API_KEY is missing in .env");
