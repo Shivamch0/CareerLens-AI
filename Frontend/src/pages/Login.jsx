@@ -30,13 +30,34 @@ function Login() {
         toast.success(res.message || "Logged in successfully");
 
         setTimeout(() => {
+          // onboarding incomplete
           if (!user.onboarding?.journeyCompleted) {
             navigate("/onboarding-journey");
-          } else if (!user.onboarding?.interestsCompleted) {
-            navigate("/onboarding-interests");
-          } else {
-            navigate("/aptitude/assessment");
+            return;
           }
+
+          // interests not selected
+          if (!user.onboarding?.interestsCompleted) {
+            navigate("/onboarding-interests");
+            return;
+          }
+
+          // all tests completed + recommendations generated
+          const testsCompleted =
+            user.onboarding?.aptitudeTestCompleted &&
+            user.onboarding?.interestTestCompleted;
+
+          const hasRecommendations =
+            Array.isArray(user?.careerRecommendations) &&
+            user.careerRecommendations.length > 0;
+
+          if (testsCompleted && hasRecommendations) {
+            navigate("/dashboard");
+            return;
+          }
+
+          // continue assessments
+          navigate("/aptitude/assessment");
         }, 700);
       } catch (error) {
         toast.error(error.response?.data?.message || error.message);
