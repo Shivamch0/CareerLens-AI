@@ -1,103 +1,409 @@
 // Hooks Imports
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "../Provider/ThemeProvider";
 
-// Components Imports
-import StatsCard from "../components/Card/StatsCard";
-import SuggestionCard from "../components/Card/SuggestionCard";
-
 // Other Imports
-import blueIcon from "../assets/blue_icon.png";
-import clipboard from "../assets/clipboard.png";
-import greenIcon from "../assets/green_icon.png";
-import micIcon from "../assets/mic-icon.png";
-import notes from "../assets/notes.png";
-import redIcon from "../assets/red_icon.png";
+import {
+  FaArrowRight,
+  FaBrain,
+  FaBriefcase,
+  FaChartLine,
+  FaCheckCircle,
+  FaClipboardList,
+  FaFileAlt,
+  FaMicrophone,
+  FaRoute,
+} from "react-icons/fa";
 import youngMan from "../assets/young_man.png";
 
 function Dashboard() {
   const { isDark } = useTheme();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+
+  const profileCompletion = useMemo(() => {
+    const checks = [
+      user?.userName,
+      user?.email,
+      user?.careerStage,
+      user?.education?.degree,
+      user?.education?.branch,
+      user?.interests?.length,
+      user?.skills?.length,
+      user?.onboarding?.aptitudeTestCompleted,
+      user?.onboarding?.interestTestCompleted,
+    ];
+
+    return Math.round((checks.filter(Boolean).length / checks.length) * 100);
+  }, [user]);
+
+  const aptitudeScore = user?.aptitudeTest?.percentage || 0;
+  const completedTests = [
+    user?.onboarding?.aptitudeTestCompleted,
+    user?.onboarding?.interestTestCompleted,
+  ].filter(Boolean).length;
+  const matchScore = Math.round(
+    (profileCompletion + aptitudeScore + completedTests * 50) / 3,
+  );
+
+  const stats = [
+    {
+      label: "Profile Completion",
+      value: profileCompletion,
+      icon: <FaCheckCircle />,
+      color: "green",
+    },
+    {
+      label: "Aptitude Score",
+      value: aptitudeScore,
+      icon: <FaBrain />,
+      color: "blue",
+    },
+    {
+      label: "Career Match",
+      value: matchScore,
+      icon: <FaChartLine />,
+      color: "rose",
+    },
+  ];
+
+  const quickActions = [
+    {
+      title: "Assessment",
+      description: `${completedTests}/2 tests complete`,
+      icon: <FaClipboardList />,
+      route: "/aptitude/assessment",
+      color: "blue",
+    },
+    {
+      title: "Resume Review",
+      description: "Improve keywords and structure",
+      icon: <FaFileAlt />,
+      route: "/resume",
+      color: "teal",
+    },
+    {
+      title: "Mock Interview",
+      description: "Practice answers and delivery",
+      icon: <FaMicrophone />,
+      route: "/interview",
+      color: "orange",
+    },
+  ];
+
+  const skillGaps = [
+    ...(user?.skills?.length ? [] : ["Add your current skills"]),
+    aptitudeScore < 70 ? "Timed aptitude practice" : null,
+    "Portfolio project planning",
+    "Resume keyword alignment",
+  ].filter(Boolean);
+
+  const activities = [
+    {
+      title: "Assessment progress",
+      detail: `${completedTests}/2 tests completed`,
+      icon: <FaClipboardList />,
+    },
+    {
+      title: "Aptitude score",
+      detail: aptitudeScore ? `${aptitudeScore}% recorded` : "Not attempted yet",
+      icon: <FaBrain />,
+    },
+    {
+      title: "Profile strength",
+      detail: `${profileCompletion}% complete`,
+      icon: <FaCheckCircle />,
+    },
+  ];
+
   return (
-    <section className={`${isDark ? "text-white" : ''} px-4 sm:px-8 md:px-16 lg:px-30 `}>
-      <h3 className="font-bold text-2xl mb-2">Welcome,Shivam👋</h3>
-      <p className={`text-sm ${isDark ? "text-gray-400 " : 'text-black'}`}>B.Tech CSE | 4th Year</p>
-
-      <div className="my-2">
-        <p className={`mb-2 font-bold ${isDark ? " text-white/80 " : "text-gray-700"}`}> Skils: 5 | Test: 2 | Match Score: 78%</p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          <StatsCard
-            content="Profile Completion "
-            percentage="85"
-            image={greenIcon}
-            className={`${isDark  ? ' bg-gradient-to-r from-green-800 to-green-500' : "bg-gradient-to-r from-green-500/50 to-emerald-300/40 backdrop-blur-lg" }`}
-            progressBar='bg-green-300'
-          />
-          <StatsCard
-            content="Aptitude Score"
-            percentage="72"
-            image={blueIcon}
-            className={`${isDark ? ' bg-gradient-to-r from-blue-800 to-blue-500' : 'bg-gradient-to-r from-blue-500/50 to-indigo-300/40 backdrop-blur-lg'} `}
-            progressBar='bg-blue-300'
-          />
-          <StatsCard
-            content="Resume Strength"
-            percentage="68"
-            image={redIcon}
-            className={`${isDark ? ' bg-gradient-to-r from-red-800 to-red-500' : 'bg-gradient-to-r from-rose-500/50 to-orange-300/40 backdrop-blur-lg'} `}
-            progressBar='bg-red-400'
-          />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 my-4 gap-5">
-          <section className={` rounded-2xl p-6 shadow-xl flex ${isDark ? 'text-white bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#4c1d95] ' : 'bg-gradient-to-r from-slate-200/60 via-indigo-100/40 to-purple-100/40 backdrop-blur-md text-black'}`}>
-            <div >
-              <h4 className="text-gray-00 font-bold mb-3 ">Recommended Carrer</h4>
-              <h3 className="text-lg font-bold mb-3">Software Developer</h3>
-              <h5 className="text-yellow-500 font-bold mb-3">Match : 85%</h5>
-              <p className="text-sm opacity-80 mb-3">Strong coding & analytical skills</p>
-              <button className={`mt-4 px-4 py-2 transition font-bold text-sm cursor-pointer rounded-lg ${isDark ? 'bg-white/10  hover:bg-white/20' : 'bg-black/10 hover:bg-black/20 '}`}>View Roadmap</button>
+    <section
+      className={`px-4 pb-10 sm:px-8 md:px-12 lg:px-16 ${
+        isDark ? "text-white" : "text-gray-900"
+      }`}
+    >
+      <div className="mx-auto max-w-7xl">
+        <div
+          className={`rounded-3xl border p-5 shadow-sm sm:p-7 ${
+            isDark
+              ? "border-white/10 bg-white/5"
+              : "border-gray-200 bg-white"
+          }`}
+        >
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="mb-2 text-sm font-bold uppercase tracking-wide text-blue-600">
+                Career dashboard
+              </p>
+              <h2 className="text-2xl font-bold sm:text-4xl">
+                Welcome, {user?.userName || "Student"}
+              </h2>
+              <p
+                className={`mt-3 text-sm leading-6 sm:text-base ${
+                  isDark ? "text-gray-300" : "text-gray-500"
+                }`}
+              >
+                {user?.education?.degree || "Your profile"}{" "}
+                {user?.education?.branch ? `| ${user.education.branch}` : ""}
+                {user?.careerStage ? ` | ${formatLabel(user.careerStage)}` : ""}
+              </p>
             </div>
-            
-              <div >
-                <img src={youngMan} className="h-50" />
-              </div>
-           
-          </section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            <SuggestionCard image={clipboard} content='Aptitude Test' buttonText='Test' className={` ${isDark ? 'bg-gradient-to-br from-[#4f46e5] via-[#6d28d9] to-[#1e3a8a] ' : 'bg-gradient-to-r from-purple-400/40 via-violet-300/30 to-indigo-200/20 backdrop-blur-md'}`}/>
-            <SuggestionCard image={notes} content='Analyze Resume' buttonText='Resume' className={`${isDark ? 'bg-gradient-to-br from-[#2bb7a9] via-[#1f9d94] to-[#0f766e]' : 'bg-gradient-to-r from-teal-400/40 via-cyan-300/30 to-teal-200/20 backdrop-blur-md'}`} />
-            <SuggestionCard image={micIcon} content=' Mock Interview' buttonText='Interview' className={`${isDark ? 'bg-gradient-to-br from-[#ef4444] via-[#dc2626] to-[#b91c1c]' : 'bg-gradient-to-r from-orange-400/40 via-red-300/30 to-pink-200/20 backdrop-blur-md'}`} />
+
+            <div
+              className={`rounded-2xl px-4 py-3 ${
+                isDark ? "bg-blue-500/15" : "bg-blue-50"
+              }`}
+            >
+              <p className="text-sm font-semibold text-blue-600">
+                Skills: {user?.skills?.length || 0} | Tests: {completedTests}/2 |
+                Match Score: {matchScore}%
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {stats.map((stat) => (
+              <MetricCard key={stat.label} stat={stat} isDark={isDark} />
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 my-4 ">
-          <section className={`relative p-4 rounded-2xl shadow-xl ${isDark ? 'text-white bg-gradient-to-r from-[#4c1d95] via-[#1e293b] to-[#0f172a] ' : 'text-black bg-gradient-to-r from-slate-200/60 via-indigo-100/40 to-purple-100/40 backdrop-blur-md'}`}>
-            <h2 className="text-lg font-bold mb-3">Skill Gap Analysis</h2>
-            <hr  className="text-gray-500 w-100"/>
-            <h3 className={`"font-bold ${isDark ? 'text-gray-300' : 'text-gray-700'} my-1`}>Skills to Improve:</h3>
-            <ul className={`"flex flex-col gap-1 text-sm font-bold ${isDark ? 'text-gray-400' : 'text-gray-800'} mb-2`}>
-              <li className="list-disc ml-7">Data Structures</li>
-              <li className="list-disc ml-7">System</li>
-              <li className="list-disc ml-7">Advanced React</li>
-            </ul>
-            <div className="flex absolute bottom-3 right-10">
-              <button className={`"flex items-center text-sm font-bold mt-2 cursor-pointer  border-white/10 shadow shadow-gray-800 px-7 py-2 rounded-xl hover:brightness-80 ${isDark ? 'bg-gradient-to-br from-[#4f46e5] via-[#6d28d9] to-[#1e3a8a]' : 'hover:bg-gray-200'}`}>Improve Skills  </button>
+        <div className="mt-5 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <section
+            className={`overflow-hidden rounded-3xl border shadow-sm ${
+              isDark
+                ? "border-white/10 bg-white/5"
+                : "border-gray-200 bg-white"
+            }`}
+          >
+            <div className="flex flex-col gap-5 p-5 sm:p-7 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-xl">
+                <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-700">
+                  <FaBriefcase />
+                </div>
+                <h3 className="text-2xl font-bold">Recommended career path</h3>
+                <p
+                  className={`mt-2 text-sm leading-6 ${
+                    isDark ? "text-gray-300" : "text-gray-500"
+                  }`}
+                >
+                  Complete both assessments to unlock a personalized career
+                  report. Your current profile points toward software and
+                  analytical roles.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  <Pill>Software Development</Pill>
+                  <Pill>Analytical Thinking</Pill>
+                  <Pill>{matchScore}% profile match</Pill>
+                </div>
+                <button
+                  onClick={() => navigate("/aptitude/progress")}
+                  className="mt-6 flex items-center gap-2 rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-700"
+                >
+                  View Assessment Progress <FaArrowRight />
+                </button>
+              </div>
+
+              <div className="flex justify-center md:justify-end">
+                <img
+                  src={youngMan}
+                  alt="career guidance"
+                  className="h-52 object-contain sm:h-64"
+                />
+              </div>
             </div>
           </section>
 
-          <section className={`p-4  rounded-2xl  shadow-xl ${isDark ? 'bg-gradient-to-r text-white from-[#4c1d95] via-[#1e293b] to-[#0f172a]' : 'bg-gradient-to-r from-slate-200/60 via-indigo-100/40 to-purple-100/40 backdrop-blur-md '}`} >
-            <h3 className="text-lg font-bold mb-3">Recent Activity</h3>
-            <hr  className="text-gray-500 w-100"/>
-            <div className="font-bold my-2 text-sm flex gap-2 items-center"><p className="text-lg">▶️</p>Aptitude Test: 72%</div>
-            <hr  className="text-gray-500 w-100"/>
-            <div className={`font-bold my-2 text-sm flex gap-2 items-center ${isDark ? 'text-gray-300' : 'text-gray-600'} `}><p className="text-lg">▶️</p>Resume Review: Need more keywords</div>
-            <hr  className="text-gray-500 w-100"/>
-            <div className={`font-bold my-2 text-sm flex gap-2 items-center ${isDark ? 'text-gray-300' : 'text-gray-600'} `}><p className="text-lg ">▶️</p>Mock Interview: Good communication</div>
+          <section
+            className={`rounded-3xl border p-5 shadow-sm sm:p-6 ${
+              isDark
+                ? "border-white/10 bg-white/5"
+                : "border-gray-200 bg-white"
+            }`}
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold">Quick actions</h3>
+                <p
+                  className={`mt-1 text-sm ${
+                    isDark ? "text-gray-300" : "text-gray-500"
+                  }`}
+                >
+                  Continue the work that moves your profile forward.
+                </p>
+              </div>
+              <FaRoute className="text-blue-600" />
+            </div>
+
+            <div className="space-y-3">
+              {quickActions.map((action) => (
+                <ActionCard
+                  key={action.title}
+                  action={action}
+                  isDark={isDark}
+                  onClick={() => navigate(action.route)}
+                />
+              ))}
+            </div>
           </section>
+        </div>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-2">
+          <InfoPanel title="Skill gap focus" isDark={isDark}>
+            <div className="space-y-3">
+              {skillGaps.map((skill) => (
+                <div
+                  key={skill}
+                  className={`flex items-center justify-between gap-3 rounded-2xl px-4 py-3 ${
+                    isDark ? "bg-white/5" : "bg-gray-50"
+                  }`}
+                >
+                  <span className="text-sm font-semibold">{skill}</span>
+                  <span className="rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-700">
+                    Focus
+                  </span>
+                </div>
+              ))}
+            </div>
+            <button
+              onClick={() => navigate("/skills")}
+              className={`mt-5 rounded-2xl px-5 py-3 text-sm font-bold transition ${
+                isDark
+                  ? "bg-white/10 text-white hover:bg-white/20"
+                  : "bg-gray-900 text-white hover:bg-gray-800"
+              }`}
+            >
+              Improve Skills
+            </button>
+          </InfoPanel>
+
+          <InfoPanel title="Recent activity" isDark={isDark}>
+            <div className="space-y-3">
+              {activities.map((activity) => (
+                <div
+                  key={activity.title}
+                  className={`flex items-center gap-4 rounded-2xl px-4 py-3 ${
+                    isDark ? "bg-white/5" : "bg-gray-50"
+                  }`}
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
+                    {activity.icon}
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold">{activity.title}</p>
+                    <p
+                      className={`text-xs ${
+                        isDark ? "text-gray-300" : "text-gray-500"
+                      }`}
+                    >
+                      {activity.detail}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </InfoPanel>
         </div>
       </div>
     </section>
   );
 }
+
+const colors = {
+  green: "bg-green-100 text-green-700",
+  blue: "bg-blue-100 text-blue-700",
+  rose: "bg-rose-100 text-rose-700",
+  teal: "bg-teal-100 text-teal-700",
+  orange: "bg-orange-100 text-orange-700",
+};
+
+const MetricCard = ({ stat, isDark }) => (
+  <article
+    className={`rounded-2xl border p-5 ${
+      isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-gray-50"
+    }`}
+  >
+    <div className="flex items-start justify-between gap-4">
+      <div>
+        <p
+          className={`text-sm font-semibold ${
+            isDark ? "text-gray-300" : "text-gray-500"
+          }`}
+        >
+          {stat.label}
+        </p>
+        <p className="mt-2 text-3xl font-bold">{stat.value}%</p>
+      </div>
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-2xl ${colors[stat.color]}`}
+      >
+        {stat.icon}
+      </div>
+    </div>
+
+    <div
+      className={`mt-5 h-2 overflow-hidden rounded-full ${
+        isDark ? "bg-white/10" : "bg-gray-200"
+      }`}
+    >
+      <div
+        className="h-full rounded-full bg-blue-600 transition-all duration-500"
+        style={{ width: `${stat.value}%` }}
+      />
+    </div>
+  </article>
+);
+
+const ActionCard = ({ action, isDark, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 ${
+      isDark
+        ? "border-white/10 bg-white/5 hover:bg-white/10"
+        : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+    }`}
+  >
+    <div
+      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${colors[action.color]}`}
+    >
+      {action.icon}
+    </div>
+    <div className="min-w-0 flex-1">
+      <p className="font-bold">{action.title}</p>
+      <p
+        className={`truncate text-sm ${isDark ? "text-gray-300" : "text-gray-500"}`}
+      >
+        {action.description}
+      </p>
+    </div>
+    <FaArrowRight className="shrink-0 text-gray-400" />
+  </button>
+);
+
+const InfoPanel = ({ title, children, isDark }) => (
+  <section
+    className={`rounded-3xl border p-5 shadow-sm sm:p-6 ${
+      isDark ? "border-white/10 bg-white/5" : "border-gray-200 bg-white"
+    }`}
+  >
+    <h3 className="mb-4 text-xl font-bold">{title}</h3>
+    {children}
+  </section>
+);
+
+const Pill = ({ children }) => (
+  <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">
+    {children}
+  </span>
+);
+
+const formatLabel = (value) => {
+  return value
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 
 export default Dashboard;
