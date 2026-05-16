@@ -54,7 +54,9 @@ const resumeSchema = new mongoose.Schema(
       ],
     },
     analysis: {
+      targetRole: String,
       score: Number,
+      usedFallback: Boolean,
       groups: [
         {
           category: String,

@@ -44,6 +44,9 @@ function Resume() {
   const [saving, setSaving] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState("");
+  const [analysisError, setAnalysisError] = useState("");
 
   const generatedResumeText = useMemo(() => buildResumeText(resume), [resume]);
   const analyzedText = resumeText.trim() || generatedResumeText;
@@ -74,6 +77,8 @@ function Resume() {
           setRemoteAnalysis({
             score: savedResume.analysis.score || 0,
             groups: savedResume.analysis.groups,
+            targetRole: savedResume.analysis.targetRole || "",
+            usedFallback: Boolean(savedResume.analysis.usedFallback),
           });
         }
       } catch (error) {
@@ -121,15 +126,27 @@ function Resume() {
 
     try {
       setUploading(true);
+      setUploadProgress(0);
+      setUploadError("");
       setUploadedFile(file);
-      const response = await uploadResume(file);
+      const response = await uploadResume(file, (progressEvent) => {
+        if (!progressEvent.total) return;
+
+        setUploadProgress(
+          Math.round((progressEvent.loaded * 100) / progressEvent.total),
+        );
+      });
       setResumeText(response.data?.extractedText || "");
       setRemoteAnalysis(null);
       toast.success(response.message || "Resume uploaded and parsed");
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      const message = error.response?.data?.message || error.message;
+      setUploadedFile(null);
+      setUploadError(message);
+      toast.error(message);
     } finally {
       setUploading(false);
+      event.target.value = "";
     }
   };
 
@@ -154,6 +171,7 @@ function Resume() {
 
     try {
       setAnalyzing(true);
+      setAnalysisError("");
       const response = await analyzeResumeApi({
         resumeText: analyzedText,
         targetRole: resume.title,
@@ -162,10 +180,18 @@ function Resume() {
       setRemoteAnalysis({
         score: response.data?.score || 0,
         groups: response.data?.groups || [],
+        targetRole: response.data?.targetRole || resume.title,
+        usedFallback: Boolean(response.data?.usedFallback),
       });
-      toast.success(response.message || "Resume analyzed successfully");
+      toast.success(
+        response.data?.usedFallback
+          ? "AI was unavailable, so a rule-based analysis was used"
+          : response.message || "Resume analyzed successfully",
+      );
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      const message = error.response?.data?.message || error.message;
+      setAnalysisError(message);
+      toast.error(message);
     } finally {
       setAnalyzing(false);
     }
@@ -344,16 +370,34 @@ function Resume() {
                 </span>
                 {uploading && (
                   <span className="mt-2 text-sm font-bold text-blue-600">
-                    Uploading and extracting text...
+                    Uploading and extracting text... {uploadProgress}%
+                  </span>
+                )}
+                {uploading && (
+                  <span className={`mt-3 h-2 w-full max-w-sm overflow-hidden rounded-full ${isDark ? "bg-white/10" : "bg-gray-200"}`}>
+                    <span
+                      className="block h-full rounded-full bg-blue-600 transition-all"
+                      style={{ width: `${uploadProgress}%` }}
+                    />
                   </span>
                 )}
                 <input
                   type="file"
-                  accept=".txt,.pdf,.doc,.docx"
+                  accept=".txt,.pdf,.docx"
                   onChange={handleUpload}
                   className="hidden"
                 />
               </label>
+              {uploadError && (
+                <InlineNotice tone="error" isDark={isDark}>
+                  {uploadError}
+                </InlineNotice>
+              )}
+              {resumeText && !uploadError && (
+                <InlineNotice tone="success" isDark={isDark}>
+                  Resume text is ready for analysis.
+                </InlineNotice>
+              )}
 
               <TextArea
                 label="Resume text for analysis"
@@ -373,9 +417,29 @@ function Resume() {
                 <FaSearch />
                 {analyzing ? "Analyzing..." : "Analyze with AI"}
               </button>
+              {analyzing && (
+                <InlineNotice tone="info" isDark={isDark}>
+                  Analyzing your resume. If AI is unavailable, CareerLens will use the built-in resume checks.
+                </InlineNotice>
+              )}
+              {analysisError && (
+                <InlineNotice tone="error" isDark={isDark}>
+                  {analysisError}
+                </InlineNotice>
+              )}
             </Panel>
 
             <Panel title="Analysis" icon={<FaSearch />} isDark={isDark}>
+              {remoteAnalysis?.usedFallback && (
+                <InlineNotice tone="warning" isDark={isDark}>
+                  AI analysis was unavailable, so this report uses rule-based resume checks.
+                </InlineNotice>
+              )}
+              {remoteAnalysis?.targetRole && (
+                <InlineNotice tone="info" isDark={isDark}>
+                  Analysis target role: {remoteAnalysis.targetRole}
+                </InlineNotice>
+              )}
               <div className="mb-5">
                 <div className="mb-2 flex items-center justify-between text-sm font-bold">
                   <span>Resume strength</span>
@@ -449,6 +513,29 @@ const Metric = ({ label, value, icon, isDark }) => (
     <p className="text-xl font-bold">{value}</p>
   </div>
 );
+
+const InlineNotice = ({ children, tone = "info", isDark }) => {
+  const tones = {
+    info: isDark
+      ? "border-blue-400/30 bg-blue-500/10 text-blue-100"
+      : "border-blue-100 bg-blue-50 text-blue-800",
+    success: isDark
+      ? "border-green-400/30 bg-green-500/10 text-green-100"
+      : "border-green-100 bg-green-50 text-green-800",
+    warning: isDark
+      ? "border-amber-400/30 bg-amber-500/10 text-amber-100"
+      : "border-amber-100 bg-amber-50 text-amber-800",
+    error: isDark
+      ? "border-red-400/30 bg-red-500/10 text-red-100"
+      : "border-red-100 bg-red-50 text-red-800",
+  };
+
+  return (
+    <div className={`mt-4 rounded-2xl border px-4 py-3 text-sm font-semibold ${tones[tone]}`}>
+      {children}
+    </div>
+  );
+};
 
 const Field = ({ label, value, onChange, isDark, placeholder = "" }) => (
   <label className="block">

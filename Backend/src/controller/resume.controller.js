@@ -78,7 +78,8 @@ const uploadResume = asyncHandler(async (req, res) => {
 });
 
 const analyzeResume = asyncHandler(async (req, res) => {
-  const { resumeText, targetRole } = req.body;
+  const { resumeText, targetRole = "" } = req.body;
+  const normalizedTargetRole = typeof targetRole === "string" ? targetRole.trim() : "";
 
   if (!resumeText || typeof resumeText !== "string") {
     throw new ApiError(400, "Resume text is required...");
@@ -88,18 +89,18 @@ const analyzeResume = asyncHandler(async (req, res) => {
   let usedFallback = false;
 
   const aiResponse = await generateResponse(
-    resumeAnalysisPrompt(resumeText.slice(0, 12000), targetRole),
+    resumeAnalysisPrompt(resumeText.slice(0, 12000), normalizedTargetRole),
   );
 
   if (aiResponse.success) {
     try {
       groups = parseAIResponse(aiResponse.data);
     } catch {
-      groups = buildRuleBasedAnalysis(resumeText, targetRole).groups;
+      groups = buildRuleBasedAnalysis(resumeText, normalizedTargetRole).groups;
       usedFallback = true;
     }
   } else {
-    groups = buildRuleBasedAnalysis(resumeText, targetRole).groups;
+    groups = buildRuleBasedAnalysis(resumeText, normalizedTargetRole).groups;
     usedFallback = true;
   }
 
@@ -111,7 +112,9 @@ const analyzeResume = asyncHandler(async (req, res) => {
       $set: {
         extractedText: resumeText,
         analysis: {
+          targetRole: normalizedTargetRole,
           score,
+          usedFallback,
           groups,
           analyzedAt: new Date(),
         },
@@ -125,6 +128,7 @@ const analyzeResume = asyncHandler(async (req, res) => {
       200,
       {
         score,
+        targetRole: normalizedTargetRole,
         groups,
         resume,
         usedFallback,

@@ -10,7 +10,7 @@ const saveResume = async (generatedResume) => {
   return res.data;
 };
 
-const uploadResume = async (file) => {
+const uploadResume = async (file, onUploadProgress) => {
   const formData = new FormData();
   formData.append("resume", file);
 
@@ -18,6 +18,7 @@ const uploadResume = async (file) => {
     headers: {
       "Content-Type": "multipart/form-data",
     },
+    onUploadProgress,
   });
 
   return res.data;
